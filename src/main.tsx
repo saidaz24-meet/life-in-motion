@@ -4,12 +4,15 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './app/routes.tsx'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
+import { SoundProvider } from './app/providers/SoundProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <div className="noise-overlay" />
-      <RouterProvider router={router} />
+      <SoundProvider>
+        <div className="noise-overlay" />
+        <RouterProvider router={router} />
+      </SoundProvider>
     </ErrorBoundary>
   </StrictMode>,
 )

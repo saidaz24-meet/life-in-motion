@@ -7,7 +7,7 @@ export default function ContactPage() {
   return (
     <>
       <SEOHead title="Contact" />
-      <div className="min-h-screen py-12 px-6 md:px-12 lg:px-16 flex items-center justify-center">
+      <div className="min-h-[100dvh] py-12 px-6 md:px-12 lg:px-16 pb-24 flex items-center justify-center">
       <div className="max-w-4xl mx-auto w-full">
         {/* Header */}
         <motion.div
@@ -16,10 +16,10 @@ export default function ContactPage() {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4">
             Get in Touch
           </h1>
-          <p className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl mx-auto leading-relaxed">
             Let's connect and explore possibilities together.
           </p>
         </motion.div>
@@ -34,13 +34,14 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.02, y: -3 }}
+            whileTap={{ scale: 0.98, y: 0 }}
             className={clsx(
               "group relative flex items-center justify-between gap-6",
               "glass rounded-lg border border-white/10 p-6 md:p-8",
-              "backdrop-blur-xl transition-all",
+              "backdrop-blur-xl transition-all duration-200 ease-out",
               "hover:border-white/20 hover:bg-white/5",
+              "hover:shadow-[0_4px_16px_rgba(120,220,255,0.15)]",
               "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
             )}
           >
@@ -66,13 +67,14 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.02, y: -3 }}
+            whileTap={{ scale: 0.98, y: 0 }}
             className={clsx(
               "group relative flex items-center justify-between gap-6",
               "glass rounded-lg border border-white/10 p-6 md:p-8",
-              "backdrop-blur-xl transition-all",
+              "backdrop-blur-xl transition-all duration-200 ease-out",
               "hover:border-white/20 hover:bg-white/5",
+              "hover:shadow-[0_4px_16px_rgba(120,220,255,0.15)]",
               "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
             )}
           >

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, ExternalLink } from "lucide-react";
+import { FileText } from "lucide-react";
 import { VENTURES, type Venture } from "../../content/ventures";
 import CaseFileModal, { type CaseFileData } from "../../components/modal/CaseFileModal";
 import { clsx } from "clsx";
 import LazyImage from "../../components/ui/LazyImage";
 import LazyVideo from "../../components/ui/LazyVideo";
+import ProofLinksStrip from "../../components/ui/ProofLinksStrip";
 import SEOHead from "../../components/ui/SEOHead";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
@@ -31,7 +32,7 @@ export default function VenturesPage() {
   return (
     <>
       <SEOHead title="Ventures" />
-      <div className="min-h-screen">
+      <div className="min-h-[100dvh] pb-24">
         {/* Header */}
       <div className="px-6 md:px-12 lg:px-16 pt-12 pb-8">
         <div className="max-w-7xl mx-auto">
@@ -39,7 +40,7 @@ export default function VenturesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
           >
             Ventures
           </motion.h1>
@@ -47,7 +48,7 @@ export default function VenturesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl"
+            className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
           >
             Building solutions that create value, connect communities, and drive impact.
           </motion.p>
@@ -168,10 +169,12 @@ function VentureSection({
               <button
                 onClick={() => onOpenCaseFile(venture)}
                 className={clsx(
-                  "group flex items-center gap-3 px-6 py-3 rounded-lg transition-all",
-                  "bg-[rgb(var(--accent))]/20 hover:bg-[rgb(var(--accent))]/30",
+                  "group flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-200 ease-out",
+                  "bg-[rgb(var(--accent))]/20 hover:bg-[rgb(var(--accent))]/30 active:bg-[rgb(var(--accent))]/25",
                   "border border-[rgb(var(--accent))]/40 hover:border-[rgb(var(--accent))]/60",
                   "text-lg font-semibold text-[rgb(var(--fg-0))]",
+                  "hover:-translate-y-0.5 active:translate-y-0",
+                  "hover:shadow-[0_4px_16px_rgba(120,220,255,0.3)]",
                   "focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]/40 focus:ring-offset-2 focus:ring-offset-transparent"
                 )}
               >
@@ -199,7 +202,7 @@ function VentureSection({
               <h3 className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-4">
                 Mission
               </h3>
-              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed">
+              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed max-w-prose">
                 {venture.context}
               </p>
             </motion.div>
@@ -267,29 +270,7 @@ function VentureSection({
               transition={{ duration: 0.6, delay: 0.4 }}
               className="glass rounded-lg border border-white/10 p-6 md:p-8 backdrop-blur-xl"
             >
-              <h3 className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-6">
-                Proof
-              </h3>
-              <div className="space-y-3">
-                {venture.proofLinks.map((link, linkIndex) => (
-                  <a
-                    key={linkIndex}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={clsx(
-                      "flex items-center justify-between gap-3 px-6 py-4 rounded-lg",
-                      "bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20",
-                      "text-[rgb(var(--fg-0))] transition-all",
-                      "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent",
-                      "group"
-                    )}
-                  >
-                    <span className="font-medium">{link.label}</span>
-                    <ExternalLink className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </a>
-                ))}
-              </div>
+              <ProofLinksStrip links={venture.proofLinks} />
             </motion.div>
           </div>
         </div>

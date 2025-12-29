@@ -145,14 +145,14 @@ export default function StoryScene({
           </motion.div>
         )}
 
-        {/* Gradient overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60" />
+        {/* Gradient overlays for readability - reduced opacity to show animated background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/40" />
         
-        {/* Vignette overlay */}
+        {/* Vignette overlay - lighter to show animated background */}
         <div 
           className="absolute inset-0" 
           style={{
-            background: "radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%)",
+            background: "radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.15) 100%)",
           }}
         />
       </div>

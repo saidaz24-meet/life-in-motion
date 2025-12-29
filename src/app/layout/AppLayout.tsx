@@ -1,13 +1,17 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "../../components/layout/Header";
+import PageFooter from "../../components/layout/PageFooter";
+import ScrollToTop from "../../components/layout/ScrollToTop";
 
 export default function AppLayout() {
   const location = useLocation();
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
-      {/* Fixed cinematic background */}
+    <>
+      <ScrollToTop />
+      <div className="fixed inset-0 overflow-hidden">
+        {/* Fixed cinematic background */}
       <div className="absolute inset-0">
         {/* Base dark background */}
         <div className="absolute inset-0 bg-[rgb(var(--bg-0))]" />
@@ -39,11 +43,11 @@ export default function AppLayout() {
         />
       </div>
 
-      {/* Header */}
+      {/* Header - fixed at top */}
       <Header />
 
-      {/* Page content with transitions */}
-      <div className="relative z-0 h-full overflow-y-auto">
+      {/* Page content with transitions - offset for fixed header */}
+      <div className="relative z-0 h-full overflow-y-auto pt-[57px]" data-scroll-container>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -54,13 +58,17 @@ export default function AppLayout() {
               duration: 0.4,
               ease: [0.4, 0, 0.2, 1],
             }}
-            className="h-full"
+            className="flex flex-col min-h-[calc(100dvh-57px)]"
           >
-            <Outlet />
+            <div className="flex-1">
+              <Outlet />
+            </div>
+            <PageFooter />
           </motion.div>
         </AnimatePresence>
       </div>
     </div>
+    </>
   );
 }
 

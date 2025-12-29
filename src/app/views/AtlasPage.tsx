@@ -134,14 +134,14 @@ export default function AtlasPage() {
   return (
     <>
       <SEOHead title="Life Atlas" />
-      <div className="min-h-screen py-12 px-6 md:px-12 lg:px-16">
+      <div className="min-h-[100dvh] py-12 px-6 md:px-12 lg:px-16 pb-24">
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-12">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
         >
           Life Atlas
         </motion.h1>
@@ -149,7 +149,7 @@ export default function AtlasPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl"
+          className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
         >
           An interactive map of experiences, moments, and connections that shape the journey.
         </motion.p>

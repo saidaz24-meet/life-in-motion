@@ -34,10 +34,11 @@ export default function HonorCard({ honor, onClick, index }: HonorCardProps) {
       transition={prefersReducedMotion ? {} : { duration: 0.5, delay: index * 0.1 }}
       onClick={onClick}
       className={clsx(
-        "group relative w-full h-full rounded-lg overflow-hidden",
+        "group relative w-full h-full rounded-lg overflow-hidden cursor-pointer",
         "glass border border-white/10",
+        "hover:border-white/30 hover:shadow-[0_8px_24px_rgba(120,220,255,0.2)]",
         "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent",
-        "transition-all duration-300"
+        "transition-all duration-300 ease-out"
       )}
       style={{
         perspective: "1000px",
@@ -50,7 +51,11 @@ export default function HonorCard({ honor, onClick, index }: HonorCardProps) {
           rotateX: -1.5,
           rotateY: 1.5,
           scale: 1.02,
-          transition: { duration: 0.3, ease: "easeOut" }
+          transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
+        }}
+        whileTap={{
+          scale: 0.98,
+          transition: { duration: 0.15, ease: "easeOut" }
         }}
         style={{
           transformStyle: "preserve-3d",

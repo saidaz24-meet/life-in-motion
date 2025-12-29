@@ -1,0 +1,45 @@
+/* Premium button microinteractions */
+.btn-premium {
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(120, 220, 255, 0.15);
+}
+
+.btn-premium:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(120, 220, 255, 0.1);
+}
+
+/* Card hover shine effect */
+.card-hover-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-hover-shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-hover-shine:hover::before {
+  left: 100%;
+}
+

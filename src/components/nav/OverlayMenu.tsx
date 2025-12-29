@@ -5,8 +5,12 @@ import { X } from "lucide-react";
 import { clsx } from "clsx";
 
 interface OverlayMenuProps {
+  id?: string;
   isOpen: boolean;
   onClose: () => void;
+  buttonPosition?: { top: number; right: number };
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 interface NavItem {
@@ -21,7 +25,8 @@ interface QuickJump {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Honors (main)", path: "/honors", description: "Recognition and achievements" },
+  { label: "Story", path: "/", description: "Journey through time" },
+  { label: "Honors", path: "/honors", description: "Recognition and achievements" },
   { label: "Ventures", path: "/ventures", description: "Projects and initiatives" },
   { label: "Life Atlas", path: "/atlas", description: "Interactive journey map" },
   { label: "Books", path: "/books", description: "Reading and recommendations" },
@@ -40,7 +45,14 @@ const QUICK_JUMPS: QuickJump[] = [
   { label: "Books", filter: "books" },
 ];
 
-export default function OverlayMenu({ isOpen, onClose }: OverlayMenuProps) {
+export default function OverlayMenu({ 
+  id, 
+  isOpen, 
+  onClose, 
+  buttonPosition,
+  onMouseEnter,
+  onMouseLeave 
+}: OverlayMenuProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -199,96 +211,140 @@ export default function OverlayMenu({ isOpen, onClose }: OverlayMenuProps) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm"
-            onPointerDown={handleBackdropClick}
-            aria-hidden="true"
-          />
+          {/* Backdrop - only show if not using hover dropdown */}
+          {!buttonPosition && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm"
+              onPointerDown={handleBackdropClick}
+              aria-hidden="true"
+            />
+          )}
 
-          {/* Menu panel */}
+          {/* Menu panel - positioned dropdown or full screen */}
           <motion.div
             ref={menuRef}
             initial={{ 
               scale: 0.8,
               opacity: 0,
-              y: -20,
+              rotateY: buttonPosition ? 15 : 0,
+              x: buttonPosition ? 20 : 0,
+              y: buttonPosition ? -10 : -20,
             }}
             animate={{ 
               scale: 1,
               opacity: 1,
+              rotateY: 0,
+              x: 0,
               y: 0,
             }}
             exit={{ 
               scale: 0.8,
               opacity: 0,
-              y: -20,
+              rotateY: buttonPosition ? 15 : 0,
+              x: buttonPosition ? 20 : 0,
+              y: buttonPosition ? -10 : -20,
             }}
             transition={{
               type: "spring",
               damping: 25,
               stiffness: 300,
-              mass: 0.8,
+              mass: 0.7,
             }}
             style={{
-              transformOrigin: "top right",
+              transformOrigin: buttonPosition ? "top right" : "top right",
+              position: buttonPosition ? "fixed" : "fixed",
+              top: buttonPosition ? `${buttonPosition.top}px` : undefined,
+              right: buttonPosition ? `${buttonPosition.right}px` : undefined,
+              ...(buttonPosition ? {} : { inset: 0 }),
             }}
-            className="fixed inset-0 z-[201] flex flex-col overflow-y-auto pointer-events-none"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            id={id}
+            className={clsx(
+              buttonPosition 
+                ? "z-[201] w-96 max-h-[80vh] overflow-y-auto"
+                : "z-[201] flex flex-col overflow-y-auto pointer-events-none",
+              "pointer-events-auto"
+            )}
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
           >
             {/* Glass panel container */}
-            <div className="flex-1 flex flex-col m-6 glass rounded-lg border border-white/10 pointer-events-auto bg-[rgb(var(--bg-0))]/90 backdrop-blur-xl">
-              {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <h2 className="text-lg font-medium text-[rgb(var(--fg-0))]">Navigation</h2>
-                <button
-                  ref={firstFocusableRef}
-                  onClick={onClose}
-                  className={clsx(
-                    "p-2 rounded-md transition-colors",
-                    "hover:bg-white/5 active:bg-white/10",
-                    "border border-white/10 hover:border-white/20",
-                    "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
-                  )}
-                  aria-label="Close menu"
-                >
-                  <X className="w-5 h-5 text-[rgb(var(--fg-0))]" />
-                </button>
-              </div>
+            <div className={clsx(
+              "flex flex-col glass rounded-lg border border-white/10 bg-[rgb(var(--bg-0))]/90 backdrop-blur-xl",
+              buttonPosition ? "shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "flex-1 m-6"
+            )}>
+              {/* Header - hide close button if dropdown */}
+              {!buttonPosition && (
+                <div className="flex items-center justify-between p-6 border-b border-white/10">
+                  <h2 className="text-lg font-medium text-[rgb(var(--fg-0))]">Navigation</h2>
+                  <button
+                    ref={firstFocusableRef}
+                    onClick={onClose}
+                    className={clsx(
+                      "p-2 rounded-md transition-all duration-200 ease-out",
+                      "hover:bg-white/5 active:bg-white/10",
+                      "border border-white/10 hover:border-white/20",
+                      "hover:-translate-y-0.5 active:translate-y-0",
+                      "hover:shadow-[0_2px_8px_rgba(120,220,255,0.1)]",
+                      "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
+                    )}
+                    aria-label="Close menu"
+                  >
+                    <X className="w-5 h-5 text-[rgb(var(--fg-0))]" />
+                  </button>
+                </div>
+              )}
 
               {/* Content */}
-              <div className="flex-1 p-6 space-y-12">
+              <div className={clsx(
+                "p-6 space-y-8",
+                buttonPosition ? "max-h-[calc(80vh-24px)] overflow-y-auto" : "flex-1 space-y-12"
+              )}>
                 {/* Main navigation */}
-                <nav className="space-y-4" aria-label="Main navigation">
+                <nav className={clsx(
+                  "space-y-2",
+                  !buttonPosition && "space-y-4"
+                )} aria-label="Main navigation">
                   {NAV_ITEMS.map((item) => (
                     <button
                       key={item.path}
                       onClick={() => handleNavClick(item.path)}
                       className={clsx(
-                        "w-full text-left p-6 rounded-lg transition-all",
+                        "w-full text-left rounded-lg transition-all duration-200 ease-out",
+                        buttonPosition 
+                          ? "p-3" 
+                          : "p-6",
                         "hover:bg-white/5 active:bg-white/10",
                         "border border-white/10 hover:border-white/20",
+                        "hover:-translate-y-0.5 active:translate-y-0",
+                        "hover:shadow-[0_4px_12px_rgba(120,220,255,0.1)]",
                         "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent",
-                        location.pathname === item.path && "bg-white/5 border-white/20"
+                        (location.pathname === item.path || (item.path === "/" && location.pathname === "/story")) && "bg-white/5 border-white/20"
                       )}
                     >
-                      <div className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-1">
+                      <div className={clsx(
+                        "font-semibold text-[rgb(var(--fg-0))]",
+                        buttonPosition ? "text-base mb-0.5" : "text-2xl mb-1"
+                      )}>
                         {item.label}
                       </div>
-                      <div className="text-sm text-[rgb(var(--fg-1))]">
-                        {item.description}
-                      </div>
+                      {!buttonPosition && (
+                        <div className="text-sm text-[rgb(var(--fg-1))]">
+                          {item.description}
+                        </div>
+                      )}
                     </button>
                   ))}
                 </nav>
 
-                {/* Quick Jumps */}
+                {/* Quick Jumps - hide in dropdown mode */}
+                {!buttonPosition && (
                 <div>
                   <h3 className="text-sm font-medium text-[rgb(var(--fg-1))] uppercase tracking-wide mb-4">
                     Quick Jumps
@@ -300,10 +356,12 @@ export default function OverlayMenu({ isOpen, onClose }: OverlayMenuProps) {
                         ref={index === QUICK_JUMPS.length - 1 ? lastFocusableRef : undefined}
                         onClick={() => handleQuickJump(jump.filter)}
                         className={clsx(
-                          "px-4 py-2 rounded-full text-sm font-medium transition-all",
+                          "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out",
                           "bg-white/5 hover:bg-white/10 active:bg-white/15",
                           "border border-white/10 hover:border-white/20",
                           "text-[rgb(var(--fg-0))]",
+                          "hover:-translate-y-0.5 active:translate-y-0",
+                          "hover:shadow-[0_2px_8px_rgba(120,220,255,0.1)]",
                           "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
                         )}
                       >
@@ -312,6 +370,7 @@ export default function OverlayMenu({ isOpen, onClose }: OverlayMenuProps) {
                     ))}
                   </div>
                 </div>
+                )}
               </div>
             </div>
           </motion.div>

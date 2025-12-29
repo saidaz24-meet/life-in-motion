@@ -50,7 +50,7 @@ export default function BooksPage() {
   return (
     <>
       <SEOHead title="Books" />
-      <div className="min-h-screen py-12 px-6 md:px-12 lg:px-16">
+      <div className="min-h-[100dvh] py-12 px-6 md:px-12 lg:px-16 pb-24">
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-12">
         <div className="flex items-start justify-between gap-4 mb-4">
@@ -59,7 +59,7 @@ export default function BooksPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
             >
               Bookshelf
             </motion.h1>
@@ -67,7 +67,7 @@ export default function BooksPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl"
+              className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
             >
               A curated collection of books that have shaped my thinking and journey.
             </motion.p>
@@ -80,9 +80,12 @@ export default function BooksPage() {
             transition={{ duration: 0.4, delay: 0.2 }}
             onClick={handleShuffle}
             className={clsx(
-              "flex items-center gap-2 px-4 py-2 rounded-lg transition-all",
-              "bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20",
+              "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ease-out",
+              "bg-white/5 hover:bg-white/10 active:bg-white/15",
+              "border border-white/10 hover:border-white/20",
               "text-sm font-medium text-[rgb(var(--fg-0))]",
+              "hover:-translate-y-0.5 active:translate-y-0",
+              "hover:shadow-[0_4px_12px_rgba(120,220,255,0.15)]",
               "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent",
               "group"
             )}
@@ -245,7 +248,7 @@ function BookDetailPanel({ book, onClose }: BookDetailPanelProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-3xl md:text-4xl lg:text-5xl font-bold text-[rgb(var(--fg-0))] mb-2"
+                className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-[rgb(var(--fg-0))] mb-2"
               >
                 {book.title}
               </motion.h2>
@@ -285,7 +288,7 @@ function BookDetailPanel({ book, onClose }: BookDetailPanelProps) {
                 <span className="text-[rgb(var(--accent))]">♥</span>
                 Why I Loved It
               </h3>
-              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed">
+              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed max-w-prose">
                 {book.whyILovedIt}
               </p>
             </motion.section>
@@ -301,7 +304,7 @@ function BookDetailPanel({ book, onClose }: BookDetailPanelProps) {
                 <span className="text-[rgb(var(--accent))]">💡</span>
                 Takeaway
               </h3>
-              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed italic">
+              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed max-w-prose italic">
                 {book.takeaway}
               </p>
             </motion.section>

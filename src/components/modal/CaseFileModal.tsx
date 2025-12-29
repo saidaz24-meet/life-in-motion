@@ -5,6 +5,7 @@ import { clsx } from "clsx";
 import YouTubeEmbed, { extractYouTubeId } from "../media/YouTubeEmbed";
 import LazyImage from "../ui/LazyImage";
 import LazyVideo from "../ui/LazyVideo";
+import ProofLinksStrip from "../ui/ProofLinksStrip";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 // Union type for case file data
@@ -385,43 +386,18 @@ export default function CaseFileModal({
                           transition={{ duration: 0.6, delay: 0.4 }}
                           className="glass rounded-lg border border-white/10 p-6 lg:p-8 backdrop-blur-xl"
                         >
-                          <h3 className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-6">
-                            {data.type === "honor" || data.type === "venture"
-                              ? "Proof & Links"
-                              : "Related Links"}
-                          </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {(data.type === "honor" || data.type === "venture"
-                              ? data.proofLinks
-                              : data.relatedLinks || []
-                            ).map((link, index) => (
-                              <a
-                                key={index}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                ref={
-                                  index ===
-                                  ((data.type === "honor" || data.type === "venture")
-                                    ? data.proofLinks.length
-                                    : data.relatedLinks?.length || 0) -
-                                    1
-                                    ? lastFocusableRef
-                                    : undefined
-                                }
-                                className={clsx(
-                                  "flex items-center justify-between gap-3 px-6 py-4 rounded-lg",
-                                  "bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20",
-                                  "text-[rgb(var(--fg-0))] transition-all",
-                                  "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent",
-                                  "group"
-                                )}
-                              >
-                                <span className="font-medium">{link.label}</span>
-                                <ExternalLink className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                              </a>
-                            ))}
-                          </div>
+                          <ProofLinksStrip
+                            links={
+                              data.type === "honor" || data.type === "venture"
+                                ? data.proofLinks
+                                : data.relatedLinks || []
+                            }
+                            label={
+                              data.type === "honor" || data.type === "venture"
+                                ? "PROOF & LINKS"
+                                : "RELATED LINKS"
+                            }
+                          />
                         </motion.section>
                       )}
 

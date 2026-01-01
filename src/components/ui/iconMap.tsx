@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import {
   Users,
   Book,
@@ -71,7 +72,7 @@ export function ExperienceIcon({
 }: {
   experience: Experience;
   className?: string;
-}): JSX.Element {
+}): ReactElement {
   const Icon = getExperienceIcon(experience);
   return (
     <Icon

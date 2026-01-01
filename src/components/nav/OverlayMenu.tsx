@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { clsx } from "clsx";
+import { createNavLogger } from "../../utils/navigation";
 
 interface OverlayMenuProps {
   id?: string;
@@ -25,7 +26,7 @@ interface QuickJump {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Story", path: "/", description: "Journey through time" },
+  { label: "Story", path: "/story", description: "Journey through time" },
   { label: "Honors", path: "/honors", description: "Recognition and achievements" },
   { label: "Ventures", path: "/ventures", description: "Projects and initiatives" },
   { label: "Life Atlas", path: "/atlas", description: "Interactive journey map" },
@@ -54,22 +55,14 @@ export default function OverlayMenu({
   onMouseLeave 
 }: OverlayMenuProps) {
   const navigate = useNavigate();
+  const nav = createNavLogger(navigate);
   const location = useLocation();
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
   const lastFocusableRef = useRef<HTMLButtonElement>(null);
 
-  // Close on navigation (only when pathname actually changes, not on initial mount)
-  const prevPathnameRef = useRef(location.pathname);
-  useEffect(() => {
-    if (isOpen && location.pathname !== prevPathnameRef.current) {
-      prevPathnameRef.current = location.pathname;
-      onClose();
-    } else if (!isOpen) {
-      prevPathnameRef.current = location.pathname;
-    }
-  }, [location.pathname, isOpen, onClose]);
+
 
   // Robust pointerdown outside handler (React 18 StrictMode safe)
   // Track when menu opened to ignore events that happened before handler was attached
@@ -78,7 +71,7 @@ export default function OverlayMenu({
   useEffect(() => {
     if (isOpen) {
       // Record when menu was opened (with small delay to let button click finish)
-      menuOpenedAtRef.current = Date.now() + 10;
+      menuOpenedAtRef.current = performance.now() + 10;
     } else {
       menuOpenedAtRef.current = null;
     }
@@ -192,8 +185,20 @@ export default function OverlayMenu({
   }, [isOpen]);
 
   const handleNavClick = (path: string) => {
-    navigate(path);
-    onClose();
+    // Prevent navigation if already on the same route
+    if (location.pathname === path) {
+      onClose();
+      return;
+    }
+    
+    // Navigate first
+    nav(path, undefined, `OverlayMenu: clicked ${path}`);
+    
+    // Close menu AFTER navigation completes (next tick)
+    // This prevents parent re-render from interfering with navigation
+    setTimeout(() => {
+      onClose();
+    }, 0);
   };
 
   const handleQuickJump = (filter: string) => {
@@ -325,7 +330,7 @@ export default function OverlayMenu({
                         "hover:-translate-y-0.5 active:translate-y-0",
                         "hover:shadow-[0_4px_12px_rgba(120,220,255,0.1)]",
                         "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent",
-                        (location.pathname === item.path || (item.path === "/" && location.pathname === "/story")) && "bg-white/5 border-white/20"
+                        location.pathname === item.path && "bg-white/5 border-white/20"
                       )}
                     >
                       <div className={clsx(

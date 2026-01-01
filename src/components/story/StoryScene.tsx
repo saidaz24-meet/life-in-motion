@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import type { StoryScene as StorySceneType } from "../../content/timeline";
 import LazyImage from "../ui/LazyImage";
 import LazyVideo from "../ui/LazyVideo";
-import { useReducedMotion, getReducedMotionProps } from "../../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 interface StorySceneProps {
   scene: StorySceneType;

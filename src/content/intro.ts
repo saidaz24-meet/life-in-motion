@@ -14,8 +14,8 @@ interface BaseIntroStep {
 export interface TypeIntroStep extends BaseIntroStep {
   type: "type";
   text: string;
-  speedMs: number; // Base typing speed in milliseconds
-  varianceMs: number; // Random variance to add/subtract for natural typing feel
+  speedMs?: number; // Base typing speed in milliseconds (optional, uses default if undefined)
+  varianceMs?: number; // Random variance to add/subtract for natural typing feel (optional, uses default if undefined)
   tone: IntroStepTone;
   lineBreakAfter?: boolean; // Whether to add a line break after this text
 }
@@ -24,7 +24,7 @@ export interface TypeIntroStep extends BaseIntroStep {
 export interface DotsIntroStep extends BaseIntroStep {
   type: "dots";
   cycles: number; // Number of dot cycles (e.g., 2 cycles = ".", "..", "...", ".", "..", "...")
-  dotIntervalMs: number; // Milliseconds between dot additions
+  dotIntervalMs?: number; // Milliseconds between dot additions (optional, uses default if undefined)
 }
 
 // Pause step: Wait time
@@ -51,6 +51,9 @@ export type IntroStep =
  * Intro Gate sequence configuration
  */
 export interface IntroGateConfig {
+  title: string;
+  subtitle: string;
+  continueButton: string;
   sequence: IntroStep[];
 }
 
@@ -63,6 +66,9 @@ export interface IntroGateConfig {
  * speedMs and varianceMs in type steps are optional and will use defaults if omitted
  */
 export const INTRO_GATE: IntroGateConfig = {
+  title: "Life is Motion",
+  subtitle: "A journey through craft, connection, and growth",
+  continueButton: "Enter",
   sequence: [
     // Dramatic hook - first line
     {

@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { clsx } from "clsx";
 import { RECAP_MILESTONES, type RecapMilestone } from "../../content/recapTimeline";

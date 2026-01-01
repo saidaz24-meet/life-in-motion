@@ -53,14 +53,7 @@ export default function RecapGateOverlay({ onComplete, onSkip, onMountChange }: 
     };
   }, [onMountChange]);
 
-  // Handle completion - fade out and call onComplete
-  const handleDone = useCallback(() => {
-    setShouldShow(false);
-    // Wait for fade-out animation, then call onComplete
-    setTimeout(() => {
-      onComplete();
-    }, prefersReducedMotion ? 200 : 800);
-  }, [onComplete, prefersReducedMotion]);
+
 
   // Handle RECAP phase CTA click - transition to WELCOME phase
   const handleRecapCTA = useCallback(() => {
@@ -83,48 +76,42 @@ export default function RecapGateOverlay({ onComplete, onSkip, onMountChange }: 
     if (phase !== "WELCOME") {
       return;
     }
-
+  
     if (prefersReducedMotion) {
-      // Show text instantly for reduced motion
       setWelcomeText(WELCOME_TEXT);
       setIsTyping(false);
-      // Auto-complete after showing text
-      timeoutRef.current = setTimeout(() => {
-        handleDone();
-      }, 500);
+      // Navigate immediately - AnimatePresence will handle exit animation
+      onComplete();
       return;
     }
-
+  
     setIsTyping(true);
     charIndexRef.current = 0;
     setWelcomeText("");
-
+  
     const typeNextChar = () => {
       if (charIndexRef.current >= WELCOME_TEXT.length) {
         setIsTyping(false);
-        // Wait 500ms after typing completes, then fade out
-        timeoutRef.current = setTimeout(() => {
-          handleDone();
-        }, 500);
+        // Navigate immediately after typing completes
+        onComplete();
         return;
       }
-
+  
       const char = WELCOME_TEXT[charIndexRef.current];
       setWelcomeText((prev) => prev + char);
       charIndexRef.current++;
-
+  
       timeoutRef.current = setTimeout(typeNextChar, TYPING_SPEED_MS);
     };
-
-    // Start typing after circle animation completes (delay for circle entrance)
+  
     timeoutRef.current = setTimeout(typeNextChar, 800);
-
+  
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [phase, prefersReducedMotion, handleDone]);
+  }, [phase, prefersReducedMotion, onComplete]);
 
   const handleSkip = () => {
     // Immediately set localStorage via onSkip (must happen before any fade-out)

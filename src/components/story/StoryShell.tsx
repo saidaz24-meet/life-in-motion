@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import { STORY_SCENES, type StoryScene } from "../../content/timeline";
+import { STORY_TIMELINE_SCENES } from "../../content/storyTimeline";
 import { clsx } from "clsx";
-import KineticText from "./KineticText";
-import StorySceneWrapper from "./StoryScene";
-import { useReducedMotion, getReducedMotionProps } from "../../hooks/useReducedMotion";
+import CinematicScene from "./CinematicScene";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import SEOHead from "../ui/SEOHead";
+import { createNavLogger } from "../../utils/navigation";
 
 interface StoryShellProps {
   onMountChange?: (mounted: boolean) => void;
@@ -15,12 +14,15 @@ interface StoryShellProps {
 
 export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   const navigate = useNavigate();
+  const nav = createNavLogger(navigate);
   const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentScene, setCurrentScene] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const isScrollingRef = useRef(false);
   const prefersReducedMotion = useReducedMotion();
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const continueTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     console.log("[StoryShell] MOUNTED");
@@ -28,58 +30,56 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     return () => {
       console.log("[StoryShell] UNMOUNTED");
       onMountChange?.(false);
+      // Cleanup all timeouts
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = null;
+      }
+      if (continueTimeoutRef.current) {
+        clearTimeout(continueTimeoutRef.current);
+        continueTimeoutRef.current = null;
+      }
+      // Reset state refs
+      isScrollingRef.current = false;
       // Cleanup any global side effects
       document.body.style.overflow = "";
     };
   }, [onMountChange]);
 
-  // Reset scroll position and state when Story page mounts/navigates to
+  // Reset scroll position and state on MOUNT ONLY (not pathname changes)
   useEffect(() => {
-    // Only reset if we're actually on the Story route
-    if ((location.pathname === "/" || location.pathname === "/story") && containerRef.current) {
-      // Use requestAnimationFrame to ensure DOM is ready
-      requestAnimationFrame(() => {
-        if (containerRef.current) {
-          containerRef.current.scrollTop = 0;
-          setCurrentScene(0);
-          setIsTransitioning(false);
-        }
-      });
-    }
-  }, [location.pathname]);
-
-  const totalScenes = STORY_SCENES?.length ?? 0;
-  const isLastScene = totalScenes > 0 && currentScene === totalScenes - 1;
-
-  // Render error fallback if timeline data is missing
-  if (!STORY_SCENES || totalScenes === 0) {
-    console.error("[StoryShell] Timeline data missing or empty", {
-      STORY_SCENES,
-      totalScenes,
-      location: location.pathname,
+    setCurrentScene(0);
+    setIsTransitioning(false);
+    isScrollingRef.current = false;
+    
+    const resetScroll = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
+      }
+    };
+    
+    requestAnimationFrame(() => {
+      requestAnimationFrame(resetScroll);
     });
-    return (
-      <div className="min-h-[100dvh] flex items-center justify-center bg-black text-white p-6">
-        <div className="max-w-2xl text-center">
-          <h1 className="text-2xl font-bold mb-4 text-red-400">Timeline data missing</h1>
-          <div className="text-sm text-gray-400 font-mono space-y-2">
-            <div>STORY_SCENES: {STORY_SCENES ? "defined" : "undefined"}</div>
-            <div>totalScenes: {totalScenes}</div>
-            <div>location: {location.pathname}</div>
-            {import.meta.env.DEV && (
-              <div className="mt-4 p-4 bg-black/50 rounded border border-red-500/50">
-                Check console for more details
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  }, []);
+
+
+  const totalScenes = STORY_TIMELINE_SCENES?.length ?? 0;
+
+  // Check for debug query param
+  const searchParams = new URLSearchParams(location.search);
+  const showDebug = searchParams.get("debug") === "1";
+
 
   // Scroll to scene
   const scrollToScene = useCallback((index: number) => {
     if (isScrollingRef.current || index < 0 || index >= totalScenes) return;
+
+    // Cleanup any pending scroll timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = null;
+    }
 
     isScrollingRef.current = true;
     setCurrentScene(index);
@@ -92,8 +92,9 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
       }
     }
 
-    setTimeout(() => {
+    scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
+      scrollTimeoutRef.current = null;
     }, 800);
   }, [totalScenes]);
 
@@ -161,15 +162,21 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   }, [isTransitioning, goToNextScene, goToPreviousScene]);
 
   const handleSkip = () => {
-    navigate("/honors");
+    nav("/honors", undefined, "StoryShell: user clicked Skip");
   };
 
-  const handleUnleash = () => {
+  const handleContinue = () => {
     setIsTransitioning(true);
-    // Cinematic transition animation - fade to black then navigate
-    setTimeout(() => {
-      navigate("/honors");
-    }, 1200);
+    // Cleanup any pending continue timeout
+    if (continueTimeoutRef.current) {
+      clearTimeout(continueTimeoutRef.current);
+      continueTimeoutRef.current = null;
+    }
+    // Cinematic transition: fade to black, then navigate to Honors
+    continueTimeoutRef.current = setTimeout(() => {
+      nav("/honors", undefined, "StoryShell: user clicked Continue after story");
+      continueTimeoutRef.current = null;
+    }, 1500);
   };
 
   // Track scroll position for progress
@@ -180,6 +187,9 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
       const sceneHeight = container.clientHeight;
+      // Only process if container has valid dimensions
+      if (sceneHeight === 0) return;
+      
       const sceneIndex = Math.round(scrollTop / sceneHeight);
       const clampedIndex = Math.max(0, Math.min(sceneIndex, totalScenes - 1));
       
@@ -192,11 +202,16 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     return () => container.removeEventListener("scroll", handleScroll);
   }, [currentScene, totalScenes]);
 
-  const reducedMotionProps = getReducedMotionProps(prefersReducedMotion);
-
   return (
     <>
       <SEOHead title="Story" />
+      {/* Debug verification - dev only */}
+      {(import.meta.env.DEV || showDebug) && (
+        <div className="fixed top-20 right-6 z-50 px-3 py-2 bg-black/80 border border-white/20 rounded text-xs font-mono text-white">
+          <div>Route: {location.pathname}</div>
+          <div>Scenes: {totalScenes}</div>
+        </div>
+      )}
       <div className="relative w-full h-[calc(100dvh-57px)] overflow-hidden bg-transparent">
         {/* Skip button - persistent */}
         <motion.button
@@ -247,29 +262,42 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
             }
           }}
         >
-        {STORY_SCENES.map((scene, index) => (
-          <StorySceneComponent
+        {STORY_TIMELINE_SCENES.map((scene, index) => (
+          <CinematicScene
             key={scene.id}
             scene={scene}
             index={index}
             isLast={index === totalScenes - 1}
             isActive={index === currentScene}
-            onUnleash={handleUnleash}
-            isTransitioning={isTransitioning}
+            onContinue={handleContinue}
           />
         ))}
       </div>
 
-        {/* Transition overlay */}
+        {/* Cinematic transition overlay */}
         <AnimatePresence>
           {isTransitioning && (
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0 }}
-              animate={prefersReducedMotion ? {} : { opacity: 1 }}
-              exit={prefersReducedMotion ? false : { opacity: 0 }}
-              transition={prefersReducedMotion ? {} : { duration: 1.2, ease: "easeInOut" }}
-              className="fixed inset-0 z-[100] bg-black"
-            />
+            <>
+              <motion.div
+                initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1 }}
+                exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                transition={prefersReducedMotion ? {} : { duration: 1.5, ease: "easeInOut" }}
+                className="fixed inset-0 z-[100] bg-black"
+              />
+              {/* Optional: Add text overlay during transition */}
+              <motion.div
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                className="fixed inset-0 z-[101] flex items-center justify-center pointer-events-none"
+              >
+                <p className="text-2xl md:text-3xl font-semibold text-[rgb(var(--fg-0))]">
+                  Entering Site Mode...
+                </p>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
@@ -277,110 +305,4 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   );
 }
 
-interface StorySceneComponentProps {
-  scene: StoryScene;
-  index: number;
-  isLast: boolean;
-  isActive: boolean;
-  onUnleash: () => void;
-  isTransitioning: boolean;
-}
-
-function StorySceneComponent({
-  scene,
-  index,
-  isLast,
-  isActive,
-  onUnleash,
-  isTransitioning,
-}: StorySceneComponentProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const reducedMotionProps = getReducedMotionProps(prefersReducedMotion);
-
-  return (
-    <StorySceneWrapper scene={scene} index={index} isActive={isActive}>
-      <div className="max-w-5xl mx-auto px-6 w-full">
-        <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
-          animate={prefersReducedMotion ? {} : { 
-            opacity: isActive ? 1 : 0.3,
-            y: isActive ? 0 : 30,
-          }}
-          transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.2 }}
-          className={clsx(
-            "glass rounded-lg border border-white/10 p-8 md:p-12 lg:p-16",
-            "backdrop-blur-xl"
-          )}
-        >
-          <KineticText
-            headline={scene.headline}
-            beats={scene.beats}
-            body={scene.body}
-            isActive={isActive}
-            year={scene.year}
-            tags={scene.tags}
-          />
-
-          {/* Final scene CTA */}
-          {isLast && (
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
-              animate={prefersReducedMotion ? {} : { 
-                opacity: isActive ? 1 : 0,
-                y: isActive ? 0 : 30,
-              }}
-              transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 1 }}
-              className="mt-12"
-            >
-              <button
-                onClick={onUnleash}
-                disabled={isTransitioning}
-                aria-label="Navigate to Honors page"
-                className={clsx(
-                  "group relative px-8 py-4 rounded-lg transition-all duration-200 ease-out",
-                  "bg-[rgb(var(--accent))]/20 hover:bg-[rgb(var(--accent))]/30 active:bg-[rgb(var(--accent))]/25",
-                  "border border-[rgb(var(--accent))]/40 hover:border-[rgb(var(--accent))]/60",
-                  "text-lg font-semibold text-[rgb(var(--fg-0))]",
-                  "hover:-translate-y-1 active:translate-y-0",
-                  "hover:shadow-[0_6px_20px_rgba(120,220,255,0.3)]",
-                  "focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]/40 focus:ring-offset-2 focus:ring-offset-transparent",
-                  "disabled:opacity-50 disabled:cursor-not-allowed"
-                )}
-              >
-                <span className="flex items-center gap-3">
-                  Unleash the site
-                  <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-                </span>
-              </button>
-            </motion.div>
-          )}
-
-          {/* Scroll indicator (not on last scene) */}
-          {!isLast && !prefersReducedMotion && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ 
-                opacity: isActive ? 1 : 0,
-              }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="absolute bottom-8 left-1/2 -translate-x-1/2"
-            >
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="text-[rgb(var(--fg-1))]"
-              >
-                <ChevronDown className="w-6 h-6" />
-              </motion.div>
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
-    </StorySceneWrapper>
-  );
-}
 

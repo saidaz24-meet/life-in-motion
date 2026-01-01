@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from "react";
 
-const INTRO_GATE_STORAGE_KEY = "lifeInMotion_seenIntroGate";
+const INTRO_COMPLETED_KEY = "introCompleted";
 
 export function useIntroGate() {
   const [shouldShow, setShouldShow] = useState(false);
@@ -29,18 +29,20 @@ export function useIntroGate() {
     }
 
     // Normal behavior: check localStorage
-    const hasSeen = localStorage.getItem(INTRO_GATE_STORAGE_KEY);
+    const hasSeen = localStorage.getItem(INTRO_COMPLETED_KEY);
     setShouldShow(hasSeen !== "1");
   }, []);
 
   const complete = () => {
-    localStorage.setItem(INTRO_GATE_STORAGE_KEY, "1");
+    localStorage.setItem(INTRO_COMPLETED_KEY, "1");
+    console.log("[useIntroGate] complete() called");
     setShouldShow(false);
   };
 
   const skip = () => {
     // Immediately set localStorage before fade-out
-    localStorage.setItem(INTRO_GATE_STORAGE_KEY, "1");
+    localStorage.setItem(INTRO_COMPLETED_KEY, "1");
+    console.log("[useIntroGate] skip() called");
     setShouldShow(false);
   };
 

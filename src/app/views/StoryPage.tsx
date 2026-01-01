@@ -1,67 +1,52 @@
 /**
- * StoryPage - Main story page with optional intro gate overlay
+ * StoryPage - Main story page (route "/story")
  * 
- * VERIFICATION CHECKLIST:
- * ✅ Story remains unchanged (StoryShell renders independently)
- * ✅ Overlay starts immediately and unmounts cleanly after completion
- * ✅ Story → Honors flow unchanged (navigation handled by StoryShell)
+ * This page only renders StoryShell - no intro gate logic.
+ * Intro gate is handled separately by IntroGatePage at route "/".
  */
 
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
 import StoryShell from "../../components/story/StoryShell";
-import RecapGateOverlay from "../../components/intro/RecapGateOverlay";
-import { useIntroGate } from "../hooks/useIntroGate";
 import DebugHUD from "../../components/intro/DebugHUD";
-import { STORY_SCENES } from "../../content/timeline";
+import { STORY_TIMELINE_SCENES } from "../../content/storyTimeline";
 
 export default function StoryPage() {
-  const location = useLocation();
-  const { shouldShow, complete, skip } = useIntroGate();
-  const [isIntroGateOverlayMounted, setIsIntroGateOverlayMounted] = useState(false);
-  const [isStoryShellMounted, setIsStoryShellMounted] = useState(false);
+  const hasMountedRef = useRef(false);
 
+  // Check for debug query param
+  const searchParams = new URLSearchParams(window.location.search);
+  const showDebug = searchParams.get("debug") === "1";
+
+  // DEV log only for first mount
   useEffect(() => {
-    console.log("[StoryPage] MOUNTED");
-    return () => {
-      console.log("[StoryPage] UNMOUNTED");
-    };
+    if (!hasMountedRef.current && import.meta.env.DEV) {
+      console.log("[StoryPage] FIRST MOUNT");
+      hasMountedRef.current = true;
+    }
   }, []);
 
-  useEffect(() => {
-    console.log("[StoryPage] shouldShow changed:", shouldShow);
-  }, [shouldShow]);
+  // Defensive check: ensure STORY_TIMELINE_SCENES is available
+  const timelineLength = STORY_TIMELINE_SCENES?.length ?? 0;
+  const hasTimelineData = STORY_TIMELINE_SCENES && Array.isArray(STORY_TIMELINE_SCENES) && timelineLength > 0;
 
-  const timelineLength = STORY_SCENES?.length ?? 0;
+  // Fallback if timeline data is missing or empty - show placeholder, no redirects
+  if (!hasTimelineData) {
+    console.error("[StoryPage] CRITICAL: Timeline data missing - check storyTimeline.ts import");
+  }
 
   return (
     <>
-      {import.meta.env.DEV && (
+      {(import.meta.env.DEV || showDebug) && (
         <DebugHUD
-          pathname={location.pathname}
+          pathname="/story"
           timelineLength={timelineLength}
-          shouldShowIntroGate={shouldShow}
-          isIntroGateOverlayMounted={isIntroGateOverlayMounted}
-          isStoryShellMounted={isStoryShellMounted}
+          shouldShowIntroGate={false}
+          isIntroGateOverlayMounted={false}
+          isStoryShellMounted={true}
+          showDebug={showDebug}
         />
       )}
-      <StoryShell key={location.key} onMountChange={setIsStoryShellMounted} />
-      <AnimatePresence>
-        {shouldShow && (
-          <RecapGateOverlay
-            onComplete={() => {
-              console.log("[StoryPage] RecapGateOverlay onComplete");
-              complete();
-            }}
-            onSkip={() => {
-              console.log("[StoryPage] RecapGateOverlay onSkip");
-              skip();
-            }}
-            onMountChange={setIsIntroGateOverlayMounted}
-          />
-        )}
-      </AnimatePresence>
+      <StoryShell />
     </>
   );
 }

@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { SITE_TITLE } from "../../content/meta";
 import { clsx } from "clsx";
 import OverlayMenu from "../nav/OverlayMenu";
 import SmileLogo from "../ui/SmileLogo";
 import SoundToggle from "../ui/SoundToggle";
 
-// Route to section label mapping
 const ROUTE_LABELS: Record<string, string> = {
   "/": "Story",
   "/story": "Story",
@@ -26,10 +25,17 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [buttonPosition, setButtonPosition] = useState({ top: 0, right: 0 });
+  
+  // Track if we've already set up scroll listener (prevent duplicates)
+  const scrollListenerSetupRef = useRef(false);
 
-  // Track scroll on the scrollable container (works for both main scroll and Story's nested scroll)
+  // Track scroll - FIXED VERSION
   useEffect(() => {
+    // Prevent duplicate setup
+    if (scrollListenerSetupRef.current) return;
+    
     let rafId: number | null = null;
     
     const handleScroll = () => {
@@ -38,7 +44,9 @@ export default function Header() {
       rafId = requestAnimationFrame(() => {
         const scrollContainer = document.querySelector('[data-scroll-container]') as HTMLElement;
         if (scrollContainer) {
-          setIsScrolled(scrollContainer.scrollTop > 10);
+          const shouldBeScrolled = scrollContainer.scrollTop > 10;
+          // Only update if value actually changed
+          setIsScrolled(prev => prev === shouldBeScrolled ? prev : shouldBeScrolled);
         }
         rafId = null;
       });
@@ -46,22 +54,28 @@ export default function Header() {
 
     const scrollContainer = document.querySelector('[data-scroll-container]') as HTMLElement;
     if (scrollContainer) {
+      scrollListenerSetupRef.current = true;
       scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
-      // Check initial scroll position
-      handleScroll();
+      
+      // Check initial scroll position AFTER a delay to avoid render loop
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          handleScroll();
+        });
+      });
+      
       return () => {
         scrollContainer.removeEventListener("scroll", handleScroll);
+        scrollListenerSetupRef.current = false;
         if (rafId !== null) {
           cancelAnimationFrame(rafId);
         }
       };
     }
-  }, []);
+  }, []); // Keep empty deps - only run once
 
-  // Generate unique ID for menu
   const menuId = "navigation-menu";
 
-  // Handle hover to open menu
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
@@ -70,13 +84,11 @@ export default function Header() {
   };
 
   const handleMouseLeave = () => {
-    // Small delay before closing to prevent flickering
     hoverTimeoutRef.current = setTimeout(() => {
       setIsMenuOpen(false);
     }, 100);
   };
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (hoverTimeoutRef.current) {
@@ -85,16 +97,24 @@ export default function Header() {
     };
   }, []);
 
-  // Get button position for menu positioning
-  const [buttonPosition, setButtonPosition] = useState({ top: 0, right: 0 });
-  
+  // Get button position - FIXED VERSION
   useEffect(() => {
+    if (!isMenuOpen) return;
+    
     const updatePosition = () => {
       if (menuButtonRef.current) {
         const rect = menuButtonRef.current.getBoundingClientRect();
-        setButtonPosition({
+        const newPosition = {
           top: rect.bottom + 8,
           right: window.innerWidth - rect.right,
+        };
+        
+        // Only update if position actually changed
+        setButtonPosition(prev => {
+          if (prev.top === newPosition.top && prev.right === newPosition.right) {
+            return prev;
+          }
+          return newPosition;
         });
       }
     };
@@ -123,7 +143,6 @@ export default function Header() {
         </div>
         
         <div className="flex items-center gap-4">
-          {/* Optional breadcrumb/section label with active state - hide Story label */}
           {sectionLabel && location.pathname !== "/" && (
             <span
               className={clsx(
@@ -136,10 +155,8 @@ export default function Header() {
             </span>
           )}
 
-          {/* Sound toggle */}
           <SoundToggle size="sm" />
           
-          {/* Menu button container with hover area */}
           <div
             className="relative"
             onMouseEnter={handleMouseEnter}
@@ -175,7 +192,6 @@ export default function Header() {
               </motion.div>
             </button>
 
-            {/* Menu dropdown - positioned from button */}
             <OverlayMenu 
               id={menuId} 
               isOpen={isMenuOpen} 
@@ -190,4 +206,3 @@ export default function Header() {
     </>
   );
 }
-

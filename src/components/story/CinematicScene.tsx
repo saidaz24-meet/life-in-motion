@@ -18,6 +18,47 @@ interface CinematicSceneProps {
   onContinue?: () => void;
 }
 
+// Framer Motion variants for text visibility
+const textVariants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    filter: "blur(8px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.6,
+      delay: 0.1,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+};
+
+const beatVariants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    filter: "blur(8px)",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.6,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    filter: "blur(8px)",
+  },
+};
+
 export default function CinematicScene({
   scene,
   index: _index,
@@ -46,10 +87,10 @@ export default function CinematicScene({
   useEffect(() => {
     if (isActive) {
       setVisibleBeats(0);
-      // Auto-reveal first beat after delay
-      const timer1 = setTimeout(() => setVisibleBeats(1), 600);
-      const timer2 = setTimeout(() => setVisibleBeats(2), 1200);
-      const timer3 = setTimeout(() => setVisibleBeats(3), 1800);
+      // Auto-reveal first beat immediately, then progressively
+      const timer1 = setTimeout(() => setVisibleBeats(1), 300); // Reduced from 600ms
+      const timer2 = setTimeout(() => setVisibleBeats(2), 800); // Reduced from 1200ms
+      const timer3 = setTimeout(() => setVisibleBeats(3), 1300); // Reduced from 1800ms
       return () => {
         clearTimeout(timer1);
         clearTimeout(timer2);
@@ -88,7 +129,9 @@ export default function CinematicScene({
                   scene.mediaRef.endsWith(".webm");
 
   return (
-    <section className="h-screen snap-start snap-always relative flex items-center justify-center overflow-hidden">
+    <section 
+      className={`h-[calc(100dvh-57px)] relative flex items-center justify-center overflow-hidden ${!isActive ? "pointer-events-none" : ""}`}
+    >
       {/* Full-bleed background media */}
       <div className="absolute inset-0 overflow-hidden">
         {isVideo ? (
@@ -111,6 +154,8 @@ export default function CinematicScene({
               src={scene.mediaRef}
               alt={scene.title}
               className="w-full h-full object-cover"
+              loading={_index === 0 ? "eager" : "lazy"}
+              fetchPriority={_index === 0 ? "high" : "auto"}
             />
           </motion.div>
         )}
@@ -126,17 +171,14 @@ export default function CinematicScene({
       </div>
 
       {/* Content - centered, large typography */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16">
+      <div className={`relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 ${isActive ? "" : "pointer-events-none"}`}>
         <div className="text-center md:text-left">
           {/* Title - very large */}
           <motion.h1
-            initial={prefersReducedMotion ? false : { opacity: isActive ? 1 : 0, y: isActive ? 0 : 40, filter: isActive ? "blur(0px)" : "blur(8px)" }}
-            animate={prefersReducedMotion ? {} : {
-              opacity: isActive ? 1 : 0,
-              y: isActive ? 0 : 40,
-              filter: isActive ? "blur(0px)" : "blur(8px)",
-            }}
-            transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            variants={prefersReducedMotion ? undefined : textVariants}
+            initial="hidden"
+            animate={prefersReducedMotion ? undefined : (isActive ? "visible" : "hidden")}
+            layout
             className="text-5xl md:text-7xl lg:text-8xl font-bold text-[rgb(var(--fg-0))] leading-[1.1] tracking-tight mb-8"
           >
             {scene.title}
@@ -148,14 +190,14 @@ export default function CinematicScene({
               {scene.beats.slice(0, visibleBeats).map((beat, beatIndex) => (
                 <motion.div
                   key={beatIndex}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 30, filter: "blur(8px)" }}
-                  animate={prefersReducedMotion ? {} : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={prefersReducedMotion ? undefined : { opacity: 0, y: -20, filter: "blur(8px)" }}
+                  variants={prefersReducedMotion ? undefined : beatVariants}
+                  initial="hidden"
+                  animate={prefersReducedMotion ? undefined : "visible"}
+                  exit={prefersReducedMotion ? undefined : "exit"}
                   transition={prefersReducedMotion ? {} : {
-                    duration: 0.6,
                     delay: beatIndex * 0.2,
-                    ease: [0.4, 0, 0.2, 1],
                   }}
+                  layout
                   className="flex items-start gap-4"
                 >
                   <motion.span

@@ -58,9 +58,9 @@ export default function AppLayout() {
 
       {/* Page content with transitions - offset for fixed header */}
       <div 
-        className={`relative z-0 h-full ${isStoryRoute ? "overflow-hidden" : "overflow-y-auto"} ${isIntroRoute ? "" : "pt-[57px]"}`} 
+        className={`relative z-0 pointer-events-auto ${isStoryRoute ? "h-full overflow-hidden" : "h-full overflow-y-auto"} ${isIntroRoute ? "" : "pt-[57px]"}`} 
         data-scroll-container
-        style={{ height: "100%", display: "flex", flexDirection: "column" }}
+        style={isStoryRoute ? { height: "100%" } : { height: "100%", display: "flex", flexDirection: "column" }}
       >
         <AnimatePresence mode="popLayout">
           <motion.div
@@ -72,12 +72,18 @@ export default function AppLayout() {
               duration: 0.4,
               ease: [0.4, 0, 0.2, 1],
             }}
-            className={`flex flex-col ${isIntroRoute ? "min-h-[100dvh]" : "min-h-[calc(100dvh-57px)]"}`}
+            className={isStoryRoute ? "h-full pointer-events-auto" : `flex flex-col ${isIntroRoute ? "min-h-[100dvh]" : "min-h-[calc(100dvh-57px)]"}`}
           >
-            <div className="flex-1">
+            {isStoryRoute ? (
               <Outlet />
-            </div>
-            {!isIntroRoute && <PageFooter />}
+            ) : (
+              <>
+                <div className="flex-1">
+                  <Outlet />
+                </div>
+                {!isIntroRoute && <PageFooter />}
+              </>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

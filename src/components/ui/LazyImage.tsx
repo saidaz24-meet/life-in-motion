@@ -6,6 +6,8 @@ interface LazyImageProps {
   alt: string;
   className?: string;
   onLoad?: () => void;
+  loading?: "lazy" | "eager";
+  fetchPriority?: "high" | "low" | "auto";
 }
 
 export default function LazyImage({
@@ -13,6 +15,8 @@ export default function LazyImage({
   alt,
   className,
   onLoad,
+  loading = "lazy",
+  fetchPriority = "auto",
 }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -34,7 +38,8 @@ export default function LazyImage({
       <img
         src={src}
         alt={alt}
-        loading="lazy"
+        loading={loading}
+        fetchPriority={fetchPriority}
         onLoad={handleLoad}
         onError={handleError}
         className={clsx(

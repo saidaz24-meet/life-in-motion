@@ -130,7 +130,7 @@ export default function CinematicScene({
         <div className="text-center md:text-left">
           {/* Title - very large */}
           <motion.h1
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 40, filter: "blur(8px)" }}
+            initial={prefersReducedMotion ? false : { opacity: isActive ? 1 : 0, y: isActive ? 0 : 40, filter: isActive ? "blur(0px)" : "blur(8px)" }}
             animate={prefersReducedMotion ? {} : {
               opacity: isActive ? 1 : 0,
               y: isActive ? 0 : 40,

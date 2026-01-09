@@ -19,6 +19,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentScene, setCurrentScene] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const isScrollingRef = useRef(false);
   const prefersReducedMotion = useReducedMotion();
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -27,6 +28,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   useEffect(() => {
     console.log("[StoryShell] MOUNTED");
     onMountChange?.(true);
+    
     return () => {
       console.log("[StoryShell] UNMOUNTED");
       onMountChange?.(false);
@@ -51,25 +53,13 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     setCurrentScene(0);
     setIsTransitioning(false);
     isScrollingRef.current = false;
-    
-    const resetScroll = () => {
-      if (containerRef.current) {
-        containerRef.current.scrollTop = 0;
-      }
-    };
-    
-    requestAnimationFrame(() => {
-      requestAnimationFrame(resetScroll);
-    });
   }, []);
-
 
   const totalScenes = STORY_TIMELINE_SCENES?.length ?? 0;
 
   // Check for debug query param
   const searchParams = new URLSearchParams(location.search);
   const showDebug = searchParams.get("debug") === "1";
-
 
   // Scroll to scene
   const scrollToScene = useCallback((index: number) => {
@@ -112,6 +102,39 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     }
   }, [currentScene, scrollToScene]);
 
+  // Trigger ready state after layout settles
+  useEffect(() => {
+    // Use setTimeout + double RAF to ensure browser has finished route transition
+    // and containerRef has non-zero height before any story logic runs
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsReady(true);
+        });
+      });
+    }, 100);
+  }, []);
+
+  // Initialize scroll position and first scene AFTER isReady is true
+  useEffect(() => {
+    if (!isReady) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Ensure container has valid dimensions
+    const rect = container.getBoundingClientRect();
+    if (rect.height === 0) return;
+
+    // Explicitly set scroll to top
+    container.scrollTop = 0;
+    
+    // Only call scrollToScene(0) after isReady is true
+    if (currentScene === 0) {
+      scrollToScene(0);
+    }
+  }, [isReady, scrollToScene, currentScene]);
+
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -132,6 +155,8 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
 
   // Handle wheel/trackpad scrolling (disabled on mobile for better performance)
   useEffect(() => {
+    if (!isReady) return; // Wait for ready state before binding scroll listeners
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -159,7 +184,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
 
     container.addEventListener("wheel", handleWheel, { passive: false });
     return () => container.removeEventListener("wheel", handleWheel);
-  }, [isTransitioning, goToNextScene, goToPreviousScene]);
+  }, [isReady, isTransitioning, goToNextScene, goToPreviousScene]);
 
   const handleSkip = () => {
     nav("/honors", undefined, "StoryShell: user clicked Skip");
@@ -179,8 +204,10 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     }, 1500);
   };
 
-  // Track scroll position for progress
+  // Track scroll position for progress - re-bind when isReady becomes true
   useEffect(() => {
+    if (!isReady) return; // Wait for ready state before binding scroll listeners
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -200,7 +227,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
 
     container.addEventListener("scroll", handleScroll);
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [currentScene, totalScenes]);
+  }, [isReady, currentScene, totalScenes]);
 
   return (
     <>
@@ -212,40 +239,8 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
           <div>Scenes: {totalScenes}</div>
         </div>
       )}
-      <div className="relative w-full h-[calc(100dvh-57px)] overflow-hidden bg-transparent">
-        {/* Skip button - persistent */}
-        <motion.button
-          initial={prefersReducedMotion ? false : { opacity: 0 }}
-          animate={prefersReducedMotion ? {} : { opacity: 1 }}
-          transition={prefersReducedMotion ? {} : { delay: 1 }}
-        onClick={handleSkip}
-        className={clsx(
-          "fixed top-[65px] right-24 z-40 px-4 py-2 rounded-md transition-all duration-200 ease-out",
-          "hover:-translate-y-0.5 active:translate-y-0",
-          "hover:shadow-[0_4px_12px_rgba(120,220,255,0.15)]",
-          "bg-white/5 hover:bg-white/10 active:bg-white/15",
-          "border border-white/10 hover:border-white/20",
-          "text-sm text-[rgb(var(--fg-0))]",
-          "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
-        )}
-      >
-        Skip story → Honors
-      </motion.button>
-
-
-        {/* Progress indicator - positioned above footer */}
-        <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0 }}
-          animate={prefersReducedMotion ? {} : { opacity: 1 }}
-          transition={prefersReducedMotion ? {} : { delay: 0.8 }}
-        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-md glass border border-white/10"
-      >
-        <span className="text-xs text-[rgb(var(--fg-1))] tracking-wide">
-          Scene {currentScene + 1} / {totalScenes}
-        </span>
-      </motion.div>
-
-        {/* Scroll container */}
+      <div className="relative w-full h-full flex-1 overflow-hidden bg-[rgb(var(--bg-0))]">
+        {/* Scroll container - always rendered to ensure containerRef is valid */}
         <div
           ref={containerRef}
           className="h-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
@@ -253,53 +248,80 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
             scrollBehavior: prefersReducedMotion ? "auto" : "smooth",
             WebkitOverflowScrolling: "touch" // Better mobile scrolling
           }}
-          onScroll={() => {
-            // Sync scroll to parent container for header backdrop effect
-            const scrollContainer = document.querySelector('[data-scroll-container]') as HTMLElement;
-            if (scrollContainer) {
-              const syntheticEvent = new Event('scroll', { bubbles: true, cancelable: false });
-              scrollContainer.dispatchEvent(syntheticEvent);
-            }
-          }}
         >
-        {STORY_TIMELINE_SCENES.map((scene, index) => (
-          <CinematicScene
-            key={scene.id}
-            scene={scene}
-            index={index}
-            isLast={index === totalScenes - 1}
-            isActive={index === currentScene}
-            onContinue={handleContinue}
-          />
-        ))}
-      </div>
+          {isReady && STORY_TIMELINE_SCENES.map((scene, index) => (
+            <CinematicScene
+              key={scene.id}
+              scene={scene}
+              index={index}
+              isLast={index === totalScenes - 1}
+              isActive={index === currentScene}
+              onContinue={handleContinue}
+            />
+          ))}
+        </div>
 
-        {/* Cinematic transition overlay */}
-        <AnimatePresence>
-          {isTransitioning && (
-            <>
-              <motion.div
-                initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-                animate={prefersReducedMotion ? undefined : { opacity: 1 }}
-                exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-                transition={prefersReducedMotion ? {} : { duration: 1.5, ease: "easeInOut" }}
-                className="fixed inset-0 z-[100] bg-black"
-              />
-              {/* Optional: Add text overlay during transition */}
-              <motion.div
-                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-                transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                className="fixed inset-0 z-[101] flex items-center justify-center pointer-events-none"
-              >
-                <p className="text-2xl md:text-3xl font-semibold text-[rgb(var(--fg-0))]">
-                  Entering Site Mode...
-                </p>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        {isReady && (
+          <>
+            {/* Skip button - persistent */}
+            <motion.button
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={prefersReducedMotion ? {} : { opacity: 1 }}
+              transition={prefersReducedMotion ? {} : { delay: 1 }}
+            onClick={handleSkip}
+            className={clsx(
+              "fixed top-[65px] right-24 z-40 px-4 py-2 rounded-md transition-all duration-200 ease-out",
+              "hover:-translate-y-0.5 active:translate-y-0",
+              "hover:shadow-[0_4px_12px_rgba(120,220,255,0.15)]",
+              "bg-white/5 hover:bg-white/10 active:bg-white/15",
+              "border border-white/10 hover:border-white/20",
+              "text-sm text-[rgb(var(--fg-0))]",
+              "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
+            )}
+          >
+            Skip story → Honors
+          </motion.button>
+
+            {/* Progress indicator - positioned above footer */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={prefersReducedMotion ? {} : { opacity: 1 }}
+              transition={prefersReducedMotion ? {} : { delay: 0.8 }}
+            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-md glass border border-white/10"
+          >
+            <span className="text-xs text-[rgb(var(--fg-1))] tracking-wide">
+              Scene {currentScene + 1} / {totalScenes}
+            </span>
+          </motion.div>
+
+            {/* Cinematic transition overlay */}
+            <AnimatePresence>
+              {isTransitioning && (
+                <>
+                  <motion.div
+                    initial={prefersReducedMotion ? undefined : { opacity: 0 }}
+                    animate={prefersReducedMotion ? undefined : { opacity: 1 }}
+                    exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                    transition={prefersReducedMotion ? {} : { duration: 1.5, ease: "easeInOut" }}
+                    className="fixed inset-0 z-[100] bg-black"
+                  />
+                  {/* Optional: Add text overlay during transition */}
+                  <motion.div
+                    initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+                    animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                    exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                    transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                    className="fixed inset-0 z-[101] flex items-center justify-center pointer-events-none"
+                  >
+                    <p className="text-2xl md:text-3xl font-semibold text-[rgb(var(--fg-0))]">
+                      Entering Site Mode...
+                    </p>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </>
+        )}
       </div>
     </>
   );

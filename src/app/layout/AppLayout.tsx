@@ -8,6 +8,7 @@ import ScrollToTop from "../../components/layout/ScrollToTop";
 export default function AppLayout() {
   const location = useLocation();
   const isIntroRoute = location.pathname === "/";
+  const isStoryRoute = location.pathname === "/story";
 
   // Temporary dev logging
   useEffect(() => {
@@ -56,8 +57,12 @@ export default function AppLayout() {
       {!isIntroRoute && <Header />}
 
       {/* Page content with transitions - offset for fixed header */}
-      <div className={`relative z-0 h-full overflow-y-auto ${isIntroRoute ? "" : "pt-[57px]"}`} data-scroll-container>
-        <AnimatePresence mode="wait">
+      <div 
+        className={`relative z-0 h-full ${isStoryRoute ? "overflow-hidden" : "overflow-y-auto"} ${isIntroRoute ? "" : "pt-[57px]"}`} 
+        data-scroll-container
+        style={{ height: "100%", display: "flex", flexDirection: "column" }}
+      >
+        <AnimatePresence mode="popLayout">
           <motion.div
             key={location.key}
             initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}

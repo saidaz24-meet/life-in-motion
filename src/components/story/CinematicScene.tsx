@@ -32,7 +32,7 @@ const textVariants = {
     transition: {
       duration: 0.6,
       delay: 0.1,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as const,
     },
   },
 };
@@ -49,7 +49,7 @@ const beatVariants = {
     filter: "blur(0px)",
     transition: {
       duration: 0.6,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as const,
     },
   },
   exit: {

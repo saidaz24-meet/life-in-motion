@@ -4,11 +4,13 @@ import { SITE_TITLE } from "../../content/meta";
 interface SEOHeadProps {
   title?: string;
   description?: string;
+  preloadImage?: string;
 }
 
 export default function SEOHead({ 
   title, 
-  description = "A journey shaped by identity, driven by bridge-building, and expressed through making." 
+  description = "A journey shaped by identity, driven by bridge-building, and expressed through making.",
+  preloadImage
 }: SEOHeadProps) {
   useEffect(() => {
     const fullTitle = title ? `${title} — ${SITE_TITLE}` : SITE_TITLE;
@@ -40,7 +42,21 @@ export default function SEOHead({
       document.head.appendChild(ogDescription);
     }
     ogDescription.setAttribute("content", description);
-  }, [title, description]);
+
+    // Preload first image for LCP optimization
+    if (preloadImage) {
+      let preloadLink = document.querySelector('link[rel="preload"][as="image"][data-preload-story]');
+      if (!preloadLink) {
+        preloadLink = document.createElement("link");
+        preloadLink.setAttribute("rel", "preload");
+        preloadLink.setAttribute("as", "image");
+        preloadLink.setAttribute("data-preload-story", "true");
+        document.head.appendChild(preloadLink);
+      }
+      preloadLink.setAttribute("href", preloadImage);
+      preloadLink.setAttribute("fetchpriority", "high");
+    }
+  }, [title, description, preloadImage]);
 
   return null;
 }

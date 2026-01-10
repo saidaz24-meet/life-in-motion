@@ -8,6 +8,7 @@ import ScrollToTop from "../../components/layout/ScrollToTop";
 export default function AppLayout() {
   const location = useLocation();
   const isIntroRoute = location.pathname === "/";
+  const isStoryRoute = location.pathname === "/story";
 
   // Temporary dev logging
   useEffect(() => {
@@ -56,8 +57,12 @@ export default function AppLayout() {
       {!isIntroRoute && <Header />}
 
       {/* Page content with transitions - offset for fixed header */}
-      <div className={`relative z-0 h-full overflow-y-auto ${isIntroRoute ? "" : "pt-[57px]"}`} data-scroll-container>
-        <AnimatePresence mode="wait">
+      <div 
+        className={`relative z-0 pointer-events-auto ${isStoryRoute ? "h-full overflow-hidden" : "h-full overflow-y-auto"} ${isIntroRoute ? "" : "pt-[57px]"}`} 
+        data-scroll-container
+        style={isStoryRoute ? { height: "100%" } : { height: "100%", display: "flex", flexDirection: "column" }}
+      >
+        <AnimatePresence mode="popLayout">
           <motion.div
             key={location.key}
             initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
@@ -67,12 +72,18 @@ export default function AppLayout() {
               duration: 0.4,
               ease: [0.4, 0, 0.2, 1],
             }}
-            className={`flex flex-col ${isIntroRoute ? "min-h-[100dvh]" : "min-h-[calc(100dvh-57px)]"}`}
+            className={isStoryRoute ? "h-full pointer-events-auto" : `flex flex-col ${isIntroRoute ? "min-h-[100dvh]" : "min-h-[calc(100dvh-57px)]"}`}
           >
-            <div className="flex-1">
+            {isStoryRoute ? (
               <Outlet />
-            </div>
-            {!isIntroRoute && <PageFooter />}
+            ) : (
+              <>
+                <div className="flex-1">
+                  <Outlet />
+                </div>
+                {!isIntroRoute && <PageFooter />}
+              </>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

@@ -8,8 +8,11 @@ import CaseFileModal from "../../components/modal/CaseFileModal";
 import SEOHead from "../../components/ui/SEOHead";
 import LazyImage from "../../components/ui/LazyImage";
 import LazyVideo from "../../components/ui/LazyVideo";
+import Badge from "../../components/ui/Badge";
+import OrgBadges from "../../components/ui/OrgBadges";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { clsx } from "clsx";
+import Container from "../../components/layout/Container";
 
 export default function HonorsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,46 +55,43 @@ export default function HonorsPage() {
   return (
     <>
       <SEOHead title="Honors" />
-      <div className="min-h-[100dvh] pb-24">
+      <div className="pb-12">
         {/* Header */}
-        <div className="px-6 md:px-12 lg:px-16 pt-12 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <motion.h1
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? {} : { duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
-            >
-              Honors
-            </motion.h1>
-            <motion.p
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? {} : { duration: 0.6, delay: 0.1 }}
-              className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
-            >
-              Recognition and achievements that reflect the journey and impact.
-            </motion.p>
-          </div>
-        </div>
+        <Container className="pt-12 pb-8">
+          <motion.h1
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+            animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+            transition={prefersReducedMotion ? {} : { duration: 0.6 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
+          >
+            Honors
+          </motion.h1>
+          <motion.p
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+            animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+            transition={prefersReducedMotion ? {} : { duration: 0.6, delay: 0.1 }}
+            className="text-lg sm:text-xl text-[rgb(var(--fg-1))] max-w-prose leading-relaxed"
+          >
+            Recognition and achievements that reflect the journey and impact.
+          </motion.p>
+        </Container>
 
         {/* Spotlight */}
         {spotlight && (
-          <div className="px-6 md:px-12 lg:px-16 mb-16">
-            <div className="max-w-7xl mx-auto">
+          <Container className="mb-16">
               <motion.div
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 40 }}
                 animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                 transition={prefersReducedMotion ? {} : { duration: 0.8 }}
-                className="relative min-h-[60vh] rounded-lg overflow-hidden cursor-pointer group"
+                className="relative w-full aspect-[16/9] max-h-[44vh] sm:max-h-[min(56vh,520px)] overflow-hidden rounded-2xl cursor-pointer group"
                 onClick={() => handleItemClick(spotlight)}
               >
                 {/* Background Media */}
-                <div className="absolute inset-0">
+                <div className="absolute inset-0 w-full h-full">
                   {spotlight.media.teaserVideo ? (
                     <LazyVideo
                       src={spotlight.media.teaserVideo}
-                      className="w-full h-full"
+                      className="absolute inset-0 w-full h-full object-cover"
                       autoPlay
                       loop
                       muted
@@ -101,22 +101,36 @@ export default function HonorsPage() {
                     <LazyImage
                       src={spotlight.media.heroImage}
                       alt={spotlight.title}
-                      className="w-full h-full"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-[rgb(var(--bg-1))] to-[rgb(var(--bg-2))]" />
+                    <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[rgb(var(--bg-1))] to-[rgb(var(--bg-2))]" />
                   )}
+                  {/* Top Scrim - Subtle header/media blending */}
+                  <div 
+                    className="absolute inset-x-0 top-0 h-12 md:h-16 pointer-events-none z-10"
+                    style={{
+                      background: `
+                        linear-gradient(to bottom,
+                          rgba(0, 0, 0, 0.6) 0%,
+                          rgba(0, 0, 0, 0.2) 50%,
+                          transparent 100%
+                        )
+                      `,
+                    }}
+                  />
+                  {/* Bottom gradient for content readability */}
                   <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 h-full min-h-[60vh] flex flex-col justify-end p-8 md:p-12 lg:p-16">
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-12 lg:p-16">
                   <div className="max-w-3xl">
                     <motion.h2
                       initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                       animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                       transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.2 }}
-                      className="text-4xl md:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4"
+                      className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4"
                     >
                       {spotlight.card.headline}
                     </motion.h2>
@@ -125,7 +139,7 @@ export default function HonorsPage() {
                         initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                         animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                         transition={prefersReducedMotion ? {} : { duration: 0.8, delay: 0.3 }}
-                        className="text-xl md:text-2xl text-[rgb(var(--fg-1))] mb-6"
+                        className="text-xl sm:text-2xl text-[rgb(var(--fg-1))] mb-6 max-w-prose"
                       >
                         {spotlight.card.subhead}
                       </motion.p>
@@ -148,14 +162,12 @@ export default function HonorsPage() {
                   </div>
                 </div>
               </motion.div>
-            </div>
-          </div>
+          </Container>
         )}
 
         {/* Vertical Timeline */}
         {timeline.length > 0 && (
-          <div className="px-6 md:px-12 lg:px-16">
-            <div className="max-w-4xl mx-auto">
+          <Container size="4xl">
               <div className="relative">
                 {/* Timeline line */}
                 <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-white/10" />
@@ -174,6 +186,18 @@ export default function HonorsPage() {
                       {/* Timeline dot */}
                       <div className="absolute left-6 top-6 w-4 h-4 rounded-full bg-[rgb(var(--accent))] border-4 border-[rgb(var(--bg-0))] group-hover:scale-125 transition-transform" />
 
+                      {/* Hero Image Banner */}
+                      {item.media.heroImage && (
+                        <div className="relative w-full h-48 sm:h-56 mb-4 rounded-lg overflow-hidden">
+                          <LazyImage
+                            src={item.media.heroImage}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+                        </div>
+                      )}
+
                       {/* Content card */}
                       <div className={clsx(
                         "glass rounded-lg border border-white/10 p-6 backdrop-blur-xl",
@@ -182,11 +206,11 @@ export default function HonorsPage() {
                       )}>
                         <div className="flex items-start justify-between gap-4 mb-4">
                           <div className="flex-1">
-                            <h3 className="text-2xl md:text-3xl font-bold text-[rgb(var(--fg-0))] mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">
+                            <h3 className="text-2xl sm:text-3xl font-bold text-[rgb(var(--fg-0))] mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">
                               {item.card.headline}
                             </h3>
                             {item.card.subhead && (
-                              <p className="text-lg text-[rgb(var(--fg-1))]">
+                              <p className="text-lg sm:text-xl text-[rgb(var(--fg-1))] max-w-prose">
                                 {item.card.subhead}
                               </p>
                             )}
@@ -197,9 +221,19 @@ export default function HonorsPage() {
                         </div>
 
                         {/* One liner */}
-                        <p className="text-base text-[rgb(var(--fg-1))] mb-4">
+                        <p className="text-base sm:text-lg text-[rgb(var(--fg-1))] mb-4 max-w-prose">
                           {item.card.oneLiner}
                         </p>
+
+                        {/* Badges and Org Logos */}
+                        {(item.badges && item.badges.length > 0) || (item.orgIds && item.orgIds.length > 0) ? (
+                          <div className="flex flex-wrap items-center gap-2 mb-4">
+                            {item.badges?.map((badge, badgeIndex) => (
+                              <Badge key={badgeIndex} badge={badge} />
+                            ))}
+                            {item.orgIds && <OrgBadges orgIds={item.orgIds} />}
+                          </div>
+                        ) : null}
 
                         {/* Tags */}
                         {item.tags.length > 0 && (
@@ -224,8 +258,7 @@ export default function HonorsPage() {
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
+          </Container>
         )}
 
         {/* Case File Modal */}

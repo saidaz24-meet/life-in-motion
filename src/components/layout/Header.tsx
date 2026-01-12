@@ -7,6 +7,8 @@ import { clsx } from "clsx";
 import OverlayMenu from "../nav/OverlayMenu";
 import SmileLogo from "../ui/SmileLogo";
 import SoundToggle from "../ui/SoundToggle";
+import { useSound } from "../../app/providers/SoundProvider";
+import HeaderBackdrop from "./HeaderBackdrop";
 
 const ROUTE_LABELS: Record<string, string> = {
   "/": "Story",
@@ -27,6 +29,7 @@ export default function Header() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [buttonPosition, setButtonPosition] = useState({ top: 0, right: 0 });
+  const { play } = useSound();
   
   // Track if we've already set up scroll listener (prevent duplicates)
   const scrollListenerSetupRef = useRef(false);
@@ -80,6 +83,7 @@ export default function Header() {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
+    play("hover");
     setIsMenuOpen(true);
   };
 
@@ -97,9 +101,11 @@ export default function Header() {
     };
   }, []);
 
-  // Get button position - FIXED VERSION
+  // Get button position - FIXED VERSION with debouncing
   useEffect(() => {
     if (!isMenuOpen) return;
+    
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
     
     const updatePosition = () => {
       if (menuButtonRef.current) {
@@ -119,19 +125,34 @@ export default function Header() {
       }
     };
     
-    updatePosition();
-    window.addEventListener('resize', updatePosition);
-    return () => window.removeEventListener('resize', updatePosition);
+    const debouncedUpdate = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(updatePosition, 150);
+    };
+    
+    updatePosition(); // Initial position
+    window.addEventListener('resize', debouncedUpdate);
+    return () => {
+      window.removeEventListener('resize', debouncedUpdate);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [isMenuOpen]);
 
   return (
     <>
+      {/* Header Backdrop - Shallow scrim gradient behind header for smooth transition */}
+      <HeaderBackdrop />
+      
       <motion.div
         className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-4 border-b border-white/10"
+        data-header
         initial={false}
         animate={{
           backgroundColor: isScrolled ? "rgba(10, 10, 12, 0.85)" : "rgba(10, 10, 12, 0)",
           backdropFilter: isScrolled ? "blur(12px) saturate(180%)" : "blur(0px)",
+          boxShadow: isScrolled 
+            ? "0 12px 40px rgba(0, 0, 0, 0.55)" 
+            : "0 10px 30px rgba(0, 0, 0, 0.45)", // Subtle shadow always present
         }}
         transition={{ duration: 0.2, ease: "easeOut" }}
       >
@@ -166,7 +187,10 @@ export default function Header() {
               ref={menuButtonRef}
               type="button"
               data-menu-button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => {
+                play("click");
+                setIsMenuOpen(!isMenuOpen);
+              }}
               aria-controls={menuId}
               className={clsx(
                 "p-2 rounded-md transition-all duration-200 ease-out",

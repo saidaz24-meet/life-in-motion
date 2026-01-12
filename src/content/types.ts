@@ -1,6 +1,8 @@
 import type { Tag } from "./meta";
+import type { OrgId } from "./orgs";
 
 export type { Tag };
+export type { OrgId };
 
 /**
  * Content type discriminator
@@ -16,16 +18,38 @@ export type ContentType = "venture" | "honor" | "experience" | "book";
 export type Privacy = "public" | "unlisted" | "proof-only";
 
 /**
+ * Explicit media role type
+ */
+export interface MediaRole {
+  type: "image" | "video";
+  src: string;
+  label?: string;
+}
+
+/**
  * Media assets for a content item
- * - heroVideo: emotional/atmospheric video (highest priority for hero display)
- * - heroImage: fallback hero image
- * - teaserVideo: product demo video (used as fallback if no heroVideo/heroImage)
- * - youtubeUrl: external YouTube link
+ * 
+ * New explicit roles (recommended):
+ * - heroMedia: optional hero media (image or video) - highest priority for carousel
+ * - demoMedia: optional demo video - distinct from hero, shown after hero
+ * - teaserMedia: optional teaser video - shown after demo
  * - gallery: array of gallery images
+ * 
+ * Legacy fields (backward compatibility, lower priority in buildMediaArray):
+ * - heroImage: fallback hero image
+ * - heroVideo: fallback emotional/atmospheric video
+ * - teaserVideo: fallback product demo video
+ * - youtubeUrl: external YouTube link
  */
 export interface Media {
+  // New explicit roles (recommended)
+  heroMedia?: MediaRole;
+  demoMedia?: MediaRole; // video only
+  teaserMedia?: MediaRole; // video only
+  
+  // Legacy fields (for backward compatibility)
   heroImage: string;
-  heroVideo?: string; // Optional emotional/atmospheric video
+  heroVideo?: string;
   teaserVideo: string;
   youtubeUrl: string;
   gallery: string[];
@@ -43,12 +67,23 @@ export interface CaseFile {
 }
 
 /**
+ * Badge for organization logos or text
+ */
+export interface Badge {
+  type: "logo" | "text";
+  src?: string; // Required for "logo" type
+  text?: string; // Required for "text" type
+  alt?: string; // Recommended for "logo" type
+}
+
+/**
  * Card copy (hook, headline, subhead)
  */
 export interface CardCopy {
   oneLiner: string;
   headline: string;
   subhead: string;
+  microSummary?: string; // Optional 1-2 line description for admissions-friendly cards
 }
 
 /**
@@ -65,6 +100,8 @@ export interface ContentItem {
   card: CardCopy;
   beats: string[];
   caseFile: CaseFile;
+  badges?: Badge[]; // Optional array of organization logos/text badges (legacy)
+  orgIds?: OrgId[]; // Optional array of organization IDs (preferred over badges for org logos)
 }
 
 /**

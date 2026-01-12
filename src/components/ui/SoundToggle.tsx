@@ -8,14 +8,24 @@ interface SoundToggleProps {
 }
 
 export default function SoundToggle({ className, size = "md" }: SoundToggleProps) {
-  const { isEnabled, toggleSound } = useSound();
+  const { isEnabled, toggleSound, play } = useSound();
 
   const iconSize = size === "sm" ? "w-3 h-3" : "w-4 h-4";
   const padding = size === "sm" ? "p-1.5" : "p-2";
 
+  const handleClick = () => {
+    play("click");
+    toggleSound();
+  };
+
+  const handleMouseEnter = () => {
+    play("hover");
+  };
+
   return (
     <button
-      onClick={toggleSound}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
       className={clsx(
         padding,
         "rounded-md transition-all duration-200 ease-out",

@@ -1,5 +1,6 @@
-import { Linkedin, Mail } from "lucide-react";
+import { Linkedin, Mail, Github } from "lucide-react";
 import { clsx } from "clsx";
+import Avatar from "../ui/Avatar";
 
 export default function PageFooter() {
   return (
@@ -11,11 +12,33 @@ export default function PageFooter() {
         {/* Center: Smile */}
         <span className="text-sm text-[rgb(var(--fg-1))]">Smile.</span>
 
-        {/* Right: Icons */}
-        <div className="flex items-center gap-4 flex-shrink-0">
+        {/* Right: Avatar + Icons */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <Avatar
+            src="/images/profile/hero.JPEG"
+            alt="Said Azaizah"
+          />
+          {/* GitHub */}
+          <a
+            href="https://github.com/saidaz24-meet/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={clsx(
+              "p-2 rounded-md transition-all duration-200 ease-out",
+              "hover:bg-white/5 active:bg-white/10",
+              "border border-white/10 hover:border-white/20",
+              "text-[rgb(var(--fg-1))] hover:text-[rgb(var(--fg-0))]",
+              "hover:-translate-y-0.5 active:translate-y-0",
+              "hover:shadow-[0_2px_8px_rgba(120,220,255,0.1)]",
+              "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-1 focus:ring-offset-transparent"
+            )}
+            aria-label="GitHub"
+          >
+            <Github className="w-4 h-4" />
+          </a>
           {/* LinkedIn */}
           <a
-            href="https://linkedin.com/in/saidazaizah"
+            href="https://www.linkedin.com/in/said-azaizah/"
             target="_blank"
             rel="noopener noreferrer"
             className={clsx(
@@ -34,7 +57,7 @@ export default function PageFooter() {
 
           {/* Mail */}
           <a
-            href="mailto:said@example.com"
+            href="mailto:az.said2007@gmail.com"
             className={clsx(
               "p-2 rounded-md transition-all duration-200 ease-out",
               "hover:bg-white/5 active:bg-white/10",

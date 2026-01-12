@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { clsx } from "clsx";
-import { CONTAINER, SPACING } from "../../styles/tokens";
+import { CONTAINER } from "../../styles/tokens";
 
 interface ContainerProps {
   children: ReactNode;
   /** Container max-width variant */
   size?: keyof typeof CONTAINER;
-  /** Horizontal padding preset */
+  /** Horizontal padding preset - Apple-like responsive spacing */
   padding?: "pageX" | "none";
   /** Additional className */
   className?: string;
@@ -15,10 +15,11 @@ interface ContainerProps {
 /**
  * Container component for consistent max-width and horizontal padding
  * Drop-in replacement for `max-w-* mx-auto` patterns
+ * Uses responsive padding: px-4 sm:px-6 lg:px-8 for mobile-first approach
  */
 export default function Container({
   children,
-  size = "7xl",
+  size = "6xl",
   padding = "pageX",
   className,
 }: ContainerProps) {
@@ -27,7 +28,7 @@ export default function Container({
       className={clsx(
         CONTAINER[size],
         "mx-auto",
-        padding === "pageX" && SPACING.pageX,
+        padding === "pageX" && "px-4 sm:px-6 lg:px-8",
         className
       )}
     >

@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { clsx } from "clsx";
 import { createNavLogger } from "../../utils/navigation";
+import { useScrollContainerLock } from "../../hooks/useScrollContainerLock";
+import { useSound } from "../../app/providers/SoundProvider";
 
 interface OverlayMenuProps {
   id?: string;
@@ -57,6 +59,7 @@ export default function OverlayMenu({
   const navigate = useNavigate();
   const nav = createNavLogger(navigate);
   const location = useLocation();
+  const { play } = useSound();
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
@@ -172,19 +175,11 @@ export default function OverlayMenu({
     return () => document.removeEventListener("keydown", handleTab);
   }, [isOpen]);
 
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  // Lock internal scroll container when menu is open
+  useScrollContainerLock(isOpen);
 
   const handleNavClick = (path: string) => {
+    play("click");
     // Prevent navigation if already on the same route
     if (location.pathname === path) {
       onClose();
@@ -202,6 +197,7 @@ export default function OverlayMenu({
   };
 
   const handleQuickJump = (filter: string) => {
+    play("click");
     navigate(`/atlas?filter=${encodeURIComponent(filter)}`);
     onClose();
   };
@@ -320,6 +316,7 @@ export default function OverlayMenu({
                     <button
                       key={item.path}
                       onClick={() => handleNavClick(item.path)}
+                      onMouseEnter={() => play("hover")}
                       className={clsx(
                         "w-full text-left rounded-lg transition-all duration-200 ease-out",
                         buttonPosition 
@@ -346,6 +343,29 @@ export default function OverlayMenu({
                       )}
                     </button>
                   ))}
+
+                  {/* Skip to Honors - mobile only, shown when on /story route */}
+                  {location.pathname === "/story" && !buttonPosition && (
+                    <button
+                      onClick={() => handleNavClick("/honors")}
+                      className={clsx(
+                        "md:hidden w-full text-left rounded-lg transition-all duration-200 ease-out",
+                        "p-6",
+                        "hover:bg-white/5 active:bg-white/10",
+                        "border border-white/10 hover:border-white/20",
+                        "hover:-translate-y-0.5 active:translate-y-0",
+                        "hover:shadow-[0_4px_12px_rgba(120,220,255,0.1)]",
+                        "focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-transparent"
+                      )}
+                    >
+                      <div className="text-2xl mb-1 font-semibold text-[rgb(var(--fg-0))]">
+                        Skip to Honors
+                      </div>
+                      <div className="text-sm text-[rgb(var(--fg-1))]">
+                        Jump to the main site
+                      </div>
+                    </button>
+                  )}
                 </nav>
 
                 {/* Quick Jumps - hide in dropdown mode */}
@@ -360,6 +380,7 @@ export default function OverlayMenu({
                         key={jump.filter}
                         ref={index === QUICK_JUMPS.length - 1 ? lastFocusableRef : undefined}
                         onClick={() => handleQuickJump(jump.filter)}
+                        onMouseEnter={() => play("hover")}
                         className={clsx(
                           "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out",
                           "bg-white/5 hover:bg-white/10 active:bg-white/15",

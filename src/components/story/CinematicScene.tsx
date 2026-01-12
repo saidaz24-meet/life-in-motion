@@ -130,10 +130,22 @@ export default function CinematicScene({
 
   return (
     <section 
-      className={`h-[calc(100dvh-57px)] relative flex items-center justify-center overflow-hidden ${!isActive ? "pointer-events-none" : ""}`}
+      className={`relative flex items-center justify-center overflow-hidden ${!isActive ? "pointer-events-none" : ""} md:h-full h-[100dvh]`}
+      style={{
+        // Clip media so it never visually bleeds into header area
+        // Header is ~64px (4rem) + safe-area-inset-top
+        clipPath: 'inset(0 0 0 0)', // Standard clipping
+      }}
     >
-      {/* Full-bleed background media */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Full-bleed background media - edge-to-edge on mobile iPhone */}
+      <div 
+        className="absolute inset-0 overflow-hidden"
+        style={{
+          // Ensure media is clipped at top to prevent bleeding into header
+          top: 0,
+          maxHeight: '100%',
+        }}
+      >
         {isVideo ? (
           <LazyVideo
             src={scene.mediaRef}
@@ -160,26 +172,63 @@ export default function CinematicScene({
           </motion.div>
         )}
 
-        {/* Gradient overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+        {/* Top Scrim - Subtle header/media blending (complementary to HeaderBackdrop, but kept for depth) */}
+        {/* Mobile: Safe-area aware, Desktop: original */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-x-0 top-0 pointer-events-none z-10 md:h-16 h-12"
           style={{
-            background: "radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%)",
+            background: `
+              linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.15) 50%,
+                transparent 100%
+              )
+            `,
+            paddingTop: 'env(safe-area-inset-top, 0px)',
           }}
+          aria-hidden="true"
+        />
+
+        {/* Bottom Blend Overlay - Enhanced for text readability on bright backgrounds */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-64 md:h-80 pointer-events-none z-10"
+          style={{
+            background: `
+              linear-gradient(to top,
+                rgba(0, 0, 0, 0.75) 0%,
+                rgba(0, 0, 0, 0.6) 25%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.2) 75%,
+                transparent 100%
+              )
+            `,
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Radial gradient vignette - Enhanced for better text contrast */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            background: "radial-gradient(ellipse at center 70%, transparent 0%, rgba(0, 0, 0, 0.45) 100%)",
+          }}
+          aria-hidden="true"
         />
       </div>
 
       {/* Content - centered, large typography */}
       <div className={`relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 ${isActive ? "" : "pointer-events-none"}`}>
         <div className="text-center md:text-left">
-          {/* Title - very large */}
+          {/* Title - very large with text shadow for readability */}
           <motion.h1
             variants={prefersReducedMotion ? undefined : textVariants}
             initial="hidden"
             animate={prefersReducedMotion ? undefined : (isActive ? "visible" : "hidden")}
             layout
             className="text-5xl md:text-7xl lg:text-8xl font-bold text-[rgb(var(--fg-0))] leading-[1.1] tracking-tight mb-8"
+            style={{
+              textShadow: "0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3)",
+            }}
           >
             {scene.title}
           </motion.h1>
@@ -212,7 +261,12 @@ export default function CinematicScene({
                   >
                     •
                   </motion.span>
-                  <span className="text-xl md:text-2xl lg:text-3xl text-[rgb(var(--fg-0))] leading-relaxed font-medium">
+                  <span 
+                    className="text-xl md:text-2xl lg:text-3xl text-[rgb(var(--fg-0))] leading-relaxed font-medium"
+                    style={{
+                      textShadow: "0 1px 4px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3)",
+                    }}
+                  >
                     {beat}
                   </span>
                 </motion.div>

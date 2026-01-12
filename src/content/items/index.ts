@@ -1,5 +1,6 @@
 import { ALL_ITEMS } from "./all";
 import type { ContentItem } from "../types";
+import { logOrgValidationErrors } from "../validateOrgs";
 
 /**
  * Get a content item by its ID
@@ -35,4 +36,9 @@ export { ventures } from "./ventures";
 export { honors } from "./honors";
 export { experiences } from "./experiences";
 export { books } from "./books";
+
+// Dev-only validation: log orgId validation errors
+if (import.meta.env.DEV) {
+  logOrgValidationErrors(ALL_ITEMS);
+}
 

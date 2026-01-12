@@ -1,33 +1,28 @@
-import { Component, type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouteError, useNavigate } from "react-router-dom";
 import { clsx } from "clsx";
 import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 
-interface ErrorBoundaryProps {
-  children: ReactNode;
-}
-
-interface ErrorBoundaryState {
-  hasError: boolean;
-  error: Error | null;
-  errorInfo: React.ErrorInfo | null;
-}
-
-// Error fallback UI component (extracted for reuse)
-function ErrorFallbackUI({ error, errorInfo }: { error: Error | null; errorInfo?: React.ErrorInfo | null }) {
+/**
+ * Error fallback component for React Router errors (used as errorElement)
+ * This handles route-level errors (404s, loader errors, etc.)
+ */
+export default function AppErrorFallback() {
+  const error = useRouteError();
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const isDev = import.meta.env.DEV;
 
+  // Extract error information
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  const errorStack = error instanceof Error ? error.stack : undefined;
+  const errorName = error instanceof Error ? error.name : "Error";
+
   const handleCopyError = async () => {
-    if (!error) return;
-    
     const errorDetails = `
-Error: ${error.name}
-Message: ${error.message}
-Stack: ${error.stack || "No stack trace available"}
-${errorInfo ? `Component Stack: ${errorInfo.componentStack}` : ""}
+Error: ${errorName}
+Message: ${errorMessage}
+${errorStack ? `Stack: ${errorStack}` : ""}
     `.trim();
 
     try {
@@ -77,7 +72,7 @@ ${errorInfo ? `Component Stack: ${errorInfo.componentStack}` : ""}
           </p>
 
           {/* Error details (dev only) */}
-          {isDev && error && (
+          {isDev && (
             <div className="mb-8 text-left">
               <details className="bg-black/20 rounded-lg border border-white/5 p-4 text-xs font-mono text-[rgb(var(--fg-1))]">
                 <summary className="cursor-pointer text-[rgb(var(--fg-0))] mb-2 hover:text-[rgb(var(--accent))] transition-colors">
@@ -86,17 +81,17 @@ ${errorInfo ? `Component Stack: ${errorInfo.componentStack}` : ""}
                 <div className="mt-2 space-y-2 overflow-auto max-h-48">
                   <div>
                     <span className="text-[rgb(var(--fg-1))]">Error:</span>{" "}
-                    <span className="text-red-400">{error.name}</span>
+                    <span className="text-red-400">{errorName}</span>
                   </div>
                   <div>
                     <span className="text-[rgb(var(--fg-1))]">Message:</span>{" "}
-                    <span className="text-yellow-400">{error.message}</span>
+                    <span className="text-yellow-400">{errorMessage}</span>
                   </div>
-                  {error.stack && (
+                  {errorStack && (
                     <div className="mt-2">
                       <span className="text-[rgb(var(--fg-1))]">Stack:</span>
                       <pre className="mt-1 text-xs overflow-x-auto whitespace-pre-wrap">
-                        {error.stack}
+                        {errorStack}
                       </pre>
                     </div>
                   )}
@@ -138,7 +133,7 @@ ${errorInfo ? `Component Stack: ${errorInfo.componentStack}` : ""}
             </button>
 
             {/* Copy error details button (dev only) */}
-            {isDev && error && (
+            {isDev && (
               <button
                 onClick={handleCopyError}
                 className={clsx(
@@ -167,46 +162,5 @@ ${errorInfo ? `Component Stack: ${errorInfo.componentStack}` : ""}
       </div>
     </div>
   );
-}
-
-// Wrapper to use navigate hook inside class component
-function ErrorFallbackWithNavigate({ error, errorInfo }: { error: Error | null; errorInfo?: React.ErrorInfo | null }) {
-  return <ErrorFallbackUI error={error} errorInfo={errorInfo} />;
-}
-
-export default class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
-  }
-
-  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error for debugging (only in dev or if you have error reporting service)
-    if (import.meta.env.DEV) {
-      console.error("ErrorBoundary caught an error:", error, errorInfo);
-    }
-    // Store errorInfo for display
-    this.setState({ errorInfo });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <ErrorFallbackWithNavigate 
-          error={this.state.error} 
-          errorInfo={this.state.errorInfo} 
-        />
-      );
-    }
-
-    return this.props.children;
-  }
 }
 

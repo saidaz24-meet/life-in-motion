@@ -14,102 +14,101 @@ export interface StoryTimelineScene {
 export const STORY_TIMELINE_SCENES: StoryTimelineScene[] = [
   {
     id: "scene-1",
-    title: "Where It Began",
+    title: "Life in Motion",
     beats: [
-      "A school built for rigor and identity",
-      "Learning to earn my space in demanding halls",
-      "Friendships and friction—both taught me"
+      "I build to make things clearer",
+      "I move to stay grounded",
+      "I lead by showing up"
+    ],
+    mediaRef: "/images/profile/hero.JPEG",
+    itemIds: []
+  },
+  {
+    id: "scene-2",
+    title: "Rigor and Identity",
+    beats: [
+      "A demanding school chapter shaped my discipline",
+      "I learned to stay open and steady in a mixed environment",
+      "Friendships and friction, both taught me"
     ],
     mediaRef: "/images/life/school-leyada/g2-graduating.jpg",
     itemIds: ["school-leyada"]
   },
   {
-    id: "scene-2",
-    title: "Building Bridges",
+    id: "scene-3",
+    title: "Bridge Building",
     beats: [
+      "MEET trained my craft and my responsibility",
       "You build, then you talk, then you build again",
-      "Differences don't vanish; they become constraints",
-      "MEET made my ambition more responsible"
+      "Trust is built through shared work"
     ],
     mediaRef: "/images/life/meet/1d9300b2-2414-473f-90b8-e562e2899c34.JPG",
     itemIds: ["meet"]
   },
   {
-    id: "scene-3",
-    title: "Roommates, Not Headlines",
+    id: "scene-4",
+    title: "RoofMate",
     beats: [
-      "A nonprofit, Android-first matching platform",
-      "Built with a binational team through MEET",
-      "Expo night: strangers thanked us like it mattered"
+      "Roommate matching is a trust problem",
+      "We chose an app-first product on purpose",
+      "Built to make \"the other\" feel like a roommate"
     ],
     mediaRef: "/images/life/roofmate/g10-expo-night.jpeg",
     itemIds: ["roofmate"]
   },
   {
-    id: "scene-4",
-    title: "Teaching as Engineering",
+    id: "scene-5",
+    title: "Teaching",
     beats: [
-      "Tracebacks as puzzles, not failures",
-      "I watched what students fear—and what helps",
-      "Then I built tools to scale that help"
+      "Teaching exposed what I did not fully understand yet",
+      "I watched what students fear, and what helps",
+      "I started building tools to reduce prep friction"
     ],
     mediaRef: "/images/life/meet-TA/g5-class-pic.jpg",
     itemIds: ["meet-ta", "bml-advanced-track"]
   },
   {
-    id: "scene-5",
-    title: "Winning Under Pressure",
-    beats: [
-      "A waiting room turned into a product problem",
-      "A form that took hours became minutes",
-      "Winning mattered. The use-case mattered more"
-    ],
-    mediaRef: "/images/life/huji-hackathon-win/hero.jpg",
-    itemIds: ["huji-hackathon-win"]
-  },
-  {
     id: "scene-6",
-    title: "From Spreadsheets to Insight",
+    title: "Research",
     beats: [
-      "Manual triage became a product problem",
-      "Runs cached by sequence hash—less recompute, more insight",
-      "Designed to ship into labs, not stay as scripts"
+      "Brilliant science can be slowed by glue work",
+      "So I rebuilt the workflow into a platform",
+      "Runs cached by sequence hash, less recompute, more insight"
     ],
     mediaRef: "/images/life/pvl/DESY-delegation/hero.jpg",
     itemIds: ["pvl-internship"]
   },
   {
     id: "scene-7",
-    title: "Rhythm That Grounds",
-    beats: [
-      "Nine years. Six hours a week",
-      "Movement as discipline, not escape",
-      "Motion as a way to stay human"
-    ],
-    mediaRef: "/images/life/dabka/Budapest-international-festival.JPG",
-    itemIds: ["dabka"]
-  },
-  {
-    id: "scene-8",
-    title: "Showing Up",
+    title: "Service",
     beats: [
       "Less about hours. More about presence",
-      "Serving without needing a stage",
-      "Building a life that's useful to others"
+      "I learned the difference between helping and performing help",
+      "Showing up quietly still matters"
     ],
     mediaRef: "/images/life/volunteering/hero.jpg",
     itemIds: ["volunteering"]
+  },
+  {
+    id: "scene-8",
+    title: "Movement",
+    beats: [
+      "When life gets loud, my body remembers the rhythm",
+      "Discipline built through repetition",
+      "Culture carried through motion"
+    ],
+    mediaRef: "/images/life/dabka/Budapest-international-festival.JPG",
+    itemIds: ["dabka"]
   },
   {
     id: "scene-9",
     title: "The Path Forward",
     beats: [
       "Each chapter builds on the last",
-      "Craft, community, and conscience—woven together",
+      "Craft, community, and conscience, woven together",
       "Ready to continue the journey"
     ],
     mediaRef: "/images/profile/hero.JPEG",
     itemIds: []
   }
 ];
-

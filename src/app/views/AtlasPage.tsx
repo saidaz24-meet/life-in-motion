@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X } from "lucide-react";
@@ -9,8 +9,12 @@ import CaseFileModal from "../../components/modal/CaseFileModal";
 import { clsx } from "clsx";
 import LazyImage from "../../components/ui/LazyImage";
 import LazyVideo from "../../components/ui/LazyVideo";
+import Badge from "../../components/ui/Badge";
+import OrgBadges from "../../components/ui/OrgBadges";
 import SEOHead from "../../components/ui/SEOHead";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import Container from "../../components/layout/Container";
+import AtlasTimelineGrid from "../../components/atlas/AtlasTimelineGrid";
 
 export default function AtlasPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +23,50 @@ export default function AtlasPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<Set<Tag>>(new Set());
   const prefersReducedMotion = useReducedMotion();
+  
+  // Use ResizeObserver to detect container width (900px breakpoint)
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Initialize with null to prevent flash - will be set immediately by ResizeObserver
+  const [isMobileLayout, setIsMobileLayout] = useState<boolean | null>(null);
+
+  // ResizeObserver for container width detection - switches layout at 900px (debounced)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const updateLayout = () => {
+      const width = container.offsetWidth;
+      setIsMobileLayout(width < 900);
+    };
+
+    // Set initial layout mode immediately
+    updateLayout();
+
+    // Debounced update function
+    const debouncedUpdate = (entries: ResizeObserverEntry[]) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        for (const entry of entries) {
+          const width = entry.contentRect.width;
+          setIsMobileLayout(width < 900);
+        }
+      }, 150);
+    };
+
+    // Create ResizeObserver to watch container width changes
+    const resizeObserver = new ResizeObserver(debouncedUpdate);
+
+    // Start observing
+    resizeObserver.observe(container);
+
+    // Cleanup
+    return () => {
+      resizeObserver.disconnect();
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
 
   // Handle URL params for focus
   useEffect(() => {
@@ -90,14 +138,14 @@ export default function AtlasPage() {
   return (
     <>
       <SEOHead title="Life Atlas" />
-      <div className="min-h-[100dvh] py-12 px-6 md:px-12 lg:px-16 pb-24">
+      <div className="py-12 pb-24">
         {/* Header */}
-        <div className="max-w-7xl mx-auto mb-12">
+        <Container className="mb-12">
           <motion.h1
             initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
             animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
             transition={prefersReducedMotion ? {} : { duration: 0.6 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
           >
             Life Atlas
           </motion.h1>
@@ -105,14 +153,14 @@ export default function AtlasPage() {
             initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
             animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
             transition={prefersReducedMotion ? {} : { duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
+            className="text-lg sm:text-xl text-[rgb(var(--fg-1))] max-w-prose leading-relaxed"
           >
             An interactive map of experiences, moments, and connections that shape the journey.
           </motion.p>
-        </div>
+        </Container>
 
         {/* Filters */}
-        <div className="max-w-7xl mx-auto mb-8 space-y-6">
+        <Container className="mb-8 space-y-6">
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[rgb(var(--fg-1))]" />
@@ -177,52 +225,74 @@ export default function AtlasPage() {
               Showing {filteredExperiences.length} of {experiences.length} experiences
             </motion.p>
           )}
-        </div>
+        </Container>
 
-        {/* Desktop: Constellation | Mobile: List */}
-        <div className="max-w-7xl mx-auto">
-          <AnimatePresence mode="wait">
-            {filteredExperiences.length > 0 ? (
-              <>
-                {/* Desktop Constellation View */}
-                <div className="hidden lg:block min-h-[80vh]">
-                  <ConstellationView
-                    experiences={filteredExperiences}
-                    onItemClick={handleExperienceClick}
-                    highlightedId={searchParams.get("focus") || undefined}
-                  />
-                </div>
+        {/* Desktop: Two-column layout (lg+) | Mobile: Single-column (<lg) */}
+        <Container>
+          {/* Container ref for ResizeObserver */}
+          <div ref={containerRef} className="min-h-0">
+            {/* Wait for initial layout detection before rendering to prevent flash */}
+            {isMobileLayout !== null && (
+              <AnimatePresence mode="wait">
+                {filteredExperiences.length > 0 ? (
+                  <>
+                    {/* Desktop: Timeline Grid (lg+) */}
+                    {!isMobileLayout && (
+                      <motion.div
+                        key="desktop-timeline-grid"
+                        initial={prefersReducedMotion ? false : { opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                        transition={prefersReducedMotion ? {} : { duration: 0.2 }}
+                        className="w-full"
+                      >
+                        <AtlasTimelineGrid
+                          experiences={filteredExperiences}
+                          onItemClick={handleExperienceClick}
+                          highlightedId={searchParams.get("focus") || undefined}
+                        />
+                      </motion.div>
+                    )}
 
-                {/* Mobile List View */}
-                <div className="lg:hidden">
-                  <div className="space-y-4">
-                    {filteredExperiences.map((experience, index) => (
-                      <ExperienceListItem
-                        key={experience.id}
-                        experience={experience}
-                        index={index}
-                        onClick={() => handleExperienceClick(experience)}
-                        isHighlighted={searchParams.get("focus") === experience.id}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <motion.div
-                key="empty"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-16"
-              >
-                <p className="text-lg text-[rgb(var(--fg-1))]">
-                  No experiences found. Try adjusting your filters.
-                </p>
-              </motion.div>
+                    {/* Mobile: Single-column List View (<900px) */}
+                    {isMobileLayout && (
+                      <motion.div
+                        key="mobile-list"
+                        initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={prefersReducedMotion ? undefined : { opacity: 0, y: -20 }}
+                        transition={prefersReducedMotion ? {} : { duration: 0.2 }}
+                        className="space-y-4"
+                      >
+                        {filteredExperiences.map((experience, index) => (
+                          <ExperienceListItem
+                            key={experience.id}
+                            experience={experience}
+                            index={index}
+                            onClick={() => handleExperienceClick(experience)}
+                            isHighlighted={searchParams.get("focus") === experience.id}
+                          />
+                        ))}
+                      </motion.div>
+                    )}
+                  </>
+                ) : (
+                  <motion.div
+                    key="empty"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center py-16"
+                  >
+                    <p className="text-base sm:text-lg text-[rgb(var(--fg-1))] max-w-prose mx-auto">
+                      No experiences found. Try adjusting your filters.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             )}
-          </AnimatePresence>
-        </div>
+          </div>
+        </Container>
 
         {/* Case File Modal */}
         <CaseFileModal
@@ -232,83 +302,6 @@ export default function AtlasPage() {
         />
       </div>
     </>
-  );
-}
-
-interface ConstellationViewProps {
-  experiences: ContentItem[];
-  onItemClick: (item: ContentItem) => void;
-  highlightedId?: string;
-}
-
-function ConstellationView({
-  experiences,
-  onItemClick,
-  highlightedId,
-}: ConstellationViewProps) {
-  // Simple constellation layout: distribute items in a circular/radial pattern
-  const radius = 300;
-  const centerX = 50; // percentage
-  const centerY = 50; // percentage
-
-  const getPosition = (index: number, total: number) => {
-    const angle = (index / total) * Math.PI * 2 - Math.PI / 2; // Start from top
-    const x = centerX + (radius * Math.cos(angle)) / 10;
-    const y = centerY + (radius * Math.sin(angle)) / 10;
-    return { x, y };
-  };
-
-  return (
-    <div className="relative w-full h-full min-h-[80vh]">
-      {experiences.map((experience, index) => {
-        const position = getPosition(index, experiences.length);
-        const isHighlighted = highlightedId === experience.id;
-
-        return (
-          <motion.button
-            key={experience.id}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-            whileHover={{ scale: 1.1, zIndex: 10 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onItemClick(experience)}
-            className={clsx(
-              "absolute group cursor-pointer",
-              "focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]/40 rounded-lg"
-            )}
-            style={{
-              left: `${position.x}%`,
-              top: `${position.y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            <div
-              className={clsx(
-                "glass rounded-lg border p-4 backdrop-blur-xl transition-all",
-                isHighlighted
-                  ? "border-[rgb(var(--accent))]/60 ring-2 ring-[rgb(var(--accent))]/40"
-                  : "border-white/10 hover:border-white/20"
-              )}
-            >
-              {experience.media.heroImage && (
-                <div className="relative w-24 h-24 mb-2 rounded overflow-hidden">
-                  <LazyImage
-                    src={experience.media.heroImage}
-                    alt={experience.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
-                </div>
-              )}
-              <h3 className="text-sm font-semibold text-[rgb(var(--fg-0))] group-hover:text-[rgb(var(--accent))] transition-colors text-center max-w-[100px] truncate">
-                {experience.title}
-              </h3>
-            </div>
-          </motion.button>
-        );
-      })}
-    </div>
   );
 }
 
@@ -370,17 +363,26 @@ function ExperienceListItem({
 
         {/* Content */}
         <div className="flex-1 text-left min-w-0">
-          <h3 className="text-lg font-semibold text-[rgb(var(--fg-0))] mb-1 group-hover:text-[rgb(var(--accent))] transition-colors">
+          <h3 className="text-base sm:text-lg font-semibold text-[rgb(var(--fg-0))] mb-1 group-hover:text-[rgb(var(--accent))] transition-colors">
             {experience.card.headline}
           </h3>
           {experience.card.subhead && (
-            <p className="text-sm text-[rgb(var(--fg-1))] mb-2">
+            <p className="text-xs sm:text-sm text-[rgb(var(--fg-1))] mb-2 max-w-prose">
               {experience.card.subhead}
             </p>
           )}
-          <p className="text-sm text-[rgb(var(--fg-1))] line-clamp-2">
+          <p className="text-xs sm:text-sm text-[rgb(var(--fg-1))] line-clamp-2 max-w-prose">
             {experience.card.oneLiner}
           </p>
+          {/* Badges and Org Logos */}
+          {(experience.badges && experience.badges.length > 0) || (experience.orgIds && experience.orgIds.length > 0) ? (
+            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              {experience.badges?.map((badge, badgeIndex) => (
+                <Badge key={badgeIndex} badge={badge} />
+              ))}
+              {experience.orgIds && <OrgBadges orgIds={experience.orgIds} />}
+            </div>
+          ) : null}
           {experience.tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-2">
               {experience.tags.slice(0, 3).map((tag) => (

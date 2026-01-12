@@ -46,6 +46,11 @@ export function getMedia(id: string): Media | undefined {
 export function getAllMediaPaths(): string[] {
   const paths: string[] = [];
   Object.values(mediaTable).forEach((media) => {
+    // New explicit roles
+    if (media.heroMedia?.src) paths.push(media.heroMedia.src);
+    if (media.demoMedia?.src) paths.push(media.demoMedia.src);
+    if (media.teaserMedia?.src) paths.push(media.teaserMedia.src);
+    // Legacy fields
     if (media.heroImage) paths.push(media.heroImage);
     if (media.heroVideo) paths.push(media.heroVideo);
     if (media.teaserVideo) paths.push(media.teaserVideo);

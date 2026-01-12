@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { clsx } from "clsx";
@@ -49,7 +50,8 @@ export default function YouTubeEmbed({
 
   if (!isOpen) return null;
 
-  return (
+  // Render YouTube embed in portal at document.body level
+  const embedContent = (
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -57,11 +59,12 @@ export default function YouTubeEmbed({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[102] flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-[102] flex items-center justify-center p-4 md:p-8 pointer-events-auto"
           onClick={onClose}
+          onPointerDown={(e) => e.stopPropagation()}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm pointer-events-auto" />
 
           {/* Video container */}
           <motion.div
@@ -104,5 +107,7 @@ export default function YouTubeEmbed({
       )}
     </AnimatePresence>
   );
+
+  return typeof document !== 'undefined' ? createPortal(embedContent, document.body) : null;
 }
 

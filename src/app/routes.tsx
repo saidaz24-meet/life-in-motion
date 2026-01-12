@@ -8,10 +8,12 @@ import AtlasPage from "./views/AtlasPage";
 import BooksPage from "./views/BooksPage";
 import AboutPage from "./views/AboutPage";
 import ContactPage from "./views/ContactPage";
+import AppErrorFallback from "../components/AppErrorFallback";
 
 export const router = createBrowserRouter([
   {
     element: <AppLayout />,
+    errorElement: <AppErrorFallback />,
     children: [
       { path: "/", element: <IntroGatePage /> },
       { path: "/story", element: <StoryPage /> },

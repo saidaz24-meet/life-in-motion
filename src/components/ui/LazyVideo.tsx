@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import { clsx } from "clsx";
 
 interface LazyVideoProps {
@@ -8,26 +8,41 @@ interface LazyVideoProps {
   loop?: boolean;
   muted?: boolean;
   playsInline?: boolean;
+  controls?: boolean;
   onLoad?: () => void;
+  onEnded?: () => void;
+  preload?: "none" | "metadata" | "auto";
 }
 
-export default function LazyVideo({
+const LazyVideo = forwardRef<HTMLVideoElement, LazyVideoProps>(({
   src,
   className,
   autoPlay = false,
   loop = false,
   muted = true,
   playsInline = true,
+  controls = false,
   onLoad,
-}: LazyVideoProps) {
+  onEnded,
+  preload = "auto",
+}, ref) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const internalVideoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  
+  // Use forwarded ref or internal ref
+  const videoRef = (ref as React.MutableRefObject<HTMLVideoElement | null>) || internalVideoRef;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // For autoplay videos, load immediately
+    if (autoPlay) {
+      setShouldLoad(true);
+      return;
+    }
 
     // Use Intersection Observer for lazy loading
     observerRef.current = new IntersectionObserver(
@@ -47,7 +62,7 @@ export default function LazyVideo({
     return () => {
       observerRef.current?.disconnect();
     };
-  }, []);
+  }, [autoPlay]);
 
   const handleLoadedData = () => {
     setIsLoaded(true);
@@ -67,7 +82,10 @@ export default function LazyVideo({
           loop={loop}
           muted={muted}
           playsInline={playsInline}
+          controls={controls}
+          preload={preload}
           onLoadedData={handleLoadedData}
+          onEnded={onEnded}
           className={clsx(
             "w-full h-full object-cover transition-opacity duration-300",
             isLoaded ? "opacity-100" : "opacity-0"
@@ -76,5 +94,9 @@ export default function LazyVideo({
       )}
     </div>
   );
-}
+});
+
+LazyVideo.displayName = "LazyVideo";
+
+export default LazyVideo;
 

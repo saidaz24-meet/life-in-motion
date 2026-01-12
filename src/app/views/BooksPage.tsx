@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shuffle, BookOpen } from "lucide-react";
+import { Shuffle } from "lucide-react";
 import { books } from "../../content/items/books";
 import type { ContentItem } from "../../content/types";
 import CaseFileModal from "../../components/modal/CaseFileModal";
 import { clsx } from "clsx";
 import SEOHead from "../../components/ui/SEOHead";
 import LazyImage from "../../components/ui/LazyImage";
+import Container from "../../components/layout/Container";
 
 export default function BooksPage() {
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
@@ -53,16 +54,16 @@ export default function BooksPage() {
   return (
     <>
       <SEOHead title="Books" />
-      <div className="min-h-[100dvh] py-12 px-6 md:px-12 lg:px-16 pb-24">
+      <div className="py-12 pb-12">
         {/* Header */}
-        <div className="max-w-7xl mx-auto mb-12">
-          <div className="flex items-start justify-between gap-4 mb-4">
+        <Container className="mb-12">
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-4 mb-4">
             <div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
               >
                 Bookshelf
               </motion.h1>
@@ -70,7 +71,7 @@ export default function BooksPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
+                className="text-lg sm:text-xl text-[rgb(var(--fg-1))] max-w-prose leading-relaxed"
               >
                 A curated collection of books that have shaped my thinking and journey.
               </motion.p>
@@ -97,10 +98,10 @@ export default function BooksPage() {
               <span>Surprise me</span>
             </motion.button>
           </div>
-        </div>
+        </Container>
 
         {/* Bookshelf */}
-        <div className="max-w-7xl mx-auto">
+        <Container>
           <AnimatePresence mode="popLayout">
             <div className="space-y-3 md:space-y-4">
               {shuffledBooks.map((book, index) => (
@@ -115,7 +116,7 @@ export default function BooksPage() {
               ))}
             </div>
           </AnimatePresence>
-        </div>
+        </Container>
 
         {/* Case File Modal */}
         <CaseFileModal
@@ -125,6 +126,42 @@ export default function BooksPage() {
         />
       </div>
     </>
+  );
+}
+
+/**
+ * Extract initials from book title (e.g., "The Great Gatsby" -> "TGG" or "TG")
+ */
+function getInitials(title: string): string {
+  const words = title.trim().split(/\s+/).filter(word => word.length > 0);
+  if (words.length === 0) return "?";
+  
+  // Take first letter of first 2-3 words, or just first 2-3 letters if single word
+  if (words.length === 1) {
+    return words[0].substring(0, 2).toUpperCase();
+  }
+  
+  const initials = words
+    .slice(0, Math.min(3, words.length))
+    .map(word => word[0].toUpperCase())
+    .join("");
+  
+  return initials;
+}
+
+interface BookCoverFallbackProps {
+  title: string;
+}
+
+function BookCoverFallback({ title }: BookCoverFallbackProps) {
+  const initials = getInitials(title);
+  
+  return (
+    <div className="relative w-full h-[72px] md:h-[88px] rounded-lg overflow-hidden bg-gradient-to-br from-[rgb(var(--bg-1))] to-[rgb(var(--bg-0))] border border-white/10 flex items-center justify-center">
+      <span className="text-lg md:text-xl font-bold text-[rgb(var(--fg-0))] opacity-80">
+        {initials}
+      </span>
+    </div>
   );
 }
 
@@ -167,31 +204,34 @@ function BookSpine({
         style={{ backgroundColor: spineColor }}
       />
 
-      {/* Book cover thumbnail */}
-      {book.media.heroImage ? (
-        <div className="relative z-10 flex-shrink-0 w-12 h-16 md:w-14 md:h-20 rounded overflow-hidden">
-          <LazyImage
-            src={book.media.heroImage}
-            alt={book.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      ) : (
-        <div className="relative z-10 flex-shrink-0">
-          <div className="p-2 rounded bg-white/5 border border-white/10">
-            <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-[rgb(var(--fg-0))]" />
+      {/* Book cover - fixed width left column */}
+      <div className="relative z-10 flex-shrink-0 w-[90px] md:w-[120px] h-full flex items-center">
+        {book.media.heroImage ? (
+          <div className="relative w-full h-[72px] md:h-[88px] rounded-lg overflow-hidden">
+            <LazyImage
+              src={book.media.heroImage}
+              alt={book.title}
+              className="w-full h-full object-cover"
+            />
           </div>
-        </div>
-      )}
+        ) : (
+          <BookCoverFallback title={book.card.headline || book.title} />
+        )}
+      </div>
 
       {/* Book info */}
       <div className="relative z-10 flex-1 text-left min-w-0">
-        <h3 className="text-lg md:text-xl font-semibold text-[rgb(var(--fg-0))] mb-1 group-hover:text-[rgb(var(--accent))] transition-colors truncate">
-          {book.card.headline}
+        <h3 className="text-base sm:text-lg md:text-xl font-semibold text-[rgb(var(--fg-0))] mb-1 group-hover:text-[rgb(var(--accent))] transition-colors truncate">
+          {book.title}
         </h3>
-        <p className="text-sm md:text-base text-[rgb(var(--fg-1))] truncate">
+        <p className="text-sm sm:text-base text-[rgb(var(--fg-1))] line-clamp-2 max-w-prose">
           {book.card.subhead || book.card.oneLiner}
         </p>
+        {book.beats && book.beats.length > 0 && (
+          <p className="text-xs sm:text-sm text-[rgb(var(--fg-1))] mt-1 opacity-80 line-clamp-1">
+            {book.beats[0]}
+          </p>
+        )}
       </div>
 
       {/* Tags preview */}

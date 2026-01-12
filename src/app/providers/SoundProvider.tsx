@@ -2,12 +2,16 @@ import { createContext, useContext, useState, useEffect, useRef, useCallback } f
 import type { ReactNode } from "react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
-const SOUND_STORAGE_KEY = "lifeInMotion_soundEnabled";
+const SFX_STORAGE_KEY = "sfxMuted";
+
+export type SFXType = "click" | "hover" | "transition";
 
 interface SoundContextValue {
-  isEnabled: boolean;
+  isEnabled: boolean; // true when sound is enabled (not muted)
   toggleSound: () => void;
   hasUserInteracted: boolean;
+  play: (type: SFXType) => void;
+  // Legacy functions (deprecated, use play() instead)
   playTick: () => void;
   playConfirm: () => void;
   playSoftBlip: () => void;
@@ -32,7 +36,6 @@ export function SoundProvider({ children }: SoundProviderProps) {
   const prefersReducedMotion = useReducedMotion();
   const [isEnabled, setIsEnabled] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const lastTickTimeRef = useRef(0);
   const audioContextRef = useRef<AudioContext | null>(null);
 
   // Initialize audio context lazily
@@ -44,9 +47,12 @@ export function SoundProvider({ children }: SoundProviderProps) {
   }, []);
 
   // Load persisted sound preference
+  // localStorage: "sfxMuted" = "1" (muted) or "0" (enabled)
   useEffect(() => {
-    const saved = localStorage.getItem(SOUND_STORAGE_KEY);
-    const shouldEnable = saved === "true" && !prefersReducedMotion;
+    const saved = localStorage.getItem(SFX_STORAGE_KEY);
+    // "1" means muted (disabled), "0" or null means enabled
+    const isMuted = saved === "1";
+    const shouldEnable = !isMuted && !prefersReducedMotion;
     setIsEnabled(shouldEnable);
 
     // Track user interaction for autoplay restrictions
@@ -73,14 +79,32 @@ export function SoundProvider({ children }: SoundProviderProps) {
     };
   }, [prefersReducedMotion, getAudioContext]);
 
-  // Play subtle tick sound (throttled)
-  const playTick = useCallback(() => {
+  // Throttle refs for different sound types
+  const lastHoverTimeRef = useRef(0);
+  const lastClickTimeRef = useRef(0);
+  const lastTransitionTimeRef = useRef(0);
+
+  // Main SFX API: play("click"|"hover"|"transition")
+  const play = useCallback((type: SFXType) => {
     if (!isEnabled || !hasUserInteracted || prefersReducedMotion) return;
 
     const now = Date.now();
-    // Throttle: minimum 150ms between ticks
-    if (now - lastTickTimeRef.current < 150) return;
-    lastTickTimeRef.current = now;
+    let throttleTime = 0;
+
+    // Throttle hover sounds more aggressively
+    if (type === "hover") {
+      throttleTime = 200; // 200ms between hover sounds
+      if (now - lastHoverTimeRef.current < throttleTime) return;
+      lastHoverTimeRef.current = now;
+    } else if (type === "click") {
+      throttleTime = 100; // 100ms between click sounds
+      if (now - lastClickTimeRef.current < throttleTime) return;
+      lastClickTimeRef.current = now;
+    } else if (type === "transition") {
+      throttleTime = 300; // 300ms between transition sounds
+      if (now - lastTransitionTimeRef.current < throttleTime) return;
+      lastTransitionTimeRef.current = now;
+    }
 
     try {
       const ctx = getAudioContext();
@@ -92,84 +116,66 @@ export function SoundProvider({ children }: SoundProviderProps) {
       oscillator.connect(gainNode);
       gainNode.connect(ctx.destination);
 
-      // Very subtle tick: high frequency, very short, very quiet
-      oscillator.frequency.value = 800;
-      oscillator.type = "sine";
-      gainNode.gain.setValueAtTime(0.05, ctx.currentTime); // Very quiet
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + 0.05);
+      // Sound presets
+      if (type === "click") {
+        // Click: quick, sharp tick
+        oscillator.frequency.value = 800;
+        oscillator.type = "sine";
+        gainNode.gain.setValueAtTime(0.06, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.05);
+      } else if (type === "hover") {
+        // Hover: subtle, soft blip
+        oscillator.frequency.value = 600;
+        oscillator.type = "sine";
+        gainNode.gain.setValueAtTime(0.04, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.08);
+      } else if (type === "transition") {
+        // Transition: gentle, slightly longer tone
+        oscillator.frequency.setValueAtTime(400, ctx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + 0.12);
+        oscillator.type = "sine";
+        gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+        oscillator.start(ctx.currentTime);
+        oscillator.stop(ctx.currentTime + 0.15);
+      }
     } catch (error) {
       // Silently fail if audio is not available
     }
   }, [isEnabled, hasUserInteracted, prefersReducedMotion, getAudioContext]);
 
-  // Play confirm sound
+  // Legacy function (deprecated, use play("click") instead)
+  const playTick = useCallback(() => {
+    play("click");
+  }, [play]);
+
+  // Legacy function (deprecated, use play("transition") instead)
   const playConfirm = useCallback(() => {
-    if (!isEnabled || !hasUserInteracted || prefersReducedMotion) return;
+    play("transition");
+  }, [play]);
 
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
-
-      // Subtle confirm: quick upward tone
-      oscillator.frequency.setValueAtTime(400, ctx.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
-      oscillator.type = "sine";
-      gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + 0.15);
-    } catch (error) {
-      // Silently fail if audio is not available
-    }
-  }, [isEnabled, hasUserInteracted, prefersReducedMotion, getAudioContext]);
-
-  // Play soft blip sound
+  // Legacy function (deprecated, use play("hover") instead)
   const playSoftBlip = useCallback(() => {
-    if (!isEnabled || !hasUserInteracted || prefersReducedMotion) return;
-
-    try {
-      const ctx = getAudioContext();
-      if (!ctx) return;
-
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
-
-      // Soft blip: gentle tone
-      oscillator.frequency.value = 500;
-      oscillator.type = "sine";
-      gainNode.gain.setValueAtTime(0.06, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + 0.12);
-    } catch (error) {
-      // Silently fail if audio is not available
-    }
-  }, [isEnabled, hasUserInteracted, prefersReducedMotion, getAudioContext]);
+    play("hover");
+  }, [play]);
 
   const toggleSound = useCallback(() => {
     const newValue = !isEnabled;
     setIsEnabled(newValue);
-    localStorage.setItem(SOUND_STORAGE_KEY, String(newValue));
+    // Store as "1" (muted) or "0" (enabled)
+    localStorage.setItem(SFX_STORAGE_KEY, newValue ? "0" : "1");
   }, [isEnabled]);
 
   const value: SoundContextValue = {
     isEnabled,
     toggleSound,
     hasUserInteracted,
+    play,
+    // Legacy functions (for backward compatibility)
     playTick,
     playConfirm,
     playSoftBlip,

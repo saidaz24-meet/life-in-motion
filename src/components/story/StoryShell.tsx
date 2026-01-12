@@ -8,6 +8,8 @@ import { useReducedMotion } from "../../hooks/useReducedMotion";
 import SEOHead from "../ui/SEOHead";
 import { createNavLogger } from "../../utils/navigation";
 import PageFooter from "../layout/PageFooter";
+import MobileScrollAffordance from "./MobileScrollAffordance";
+import { useSound } from "../../app/providers/SoundProvider";
 
 interface StoryShellProps {
   onMountChange?: (mounted: boolean) => void;
@@ -24,6 +26,8 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   const [isReady, setIsReady] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const continueTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { play } = useSound();
+  const previousSceneRef = useRef(0);
 
   useEffect(() => {
     console.log("[StoryShell] MOUNTED");
@@ -37,8 +41,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
         clearTimeout(continueTimeoutRef.current);
         continueTimeoutRef.current = null;
       }
-      // Cleanup any global side effects
-      document.body.style.overflow = "";
+      // StoryShell uses its own internal scroll container, no body overflow changes needed
     };
   }, [onMountChange]);
 
@@ -90,6 +93,10 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
       });
     }, 100);
   }, []);
+
+  // For story route, StoryShell creates its own nested scroll container
+  // The containerRef points to the inner scroll div (set via ref attribute below)
+  // This allows snap scrolling independent of the main scroll container
 
   // Initialize scroll position AFTER isReady is true
   useEffect(() => {
@@ -208,6 +215,14 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
     };
   }, [isReady, totalScenes]); // Removed currentScene from deps to prevent re-initialization loops
 
+  // Play transition sound when scene changes
+  useEffect(() => {
+    if (previousSceneRef.current !== currentScene && currentScene > 0) {
+      play("transition");
+    }
+    previousSceneRef.current = currentScene;
+  }, [currentScene, play]);
+
   // Get first image for preloading (LCP optimization)
   const firstImage = STORY_TIMELINE_SCENES[0]?.mediaRef;
 
@@ -221,13 +236,14 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
           <div>Scenes: {totalScenes}</div>
         </div>
       )}
-      <div className="relative w-full h-[calc(100dvh-57px)] overflow-hidden">
-        {/* Scroll container - always rendered to ensure containerRef is valid */}
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Scroll container - uses main scroll container via parent */}
+        {/* Mobile: Use 100dvh to fill entire viewport including system bars, Desktop: h-full */}
         <div
           ref={containerRef}
-          className="h-[calc(100dvh-57px)] overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide"
+          className="overflow-y-scroll snap-y snap-mandatory scroll-smooth scrollbar-hide md:h-full h-[100dvh]"
           style={{ 
-            WebkitOverflowScrolling: "touch" // Better mobile scrolling
+            WebkitOverflowScrolling: "touch", // Better mobile scrolling
           }}
         >
           {isReady && STORY_TIMELINE_SCENES.map((scene, index) => (
@@ -237,7 +253,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
                 sceneRefs.current[index] = el;
               }}
               data-scene-index={index}
-              className="snap-start snap-always h-[calc(100dvh-57px)] w-full"
+              className="snap-start snap-always w-full md:h-full h-[100dvh]"
             >
               <CinematicScene
                 scene={scene}
@@ -251,12 +267,15 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
           {/* Footer at the end of story */}
           {isReady && (
             <div className="snap-start snap-always w-full">
+              {/* End cap spacer */}
+              <div className="h-8 flex-shrink-0" aria-hidden="true" />
               <PageFooter />
             </div>
           )}
         </div>
 
         {/* Skip button - persistent, high z-index to stay above scenes */}
+        {/* Mobile: Hidden (moved to hamburger menu), Desktop: Visible */}
         {isReady && (
           <motion.button
             initial={prefersReducedMotion ? false : { opacity: 0 }}
@@ -264,7 +283,7 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
             transition={prefersReducedMotion ? {} : { delay: 0.5 }}
             onClick={handleSkip}
             className={clsx(
-              "fixed top-[65px] right-24 z-[50] px-4 py-2 rounded-md transition-all duration-200 ease-out",
+              "hidden md:flex fixed top-[65px] right-24 z-[50] px-4 py-2 rounded-md transition-all duration-200 ease-out",
               "hover:-translate-y-0.5 active:translate-y-0",
               "hover:shadow-[0_4px_12px_rgba(120,220,255,0.15)]",
               "bg-white/5 hover:bg-white/10 active:bg-white/15",
@@ -277,19 +296,15 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
           </motion.button>
         )}
 
-        {/* Progress indicator - positioned above footer, high z-index */}
+        {/* Mobile scroll affordance - deterministic, always visible when content below */}
         {isReady && (
-          <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0 }}
-            animate={prefersReducedMotion ? {} : { opacity: 1 }}
-            transition={prefersReducedMotion ? {} : { delay: 0.8 }}
-            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[50] px-4 py-2 rounded-md glass border border-white/10"
-          >
-            <span className="text-xs text-[rgb(var(--fg-1))] tracking-wide">
-              Scene {currentScene + 1} / {totalScenes}
-            </span>
-          </motion.div>
+          <MobileScrollAffordance 
+            scrollElRef={containerRef}
+            activeSceneIndex={currentScene}
+            totalScenes={totalScenes}
+          />
         )}
+
 
         {/* Cinematic transition overlay */}
         {isReady && (

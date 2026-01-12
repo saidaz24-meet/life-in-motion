@@ -8,10 +8,13 @@ import type { ContentItem } from "../../content/types";
 import CaseFileModal from "../../components/modal/CaseFileModal";
 import { clsx } from "clsx";
 import LazyImage from "../../components/ui/LazyImage";
-import LazyVideo from "../../components/ui/LazyVideo";
 import ProofLinksStrip from "../../components/ui/ProofLinksStrip";
+import Badge from "../../components/ui/Badge";
+import OrgBadges from "../../components/ui/OrgBadges";
 import SEOHead from "../../components/ui/SEOHead";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import Container from "../../components/layout/Container";
+import HeroMedia from "../../components/HeroMedia";
 
 export default function VenturesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -60,28 +63,26 @@ export default function VenturesPage() {
   return (
     <>
       <SEOHead title="Ventures" />
-      <div className="min-h-[100dvh] pb-24">
+      <div className="pb-12">
         {/* Header */}
-        <div className="px-6 md:px-12 lg:px-16 pt-12 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
-            >
-              Ventures
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-lg md:text-xl text-[rgb(var(--fg-1))] max-w-2xl leading-relaxed"
-            >
-              Building solutions that create value, connect communities, and drive impact.
-            </motion.p>
-          </div>
-        </div>
+        <Container className="pt-12 pb-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[rgb(var(--fg-0))] mb-4"
+          >
+            Ventures
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-lg sm:text-xl text-[rgb(var(--fg-1))] max-w-prose leading-relaxed"
+          >
+            Building solutions that create value, connect communities, and drive impact.
+          </motion.p>
+        </Container>
 
         {/* Flagship Sections */}
         <div className="space-y-24 md:space-y-32">
@@ -98,23 +99,21 @@ export default function VenturesPage() {
 
         {/* Other Ventures */}
         {others.length > 0 && (
-          <div className="px-6 md:px-12 lg:px-16 mt-24">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-[rgb(var(--fg-0))] mb-8">
-                Other Ventures
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {others.map((venture, index) => (
-                  <SmallVentureCard
-                    key={venture.id}
-                    venture={venture}
-                    index={index}
-                    onOpenCaseFile={handleOpenCaseFile}
-                  />
-                ))}
-              </div>
+          <Container className="mt-24">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[rgb(var(--fg-0))] mb-8">
+              Other Ventures
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {others.map((venture, index) => (
+                <SmallVentureCard
+                  key={venture.id}
+                  venture={venture}
+                  index={index}
+                  onOpenCaseFile={handleOpenCaseFile}
+                />
+              ))}
             </div>
-          </div>
+          </Container>
         )}
 
         {/* Case File Modal */}
@@ -152,74 +151,42 @@ function VentureSection({
       transition={prefersReducedMotion ? {} : { duration: 0.8, delay: index * 0.2 }}
       className="relative"
     >
-      {/* Hero Area */}
-      <div className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Background Media */}
-        <div className="absolute inset-0">
-          {venture.media.teaserVideo ? (
-            <motion.div
-              className="w-full h-full"
-              initial={prefersReducedMotion ? false : { scale: 1.1 }}
-              whileInView={prefersReducedMotion ? {} : { scale: 1 }}
-              viewport={{ once: true }}
-              transition={prefersReducedMotion ? {} : { duration: 1.5, ease: "easeOut" }}
-            >
-              <LazyVideo
-                src={venture.media.teaserVideo}
-                className="w-full h-full"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            </motion.div>
-          ) : venture.media.heroImage ? (
-            <motion.div
-              className="w-full h-full"
-              initial={prefersReducedMotion ? false : { scale: 1.1 }}
-              whileInView={prefersReducedMotion ? {} : { scale: 1 }}
-              viewport={{ once: true }}
-              transition={prefersReducedMotion ? {} : { duration: 1.5, ease: "easeOut" }}
-            >
-              <LazyImage
-                src={venture.media.heroImage}
-                alt={venture.title}
-                className="w-full h-full"
-              />
-            </motion.div>
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[rgb(var(--bg-1))] to-[rgb(var(--bg-2))]" />
-          )}
-
-          {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%)",
-            }}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-16 w-full">
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="glass rounded-lg border border-white/10 p-8 md:p-12 lg:p-16 backdrop-blur-xl"
-            >
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4">
+      {/* Hero Area - Using HeroMedia component */}
+      <HeroMedia
+        imageSrc={venture.media.heroImage || (venture.id === "roofmate" ? "/images/life/roofmate/g10-expo-night.jpeg" : undefined)}
+        videoSrc={venture.id === "roofmate" ? undefined : venture.media.teaserVideo}
+        alt={venture.title}
+        aspectRatio="16/9"
+        maxHeightDesktop="clamp(44vh, 520px, 56vh)"
+        className="flex items-center justify-center"
+      >
+        <Container className="w-full pointer-events-auto">
+            <div className="max-w-4xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="glass rounded-lg border border-white/10 p-8 md:p-12 lg:p-16 backdrop-blur-xl"
+              >
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[rgb(var(--fg-0))] mb-4">
                 {venture.card.headline}
               </h2>
               {venture.card.subhead && (
-                <p className="text-xl md:text-2xl text-[rgb(var(--fg-1))] mb-8">
+                <p className="text-xl sm:text-2xl text-[rgb(var(--fg-1))] mb-6 max-w-prose">
                   {venture.card.subhead}
                 </p>
               )}
+
+              {/* Badges and Org Logos */}
+              {(venture.badges && venture.badges.length > 0) || (venture.orgIds && venture.orgIds.length > 0) ? (
+                <div className="flex flex-wrap items-center gap-2 mb-6">
+                  {venture.badges?.map((badge, badgeIndex) => (
+                    <Badge key={badgeIndex} badge={badge} />
+                  ))}
+                  {venture.orgIds && <OrgBadges orgIds={venture.orgIds} />}
+                </div>
+              ) : null}
 
               {/* Case File Button */}
               <button
@@ -239,11 +206,11 @@ function VentureSection({
               </button>
             </motion.div>
           </div>
-        </div>
-      </div>
+        </Container>
+      </HeroMedia>
 
       {/* Content Sections */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-16 md:py-24">
+      <Container className="py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           {/* Left Column */}
           <div className="space-y-12">
@@ -255,10 +222,10 @@ function VentureSection({
               transition={{ duration: 0.6, delay: 0.1 }}
               className="glass rounded-lg border border-white/10 p-6 md:p-8 backdrop-blur-xl"
             >
-              <h3 className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-4">
+              <h3 className="text-2xl sm:text-3xl font-semibold text-[rgb(var(--fg-0))] mb-4">
                 Context
               </h3>
-              <p className="text-base md:text-lg text-[rgb(var(--fg-1))] leading-relaxed max-w-prose">
+              <p className="text-base sm:text-lg text-[rgb(var(--fg-1))] leading-relaxed max-w-prose">
                 {venture.caseFile.context}
               </p>
             </motion.div>
@@ -272,14 +239,14 @@ function VentureSection({
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="glass rounded-lg border border-white/10 p-6 md:p-8 backdrop-blur-xl"
               >
-                <h3 className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-4">
+                <h3 className="text-2xl sm:text-3xl font-semibold text-[rgb(var(--fg-0))] mb-4">
                   What I Did
                 </h3>
                 <ul className="space-y-3">
                   {venture.caseFile.whatIDid.map((item, itemIndex) => (
                     <li
                       key={itemIndex}
-                      className="flex items-start gap-3 text-base md:text-lg text-[rgb(var(--fg-1))]"
+                      className="flex items-start gap-3 text-base sm:text-lg text-[rgb(var(--fg-1))] max-w-prose"
                     >
                       <span className="text-[rgb(var(--accent))] mt-1 flex-shrink-0">
                         •
@@ -303,14 +270,14 @@ function VentureSection({
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="glass rounded-lg border border-white/10 p-6 md:p-8 backdrop-blur-xl"
               >
-                <h3 className="text-2xl font-semibold text-[rgb(var(--fg-0))] mb-4">
+                <h3 className="text-2xl sm:text-3xl font-semibold text-[rgb(var(--fg-0))] mb-4">
                   Impact
                 </h3>
                 <ul className="space-y-3">
                   {venture.caseFile.impact.map((item, itemIndex) => (
                     <li
                       key={itemIndex}
-                      className="flex items-start gap-3 text-base md:text-lg text-[rgb(var(--fg-1))]"
+                      className="flex items-start gap-3 text-base sm:text-lg text-[rgb(var(--fg-1))] max-w-prose"
                     >
                       <span className="text-[rgb(var(--accent))] mt-1 flex-shrink-0">
                         •
@@ -356,7 +323,7 @@ function VentureSection({
             ))}
           </motion.div>
         )}
-      </div>
+      </Container>
     </motion.section>
   );
 }
@@ -392,17 +359,26 @@ function SmallVentureCard({
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
         </div>
       )}
-      <h3 className="text-2xl font-bold text-[rgb(var(--fg-0))] mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">
-        {venture.card.headline}
-      </h3>
-      {venture.card.subhead && (
-        <p className="text-lg text-[rgb(var(--fg-1))] mb-4">
-          {venture.card.subhead}
-        </p>
-      )}
-      <p className="text-base text-[rgb(var(--fg-1))] mb-4">
-        {venture.card.oneLiner}
-      </p>
+              <h3 className="text-xl sm:text-2xl font-bold text-[rgb(var(--fg-0))] mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">
+                {venture.card.headline}
+              </h3>
+              {venture.card.subhead && (
+                <p className="text-base sm:text-lg text-[rgb(var(--fg-1))] mb-2 max-w-prose">
+                  {venture.card.subhead}
+                </p>
+              )}
+              {/* Badges and Org Logos */}
+              {(venture.badges && venture.badges.length > 0) || (venture.orgIds && venture.orgIds.length > 0) ? (
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  {venture.badges?.map((badge, badgeIndex) => (
+                    <Badge key={badgeIndex} badge={badge} />
+                  ))}
+                  {venture.orgIds && <OrgBadges orgIds={venture.orgIds} />}
+                </div>
+              ) : null}
+              <p className="text-sm sm:text-base text-[rgb(var(--fg-1))] mb-4 max-w-prose">
+                {venture.card.oneLiner}
+              </p>
       <button
         className={clsx(
           "text-sm font-medium text-[rgb(var(--accent))]",

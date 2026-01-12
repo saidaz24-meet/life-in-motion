@@ -1,787 +1,981 @@
 import type { ContentItem } from "../types";
 
 export const ALL_ITEMS: ContentItem[] = [
+  {
+    "id": "roofmate",
+    "type": "venture",
+    "title": "RoofMate",
+    "date": "jan 2024 - present",
+    "tags": [
+      "Bridge-building",
+      "Entrepreneurship",
+      "Community",
+      "Leadership",
+      "Craft"
+    ],
+    "orgIds": [
+      "MEET"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroMedia": {
+        "type": "image",
+        "src": "/images/life/roofmate/g10-expo-night.jpeg",
+        "label": "RoofMate Expo Night"
+      },
+      "demoMedia": {
+        "type": "video",
+        "src": "/teasers/roofmate.MP4",
+        "label": "RoofMate Demo"
+      },
+      "heroImage": "/images/life/roofmate/g10-expo-night.jpeg",
+      "teaserVideo": "/teasers/roofmate-demo.mp4",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/life/roofmate/g1-my-mindset.jpeg",
+        "/images/life/roofmate/g2-min-map-tools.jpeg",
+        "/images/life/roofmate/g3-roofmate-book.JPG",
+        "/images/life/roofmate/g4-brainstorming.png",
+        "/images/life/roofmate/g5-beginning.jpeg",
+        "/images/life/roofmate/g6-beginning.jpg",
+        "/images/life/roofmate/g7-MVP-test-day.JPG",
+        "/images/life/roofmate/g8-MVP-test-day.jpg",
+        "/images/life/roofmate/g9-MVP-test-day.jpg",
+        "/images/life/roofmate/g11-expo-night-Appsflyer.JPG",
+        "/images/life/roofmate/g12-expo-night.JPG",
+        "/images/life/roofmate/g13-expo-night.JPG",
+        "/images/life/roofmate/g14-expo-night.JPG",
+        "/images/life/roofmate/g15-expo-night.jpg",
+        "/images/life/roofmate/g16-waitlist-website-screenshot.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "Android-first roommate matching built to make dorm trust easier to start.",
+      "headline": "A roommate can change your whole year",
+      "subhead": "Co-founded through MEET with a binational team. App-first by design."
+    },
+    "beats": [
+      "Roommate matching is not just logistics. It is trust.",
+      "We designed for onboarding, verification, and real conversations.",
+      "App-first because housing windows are time-sensitive.",
+      "Matching is important. Trust cues are just as important.",
+      "Built to make \"the other\" feel like a roommate."
+    ],
+    "caseFile": {
+      "context": "RoofMate is a nonprofit, Android-first roommate matching app for dorm housing. I co-founded it through MEET with a binational team of Arabs and Jews in Israel. We built it around one idea: trust grows faster when people meet as people, not labels. My work focused on building the product into something students can actually use and on turning user feedback into clear choices.",
+      "whatIDid": [
+        "Built core app flows and the onboarding experience with a focus on drop-off points.",
+        "Implemented matching logic that ranks compatibility by interests and living habits.",
+        "Translated user and admin feedback into product decisions, edge cases, and fixes."
+      ],
+      "impact": [
+        "Shipped a working mobile product built around trust, not just profiles.",
+        "Learned to make product tradeoffs under real constraints and a real team."
+      ],
+      "evidence": [
         {
-          "id": "roofmate",
-          "type": "venture",
-          "title": "RoofMate",
-          "date": "jan 2024 - present",
-          "tags": ["Bridge-building", "Entrepreneurship", "Community", "Leadership", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/roofmate/g10-expo-night.jpeg",
-            "teaserVideo": "/teasers/roofmate-demo.mp4",
-            "youtubeUrl": "",
-            "gallery": [
-              "/images/life/roofmate/g1-my-mindset.jpeg",
-              "/images/life/roofmate/g2-min-map-tools.jpeg",
-              "/images/life/roofmate/g3-roofmate-book.JPG",
-              "/images/life/roofmate/g4-brainstorming.png",
-              "/images/life/roofmate/g5-beginning.jpeg",
-              "/images/life/roofmate/g6-beginning.jpg",
-              "/images/life/roofmate/g7-MVP-test-day.JPG",
-              "/images/life/roofmate/g8-MVP-test-day.jpg",
-              "/images/life/roofmate/g9-MVP-test-day.jpg",
-              "/images/life/roofmate/g11-expo-night-Appsflyer.JPG",
-              "/images/life/roofmate/g12-expo-night.JPG",
-              "/images/life/roofmate/g13-expo-night.JPG",
-              "/images/life/roofmate/g14-expo-night.JPG",
-              "/images/life/roofmate/g15-expo-night.jpg",
-              "/images/life/roofmate/g16-waitlist-website-screenshot.jpg"
-            ]
-          },
-          "card": {
-            "oneLiner": "Android-first roommate matching built to turn labels into roommates.",
-            "headline": "Roommates, not headlines: trust at dorm scale",
-            "subhead": "Built in MEET; engineered as a real product, not a slogan."
-          },
-          "beats": [
-            "A nonprofit, Android-first matching platform.",
-            "Built with a binational team through MEET.",
-            "NLP ranks matches by interests and habits.",
-            "Expo night: strangers thanked us like it mattered.",
-            "Built to make “the other” feel like a roommate."
-          ],
-          "caseFile": {
-            "context": "RoofMate is a nonprofit, Android-first roommate-matching platform built with a binational team during MEET. The idea is simple but demanding: reduce fear by replacing distance with everyday proximity—shared meals, late-night conversations, and study sessions—one roommate pair at a time. The platform focuses on matching by interests and habits (not nationality), using NLP to rank compatibility. I served as Concept Founder/CTO/Lead Developer, balancing engineering with the human responsibility of building something meant for real lives. At an expo night after presenting, people approached to say the product carried meaning beyond the demo. In the raw vault, the project is described as having over 500 users and partnerships with four universities, and being used to create a scholarship fund for Arab students from modest revenue.",
-            "whatIDid": [
-              "Led product + technical direction as Concept Founder/CTO/Lead Dev.",
-              "Built Android app (Java/XML) and data layer with Firebase (Auth/Database).",
-              "Implemented matching pipeline using NLP on interests and habits.",
-              "Prototyped real-time/video flow with WebRTC + Firebase signaling.",
-              "Documented third-party/privacy context and began security hardening."
-            ],
-            "impact": [
-              "Over 500 users (as stated in the raw vault).",
-              "Partnerships with four universities (as stated in the raw vault).",
-              "Created a scholarship fund for Arab students from modest revenue."
-            ],
-            "evidence": [
-              { "label": "RoofMate Expo Night repo", "url": "https://github.com/saidaz24-meet/RoofMateExpoNight" },
-              { "label": "GitHub profile", "url": "https://github.com/saidaz24-meet" }
-            ],
-            "deepDive": "During my participation in MEET, I was part of a binational team—Arabs and Jews in Israel building something together. We created RoofMate, an app that pairs students as roommates with the belief that ordinary acts—shared meals, late-night conversations, study sessions—can quietly rewrite the future, one roommate pair at a time.\n\nDeveloping RoofMate required balancing diverse perspectives without minimizing anyone’s opinion. Successful collaboration means giving differences the space to meet in creative friction, forging something that serves a community larger than ourselves.\n\nOn exposition night, after we presented our design, I realized how hope reverberates out through a community. A student came up to thank us, eyes bright with possibility. Later, a father approached with his child beside him, clasped my hand, and I understood that what we built carried meaning well beyond our team."
-          }
+          "label": "RoofMate demo video",
+          "url": "/teasers/roofmate-demo.mp4"
         },
-      
         {
-          "id": "pvl-internship",
-          "type": "venture",
-          "title": "Peptide Visual Lab",
-          "date": "september 2025 - present",
-          "tags": ["Research", "Craft", "Leadership", "Entrepreneurship"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/pvl/DESY-delegation/hero.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "https://youtu.be/8hQxsDMqzr4",
-            "gallery": [
-              "/images/life/pvl/DESY-delegation/IMG_1577.jpg",
-              "/images/life/pvl/DESY-delegation/IMG_1656.jpg",
-              "/images/life/pvl/DESY-delegation/IMG_1663.jpg",
-              "/images/life/pvl/DESY-delegation/IMG_1667.jpg",
-              "/images/life/pvl/DESY-delegation/IMG_1685.jpg",
-              "/images/life/pvl/DESY-delegation/IMG_1762.jpg",
-              "/images/life/pvl/DESY-delegation/IMG_9459_Original.jpg",
-              "/images/life/pvl/DESY-delegation/hero.jpg",
-              "/images/life/pvl/internship/g1-in-terminal.jpg",
-              "/images/life/pvl/internship/g2-in-lab.jpg",
-              "/images/life/pvl/internship/g3-in-lab.jpg",
-              "/images/life/pvl/internship/g4-in-lab.jpg",
-              "/images/life/pvl/internship/g5-reflection.jpg",
-              "/images/life/pvl/internship/g6-reflection.jpg",
-              "/images/life/pvl/internship/g7-reflection.jpg",
-              "/images/life/pvl/internship/g8-group-pic.jpg",
-              "/images/life/pvl/internship/g9-group-pic.jpg",
-              "/images/life/pvl/internship/g10-group-pic.jpg",
-              "/images/life/pvl/internship/g11-group-pic.jpg"
-            ]
-          },
-          "card": {
-            "oneLiner": "A privacy-first lab tool replacing peptide spreadsheets with insight.",
-            "headline": "So scientists can focus on discovery, not spreadsheets",
-            "subhead": "React/FastAPI system with caching, visualization, and auditability."
-          },
-          "beats": [
-            "Manual triage became a product problem.",
-            "CSV/UniProt → visual triage across web and mobile.",
-            "Runs cached by sequence hash—less recompute, more insight.",
-            "Built with React/TypeScript + FastAPI.",
-            "Designed to ship into labs, not stay as scripts."
-          ],
-          "caseFile": {
-            "context": "Peptide Visual Lab (PVL) is described in the raw vault as a privacy-first web app designed to help labs move from copy-paste triage to repeatable, visual, auditable analysis. The system supports CSV and UniProt-driven workflows and presents results through metric cards and drill-down peptide detail views. The vault notes the goal of shifting labs from one-off scripts toward a structured library of analyzed sequences, with caching keyed by sequence hash. The architecture listed includes a TypeScript/React web client, a Python/FastAPI backend, and a mobile mirror flow (React Native + Appwrite) for quick triage and single-sequence analysis. PVL also integrates predictors and calculations (the vault explicitly mentions TANGO and PSIPRED) and supports threshold configurations. The vault states an MVP was built in two weeks and mentions a part-time Technion offer and targeting lab deployments (targets are described as targets, not confirmed outcomes).",
-            "whatIDid": [
-              "Re-architected a stalled pipeline into a shippable end-to-end tool.",
-              "Built the web client in React/TypeScript with visualization UI.",
-              "Implemented backend endpoints in Python/FastAPI for upload/query/predict.",
-              "Integrated TANGO and PSIPRED runs into a unified analysis flow.",
-              "Designed caching by sequence hash and planned lab/server deployment."
-            ],
-            "impact": [
-              "MVP built in two weeks (as stated in the raw vault).",
-              "Designed to reduce repeated heavy recomputation via caching (vault).",
-              "Targeting deployment to labs (stated as a target in the raw vault)."
-            ],
-            "evidence": [
-              { "label": "PVL demo (YouTube)", "url": "https://youtu.be/8hQxsDMqzr4" },
-              { "label": "GitHub profile", "url": "https://github.com/saidaz24-meet" }
-            ],
-            "deepDive": "Peptide Visual Lab (PVL) is a privacy-first web app I designed so scientists can focus on discovery, not spreadsheets.\n\nTech listed in the vault: React/TypeScript, FastAPI, Tailwind, Zustand, Recharts; plus a mobile mirror flow (React Native + Appwrite). Backend responsibilities include parsing CSV/Excel/UniProt, running TANGO and PSIPRED, and returning a shared threshold config with each run.\n\nData and vision (vault): results are cached by sequence hash and stored (Appwrite + Postgres mentioned) so labs can query an analysis landscape instead of recomputing from scratch.\n\nPersonal story (vault): I arrived at DESY with a simple question for Dr. Aleksandr Golubev—“Hit me with your bottlenecks.” Watching a team split time between benches and spreadsheets made the problem obvious.\n\nNote for reviewers (vault): the production repo is private due to lab privacy and internal paths; a clean, redacted case-study repo is maintained with identical architecture."
-          }
-        },
-      
-        {
-          "id": "empowered",
-          "type": "venture",
-          "title": "EmpowerED",
-          "date": "jan 2024 - april 2024",
-          "tags": ["Community", "Leadership", "Entrepreneurship", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/empowered/g1-group-pic.JPG",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": [
-              "/images/life/empowered/g1-group-pic.JPG",
-              "/images/life/empowered/g2-logo.png"
-            ]
-          },
-          "card": {
-            "oneLiner": "A short sprint where a team tried to build <FILL IN>.",
-            "headline": "A team sprint toward something we wanted to fix",
-            "subhead": "Artifacts and process are documented in Drive."
-          },
-          "beats": [
-            "A focused build sprint: Jan–Apr 2024.",
-            "Teamwork, iteration, and product decisions.",
-            "Artifacts captured: brainstorming → building process.",
-            "<FILL IN>",
-            "Lessons I carried into later ventures."
-          ],
-          "caseFile": {
-            "context": "EmpowerED appears in your inventory as a venture (Jan 2024–Apr 2024) with a Drive folder containing brainstorming and build artifacts. The raw vault does not include detailed narrative text for this item in the material provided, so I’m leaving core claims and outcomes as `<FILL IN>` until the vault section is added or expanded. The site will still present this as a chapter through a hero, a short beat sequence, and a case file that prioritizes process artifacts and evidence.",
-            "whatIDid": [
-              "<FILL IN>",
-              "<FILL IN>",
-              "<FILL IN>"
-            ],
-            "impact": [
-              "<FILL IN>"
-            ],
-            "evidence": [
-              {
-                "label": "Drive folder (process artifacts)",
-                "url": "https://drive.google.com/drive/folders/1Yyop00qaoglrnI4KusbC-cn5-R8Ua7Ni"
-              }
-            ],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "huji-hackathon-win",
-          "type": "honor",
-          "title": "HUJI Hackathon – Winner",
-          "date": "may 2025",
-          "tags": ["Entrepreneurship", "Craft", "Community", "Leadership"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/huji-hackathon-win/hero.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": [
-              "/images/life/huji-hackathon-win/hero.jpg",
-              "/images/life/huji-hackathon-win/g1-building.jpg",
-              "/images/life/huji-hackathon-win/g2-debugging.jpg",
-              "/images/life/huji-hackathon-win/g3-presenting.jpg",
-              "/images/life/huji-hackathon-win/g4-winning.jpg",
-              "/images/life/huji-hackathon-win/g5-web-screenshot.jpeg",
-              "/images/life/huji-hackathon-win/g6-web-screenshot.jpeg"
-            ]
-          },
-          "card": {
-            "oneLiner": "Hackathon winner: built a tool that turns bureaucracy into conversation.",
-            "headline": "Winner: building dignity into digital paperwork",
-            "subhead": "A prototype born from helping an elder finish a form."
-          },
-          "beats": [
-            "A waiting room turned into a product problem.",
-            "A chat flow that meets people in their language.",
-            "A form that took hours became minutes.",
-            "Hackathon pressure—ship, test, pitch, repeat.",
-            "Winning mattered. The use-case mattered more."
-          ],
-          "caseFile": {
-            "context": "In the raw vault, the HUJI hackathon project is framed as a response to an elder struggling with bureaucratic digital paperwork. The narrative describes mapping the steps: finding the right form, decoding Hebrew, copying IDs, printing/signing/scanning, and hoping it works. The project (named “Shaman” in the vault) is described as a chat-based assistant that asks clarifying questions and helps complete forms in whatever language comes first. The vault claims a specific moment: a form that used to take an afternoon became feasible in about fourteen minutes. The emphasis is not “AI magic,” but dignity: making systems meet people where they are. You also included the official hackathon site and the repository as proof.",
-            "whatIDid": [
-              "Helped define a user story grounded in a real bureaucratic pain point.",
-              "Built and shipped a prototype within hackathon constraints.",
-              "Designed the flow around clarifying questions and language flexibility.",
-              "Prepared and delivered the pitch/demo."
-            ],
-            "impact": [
-              "HUJI Hackathon winner (May 2025).",
-              "Vault describes a reduction from hours to ~14 minutes for one workflow."
-            ],
-            "evidence": [
-              { "label": "HUJI Hackathon site", "url": "https://www.hujihackathon.com/" },
-              { "label": "Project repo", "url": "https://github.com/saidaz24-meet/HUJI_Hackathon" }
-            ],
-            "deepDive": "I never meant to build an app that sounded like a mystic. “Shaman” was a joke—until I watched an elder shrink in a waiting room under the weight of a PDF.\n\nWe waited. I mapped her journey: find the right link, decode bureaucratic Hebrew, copy numbers, print-sign-scan-upload, and pray.\n\nBack home she sighed, “I’m too old for this new world.” And I heard the real sentence underneath: the world is too lazy to meet her.\n\nAt the hackathon, we built a prototype that asks questions in the user’s language and guides them through the paperwork like a conversation.\n\nIn fourteen minutes, a task that used to steal an afternoon became possible again."
-          }
-        },
-      
-        {
-          "id": "meta-hackathon-win",
-          "type": "honor",
-          "title": "Meta Hackathon – Winner",
-          "date": "august 2022",
-          "tags": ["Entrepreneurship", "Craft", "Community"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/foom_meta_hackathon_win/g2-announcing-winners.JPG",
-            "teaserVideo": "",
-            "youtubeUrl": "https://www.youtube.com/watch?app=desktop&v=gDBhXQG5lmo",
-            "gallery": [
-              "/images/life/foom_meta_hackathon_win/g1-presenting-to-meta.jpg",
-              "/images/life/foom_meta_hackathon_win/g2-announcing-winners.JPG"
-            ]
-          },
-          "card": {
-            "oneLiner": "Meta Hackathon winner — <FILL IN>.",
-            "headline": "Winner: learning to ship under real pressure",
-            "subhead": "Presentation link included; details in vault: <FILL IN>."
-          },
-          "beats": [
-            "A stage. A deadline. A team under pressure.",
-            "Pitching to judges—clarity or nothing.",
-            "A win that taught me how to compress a story.",
-            "<FILL IN>",
-            "A chapter I still build from."
-          ],
-          "caseFile": {
-            "context": "Your inventory confirms a Meta Hackathon win (Aug 2022) with local photos and a YouTube presentation link. The raw vault text provided does not include detailed narrative or technical specifics for this particular hackathon in the material I received, so I’m keeping the descriptive copy minimal and marking missing specifics as `<FILL IN>` until the relevant vault section is added.",
-            "whatIDid": [
-              "<FILL IN>",
-              "<FILL IN>",
-              "<FILL IN>"
-            ],
-            "impact": ["Meta Hackathon winner (Aug 2022)."],
-            "evidence": [
-              {
-                "label": "Winning presentation (YouTube)",
-                "url": "https://www.youtube.com/watch?app=desktop&v=gDBhXQG5lmo"
-              }
-            ],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "bml-advanced-track",
-          "type": "honor",
-          "title": "BetterMind Labs – Advanced Track",
-          "date": "july 2025 - present",
-          "tags": ["Identity", "Leadership", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "",
-            "teaserVideo": "",
-            "youtubeUrl": "https://www.youtube.com/watch?v=rXLCb_o5eC8",
-            "gallery": []
-          },
-          "card": {
-            "oneLiner": "Selected for an advanced AI track; built MSSA for MEET teaching.",
-            "headline": "From teaching chaos to a tool that helps",
-            "subhead": "Advanced Track: 9 selected from 80 (vault)."
-          },
-          "beats": [
-            "Teaching revealed the real bottleneck: prep time.",
-            "So I built MSSA: an AI-powered teaching assistant.",
-            "Refined with engineers; selected 9/80 for advanced track.",
-            "Focused on deployment for MEET’s next cycle.",
-            "AI as leverage—not novelty."
-          ],
-          "caseFile": {
-            "context": "In the raw vault, after graduating in June 2025 you describe returning to MEET and taking on a Teaching Assistant role, then building MSSA (Meet Session Script Assistant), an AI-powered teaching assistant. The vault frames the problem as practical: instructors drowning in PDFs, slide decks, and scattered prep; new instructors struggling to build strong sessions. You describe product thinking—grounding outputs in slides, anticipating clarifying questions, and compressing messy needs into usable tools. The vault also states you were selected as one of nine students out of eighty for a 12-week Advanced Track in applied AI and product design, after refining MSSA under guidance and aiming to deploy it for MEET’s next teaching cycle.",
-            "whatIDid": [
-              "Identified instructor pain points by observing and teaching at MEET.",
-              "Built MSSA to turn teaching materials into structured session assets.",
-              "Iterated based on instructor feedback; focused on grounded outputs.",
-              "Refined the tool under engineering guidance; prepared for deployment."
-            ],
-            "impact": [
-              "Selected as 1 of 9 students out of 80 for a 12-week Advanced Track (vault).",
-              "Built and refined MSSA to support MEET’s next teaching cycle (vault)."
-            ],
-            "evidence": [
-              {
-                "label": "MSSA repo",
-                "url": "https://github.com/saidaz24-meet/meet-session-script-assistant"
-              },
-              {
-                "label": "Advanced Track letter",
-                "url": "https://drive.google.com/file/d/1sBxCysQzjNaGbi522Te04YaCgetFwuIj/view"
-              },
-              {
-                "label": "Interview (YouTube)",
-                "url": "https://www.youtube.com/watch?v=rXLCb_o5eC8"
-              }
-            ],
-            "deepDive": "After completing LEAD, I returned to MEET as a Teaching Assistant. I began building an AI-powered teaching assistant—MSSA.\n\nWhat excites me isn’t the novelty of AI; it’s the leverage for educators: if a tool anticipates a clarifying question because we anticipated it; if a broken route handler becomes a working demo; if a new instructor gets a structure instead of chaos.\n\nUnder guidance, I refined MSSA and was selected as one of nine students out of eighty for the 12-week Advanced Track in applied AI and product design. The next steps were concrete: deploy MSSA for MEET’s next teaching cycle."
-          }
-        },
-      
-        {
-          "id": "dabka",
-          "type": "experience",
-          "title": "Dabka (Dance)",
-          "date": "2016 - present",
-          "tags": ["Identity", "Community", "Movement"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/dabka/Budapest-international-festival.JPG",
-            "teaserVideo": "",
-            "youtubeUrl": "https://www.youtube.com/watch?v=ARY_L0_9DEc",
-            "gallery": [
-              "/images/life/dabka/Budapest-international-festival.JPG",
-              "/images/life/dabka/spain-festival.JPG"
-            ]
-          },
-          "card": {
-            "oneLiner": "Nine years of Dabka—discipline, belonging, and motion.",
-            "headline": "A decade of rhythm that kept me grounded",
-            "subhead": "Six hours a week, even during the busiest seasons (vault)."
-          },
-          "beats": [
-            "Nine years. Six hours a week.",
-            "Movement as discipline, not escape.",
-            "A troupe—community that holds you accountable.",
-            "On stage: identity without explanation.",
-            "Motion as a way to stay human."
-          ],
-          "caseFile": {
-            "context": "The raw vault states you’ve maintained a long commitment to Dabka with your troupe for nine years, training about six hours per week. In the site, Dabka functions as more than “a hobby”: it’s a parallel training ground for discipline, teamwork, and presence—an embodied counterweight to screens, deadlines, and high-stakes building. The visual media (festival photos + a YouTube link) supports a cinematic chapter that keeps the reader feeling your consistency over time.",
-            "whatIDid": [
-              "Trained consistently in Dabka over multiple years (vault).",
-              "Performed with a troupe in public settings (supported by media).",
-              "<FILL IN: notable performances/roles if you want to specify>"
-            ],
-            "impact": [
-              "Sustained a 9-year commitment (vault).",
-              "Maintained ~6 hours/week training (vault)."
-            ],
-            "evidence": [
-              { "label": "Performance video (YouTube)", "url": "https://www.youtube.com/watch?v=ARY_L0_9DEc" }
-            ],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "meet",
-          "type": "experience",
-          "title": "MEET (Middle East Entrepreneurs of Tomorrow)",
-          "date": "2022 - present",
-          "tags": ["Bridge-building", "Leadership", "Community", "Identity"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/meet/1d9300b2-2414-473f-90b8-e562e2899c34.JPG",
-            "teaserVideo": "/teasers/meet.mov",
-            "youtubeUrl": "",
-            "gallery": [
-              "/images/life/meet/1d9300b2-2414-473f-90b8-e562e2899c34.JPG",
-              "/images/life/meet/2b36274f-f88b-433f-b658-1700934ef121.JPG"
-            ]
-          },
-          "card": {
-            "oneLiner": "A place where building and dialogue happen in the same room.",
-            "headline": "Where code becomes a language for trust",
-            "subhead": "Binational collaboration that trained both craft and conscience."
-          },
-          "beats": [
-            "You build, then you talk, then you build again.",
-            "Differences don’t vanish; they become constraints.",
-            "The team is the test: can you still ship?",
-            "Projects become bridges you can actually walk on.",
-            "MEET made my ambition more responsible."
-          ],
-          "caseFile": {
-            "context": "In your raw vault, MEET appears as the environment where binational teamwork is not an abstract value but a daily constraint—balancing perspectives without minimizing anyone’s voice. You describe building projects (including RoofMate) inside this environment and experiencing how a demo can resonate beyond the room. MEET also appears later as the place you returned to as a Teaching Assistant, turning your learning loop into a teaching loop.",
-            "whatIDid": [
-              "Collaborated in binational teams on technical projects (vault).",
-              "Used building as a vehicle for dialogue and shared ownership.",
-              "<FILL IN: specific projects beyond RoofMate if you want listed>"
-            ],
-            "impact": [
-              "<FILL IN: measurable outcomes you want publicly stated (if any)>"
-            ],
-            "evidence": [
-              { "label": "MEET official site", "url": "https://www.meet.org/" }
-            ],
-            "deepDive": "During my participation in MEET, I was part of a binational team—Arabs and Jews in Israel building something together.\n\nSuccessful collaboration required giving differences space to come together in creative friction, forging something that serves a community larger than ourselves.\n\nThat experience taught me that innovation is not just a flash of a single mind; it’s a discipline of listening, negotiating constraints, and still delivering."
-          }
-        },
-      
-        {
-          "id": "meet-ta",
-          "type": "experience",
-          "title": "MEET TA / Teaching Assistant",
-          "date": "2024 - present",
-          "tags": ["Leadership", "Community", "Craft", "Identity"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/meet-TA/g5-class-pic.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": [
-              "/images/life/meet-TA/g1-falling-in-love.jpg",
-              "/images/life/meet-TA/g2-love-the-students.jpg",
-              "/images/life/meet-TA/g3-students.jpg",
-              "/images/life/meet-TA/g4-cool-pic-with-students-funny.jpg",
-              "/images/life/meet-TA/g5-class-pic.jpg",
-              "/images/life/meet-TA/g6-class-pic.jpg",
-              "/images/life/meet-TA/g7-team-pic.jpg",
-              "/images/life/meet-TA/g8-team-pic.jpg",
-              "/images/life/meet-TA/g9-me-as-a-funny-ta.jpg"
-            ]
-          },
-          "card": {
-            "oneLiner": "Teaching CS where the real lesson is agency, not syntax.",
-            "headline": "Turning confusion into confidence, one student at a time",
-            "subhead": "The teaching chapter that led directly to building MSSA."
-          },
-          "beats": [
-            "Tracebacks as puzzles, not failures.",
-            "Prep nights: teaching is engineering too.",
-            "I watched what students fear—and what helps.",
-            "Then I built tools to scale that help.",
-            "Leadership is patience with a deadline."
-          ],
-          "caseFile": {
-            "context": "The raw vault describes your MEET teaching as deeply hands-on: long sessions plus late-night preparation, learning the rhythm of when students struggle, and treating a traceback like a puzzle to solve together. You describe shifting from “teaching content” to “designing learning”—distilling messy needs into structured outputs and being strict about grounding explanations in real materials. This chapter directly connects to the MSSA build, because you treated teaching pain points as solvable system bottlenecks.",
-            "whatIDid": [
-              "Taught and supported students during CS sessions (vault).",
-              "Studied what makes sessions succeed: instructor flow and student friction.",
-              "Prototyped tooling ideas from observed pain points (vault)."
-            ],
-            "impact": [
-              "<FILL IN: number of sessions/students if you want stated publicly>"
-            ],
-            "evidence": [
-              {
-                "label": "MSSA repo (teaching tool)",
-                "url": "https://github.com/saidaz24-meet/meet-session-script-assistant"
-              }
-            ],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "school-leyada",
-          "type": "experience",
-          "title": "Leyada (Hebrew University Secondary School)",
-          "date": "2019 - 2025",
-          "tags": ["Identity", "Leadership", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/school-leyada/g2-graduating.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": [
-              "/images/life/school-leyada/g1-learning-life-lessons-with-friends.jpg",
-              "/images/life/school-leyada/g2-graduating.jpg",
-              "/images/life/school-leyada/g3-graduating-with-teachers.jpg",
-              "/images/life/school-leyada/g4-graudation-friends-for-life.jpg",
-              "/images/life/school-leyada/g6-scores-bagrut-and-sat-accomplishments.jpg"
-            ]
-          },
-          "card": {
-            "oneLiner": "A demanding school chapter where I learned to earn my space.",
-            "headline": "Where rigor met identity, and neither stayed simple",
-            "subhead": "Advanced STEM environment; physics linked to Weizmann (vault)."
-          },
-          "beats": [
-            "A school built for advanced STEM intensity.",
-            "Rigor that forced structure, not just talent.",
-            "Identity lived inside the same hallways.",
-            "Friendships and friction—both taught me.",
-            "I left with momentum, not closure."
-          ],
-          "caseFile": {
-            "context": "Your raw vault describes Leyada as among Israel’s leading institutions for advanced STEM, including a physics program developed with the Weizmann Institute of Science. In the same doc, you also describe personal reflection rituals—climbing to the roof at night to write, sketch, and quiet the noise—using stillness to reset your mind. This chapter works best on the site as a bridge between internal world and external performance: rigor, identity, and self-discipline coexisting in one timeline.",
-            "whatIDid": [
-              "Completed secondary school in a rigorous advanced-STEM environment (vault).",
-              "Sustained personal reflection practices that supported consistency (vault).",
-              "<FILL IN: specific school achievements you want summarized from g6 image>"
-            ],
-            "impact": [
-              "<FILL IN: public academic outcomes if you want them stated explicitly>"
-            ],
-            "evidence": [
-              { "label": "Leyada official site", "url": "https://www.leyada.net/" }
-            ],
-            "deepDive": "Most nights, I climb to the roof.\n\nSometimes I write in a notebook, sometimes I sketch, sometimes I just stare at the sky. The wind cools my skin and carries the faint hum of a neighbor’s TV as the streetlights flicker on, one by one.\n\nThere is a simple joy in sitting where the world is wide and unsorted—in letting my thoughts be the same. I trace constellations the way people have for thousands of years: looking up, waiting for patterns, turning points of light into stories.\n\nWhen I climb back down, the world below hasn’t changed—but somehow, each time, I have."
-          }
-        },
-      
-        {
-          "id": "volunteering",
-          "type": "experience",
-          "title": "Volunteering",
-          "date": "2022 - 2025",
-          "tags": ["Community", "Leadership"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/life/volunteering/hero.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": []
-          },
-          "card": {
-            "oneLiner": "Showing up consistently where people actually need you.",
-            "headline": "Service that trained my patience and responsibility",
-            "subhead": "<FILL IN>"
-          },
-          "beats": [
-            "Less about hours. More about presence.",
-            "<FILL IN>",
-            "Serving without needing a stage.",
-            "Learning sacrifice as a real skill.",
-            "Building a life that’s useful to others."
-          ],
-          "caseFile": {
-            "context": "Your inventory includes Volunteering (2022–2025) with a verified hero image. The raw vault references service and sacrifice in multiple places, but the specific volunteering details for this item are not fully spelled out in the provided material, so outcomes and specific roles are marked as `<FILL IN>` until the relevant vault section is added.",
-            "whatIDid": ["<FILL IN>", "<FILL IN>", "<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "be-useful",
-          "type": "book",
-          "title": "Be Useful",
-          "date": "<FILL IN>",
-          "tags": ["Leadership", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/book/be_useful/9780593792988.jpeg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": ["/images/book/be_useful/9780593792988.jpeg"]
-          },
-          "card": {
-            "oneLiner": "A book that I return to when I need structure.",
-            "headline": "A reminder to choose action over noise",
-            "subhead": "<FILL IN: what you took from it>"
-          },
-          "beats": [
-            "A book I keep close for discipline.",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "rich-dad-poor-dad",
-          "type": "book",
-          "title": "Rich Dad Poor Dad",
-          "date": "<FILL IN>",
-          "tags": ["Entrepreneurship", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/book/rich_dad_poor_dad/0013778173-L.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": ["/images/book/rich_dad_poor_dad/0013778173-L.jpg"]
-          },
-          "card": {
-            "oneLiner": "A book that shaped how I think about value and ownership.",
-            "headline": "Learning to think in systems, not salaries",
-            "subhead": "<FILL IN>"
-          },
-          "beats": [
-            "<FILL IN>",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "start-with-why",
-          "type": "book",
-          "title": "Start With Why",
-          "date": "<FILL IN>",
-          "tags": ["Leadership", "Identity"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/book/start_with_why/images_1.jpeg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": ["/images/book/start_with_why/images_1.jpeg"]
-          },
-          "card": {
-            "oneLiner": "A book I use to pressure-test mission vs. ego.",
-            "headline": "Finding the why before building the how",
-            "subhead": "<FILL IN>"
-          },
-          "beats": [
-            "<FILL IN>",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "the-almanack",
-          "type": "book",
-          "title": "The Almanack of Naval Ravikant",
-          "date": "<FILL IN>",
-          "tags": ["Entrepreneurship", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/book/the_almanack/the-almanack-of-naval-ravikant-9798893310948_lg.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": ["/images/book/the_almanack/the-almanack-of-naval-ravikant-9798893310948_lg.jpg"]
-          },
-          "card": {
-            "oneLiner": "A book that challenged how I define success.",
-            "headline": "Wealth, leverage, and clarity—without the noise",
-            "subhead": "<FILL IN>"
-          },
-          "beats": [
-            "<FILL IN>",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "the-power-of-now",
-          "type": "book",
-          "title": "The Power of Now",
-          "date": "<FILL IN>",
-          "tags": ["Identity"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/book/the_power_of_now/9780340733509.jpg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": ["/images/book/the_power_of_now/9780340733509.jpg"]
-          },
-          "card": {
-            "oneLiner": "A book that helped me notice what my mind skips past.",
-            "headline": "Learning presence as a daily discipline",
-            "subhead": "<FILL IN>"
-          },
-          "beats": [
-            "<FILL IN>",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "think-again",
-          "type": "book",
-          "title": "Think Again",
-          "date": "<FILL IN>",
-          "tags": ["Craft", "Leadership"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "/images/book/think_again/9781984878106.jpeg",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": ["/images/book/think_again/9781984878106.jpeg"]
-          },
-          "card": {
-            "oneLiner": "A book that reminded me to treat beliefs like prototypes.",
-            "headline": "Rewriting opinions with the humility to learn",
-            "subhead": "<FILL IN>"
-          },
-          "beats": [
-            "<FILL IN>",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
-        },
-      
-        {
-          "id": "7-habits-teen",
-          "type": "book",
-          "title": "The 7 Habits of Highly Effective Teens",
-          "date": "<FILL IN>",
-          "tags": ["Leadership", "Craft"],
-          "privacy": "public",
-          "media": {
-            "heroImage": "",
-            "teaserVideo": "",
-            "youtubeUrl": "",
-            "gallery": []
-          },
-          "card": {
-            "oneLiner": "A book I associate with building structure early.",
-            "headline": "Habits as architecture, not motivation",
-            "subhead": "Cover missing; add later."
-          },
-          "beats": [
-            "<FILL IN>",
-            "<FILL IN>",
-            "<FILL IN>"
-          ],
-          "caseFile": {
-            "context": "<FILL IN: your personal takeaway from this book>",
-            "whatIDid": ["<FILL IN>"],
-            "impact": ["<FILL IN>"],
-            "evidence": [],
-            "deepDive": ""
-          }
+          "label": "RoofMate Expo Night repo",
+          "url": "https://github.com/saidaz24-meet/RoofMateExpoNight"
         }
-      ];
+      ],
+      "deepDive": "In our region, conflict is loud, but proximity is quiet. Roommates share routines before they share opinions. That reality made roommate matching feel like a real leverage point.\n\nRoofMate started as a simple question: can we help students meet as people first? It quickly became a trust problem. People needed safety, verification, and clarity, not just a swipeable profile.\n\nWe chose an app-first product on purpose. Students prefer mobile onboarding. Verification is easier with a phone camera. Housing windows are time-sensitive. A private chat needs device-level permissions that just work.\n\nMy role was to build and to keep decisions grounded. I cared about the small details that stop people from finishing signup. I cared about what happens after a match, not just before it. That mindset is what made the product feel real."
+    }
+  },
+  {
+    "id": "pvl-internship",
+    "type": "venture",
+    "title": "Peptide Visual Lab",
+    "date": "dec 2024 - present",
+    "tags": [
+      "Research",
+      "Craft",
+      "Leadership",
+      "Entrepreneurship"
+    ],
+    "orgIds": [
+      "DESY"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/pvl/DESY-delegation/hero.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "https://youtu.be/8hQxsDMqzr4",
+      "gallery": [
+        "/images/life/pvl/DESY-delegation/IMG_1577.jpg",
+        "/images/life/pvl/DESY-delegation/IMG_1656.jpg",
+        "/images/life/pvl/DESY-delegation/IMG_1663.jpg",
+        "/images/life/pvl/DESY-delegation/IMG_1667.jpg",
+        "/images/life/pvl/DESY-delegation/IMG_1685.jpg",
+        "/images/life/pvl/DESY-delegation/IMG_1762.jpg",
+        "/images/life/pvl/DESY-delegation/IMG_9459_Original.jpg",
+        "/images/life/pvl/DESY-delegation/hero.jpg",
+        "/images/life/pvl/internship/g1-in-terminal.jpg",
+        "/images/life/pvl/internship/g2-in-lab.jpg",
+        "/images/life/pvl/internship/g3-in-lab.jpg",
+        "/images/life/pvl/internship/g4-in-lab.jpg",
+        "/images/life/pvl/internship/g5-reflection.jpg",
+        "/images/life/pvl/internship/g6-reflection.jpg",
+        "/images/life/pvl/internship/g7-reflection.jpg",
+        "/images/life/pvl/internship/g8-group-pic.jpg",
+        "/images/life/pvl/internship/g9-group-pic.jpg",
+        "/images/life/pvl/internship/g10-group-pic.jpg",
+        "/images/life/pvl/internship/g11-group-pic.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "A privacy-first platform to run peptide analysis and make results readable fast.",
+      "headline": "Turning fragile scripts into a product researchers can trust",
+      "subhead": "Proposed and built with an evolutionary research team."
+    },
+    "beats": [
+      "I saw brilliant science slowed down by glue work.",
+      "So I rebuilt the workflow into a platform.",
+      "Runs cached by sequence hash, less recompute, more insight.",
+      "Validation is the loop. Biology decides the thresholds.",
+      "Long-term direction: queryable precomputed structure."
+    ],
+    "caseFile": {
+      "context": "Peptide Visual Lab is a privacy-first web platform I proposed and built with an evolutionary research team. It began during a selective course at DESY and continued afterward as an ongoing collaboration. I rebuilt the analysis pipeline into a modular backend and designed a frontend that makes sequence results interpretable at a glance. The long-term direction is to precompute structural properties at scale so labs can query instead of rerunning manual workflows.",
+      "whatIDid": [
+        "Proposed the project and rebuilt the pipeline into a modular, web-friendly system.",
+        "Designed backend orchestration, standardized inputs, and added caching by sequence hash.",
+        "Built the UI to make results visual, comparable, and auditable for researchers."
+      ],
+      "impact": [
+        "Turned a fragile script workflow into a reusable platform with a clear feedback loop.",
+        "Created a foundation for faster onboarding and more consistent interpretation."
+      ],
+      "evidence": [
+        {
+          "label": "PVL abstract (Google Doc)",
+          "url": "https://docs.google.com/document/d/1In0ZTwfDBlnjkZw14Ep19BVldTfZTOCZNQbx7O89LQk/edit?usp=sharing"
+        },
+        {
+          "label": "CSSB at DESY",
+          "url": "https://photon-science.desy.de/research/centres_for_research/cssb/index_eng.html"
+        }
+      ],
+      "deepDive": "The most frustrating part of research is not the hard science. It is the setup and the glue. Files in different formats. Scripts that only work on one machine. Results scattered across folders. Interpretation slowed down by uncertainty.\n\nPVL was my response. I wanted a single place where a researcher can run a sequence, see outputs with context, and compare runs without guessing what changed.\n\nI rebuilt the pipeline around one promise: repeatability. Standard inputs. Clear run artifacts. Caching by sequence hash so teams can iterate without recomputing the same work.\n\nThe key loop is validation. Every threshold and visualization needed biological meaning, not just code correctness. Working with researchers forced me to build in a way that is both technical and humble.\n\nThe direction that excites me is precomputation. When structure is queryable, the bottleneck moves from setup to discovery."
+    }
+  },
+  {
+    "id": "empowered",
+    "type": "venture",
+    "title": "EmpowerED",
+    "date": "september 2023 - jan 2024",
+    "tags": [
+      "Community",
+      "Leadership",
+      "Entrepreneurship",
+      "Craft"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/empowered/g1-group-pic.JPG",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/life/empowered/g1-group-pic.JPG",
+        "/images/life/empowered/g2-logo.png"
+      ]
+    },
+    "card": {
+      "oneLiner": "A short sprint where three of us built an MVP plus a workshop and curriculum.",
+      "headline": "A team sprint toward something we wanted to fix",
+      "subhead": "Drive artifacts and the deck are linked below."
+    },
+    "beats": [
+      "A focused build sprint: Sep 2023 to Jan 2024.",
+      "We turned a problem into an MVP you can demo.",
+      "Then we taught it: workshop and curriculum.",
+      "We documented decisions so the work survives the sprint.",
+      "It trained how I build with a team."
+    ],
+    "caseFile": {
+      "context": "EmpowerED was a short sprint where my team of three built an MVP plus a workshop and curriculum to help high school students get career support earlier. We explored the problem, designed simple guidance content, tested assumptions in a workshop, and kept a clear archive of artifacts so others can build on the work.",
+      "whatIDid": [
+        "Helped narrow scope and connect flows into an MVP we could demo.",
+        "Helped run the workshop and used it to test what we assumed.",
+        "Helped turn the learning into a curriculum and a reusable process archive."
+      ],
+      "impact": [
+        "Produced an MVP, a workshop plan, and a curriculum we could run again.",
+        "Built a repeatable sprint rhythm I later used in bigger projects."
+      ],
+      "evidence": [
+        {
+          "label": "Drive folder (process)",
+          "url": "https://drive.google.com/drive/folders/1Yyop00qaoglrnI4KusbC-cn5-R8Ua7Ni"
+        },
+        {
+          "label": "EmpowerED deck (Slides)",
+          "url": "https://docs.google.com/presentation/d/15nHN4FPdhCDCcyvQwqvgM2stwkZrprRY3g9q9OpuL9w/edit?slide=id.g2c4c49410a4_0_14#slide=id.g2c4c49410a4_0_14"
+        }
+      ],
+      "deepDive": ""
+    }
+  },
+  {
+    "id": "huji-hackathon-win",
+    "type": "honor",
+    "title": "HUJI Hackathon – Winner",
+    "date": "may 2025",
+    "tags": [
+      "Entrepreneurship",
+      "Craft",
+      "Community"
+    ],
+    "orgIds": [
+      "HUJI"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/huji-hackathon-win/hero.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/life/huji-hackathon-win/hero.jpg",
+        "/images/life/huji-hackathon-win/g1-building.jpg",
+        "/images/life/huji-hackathon-win/g2-debugging.jpg",
+        "/images/life/huji-hackathon-win/g3-presenting.jpg",
+        "/images/life/huji-hackathon-win/g4-winning.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "Built a form-filling assistant in a weekend. Won the HUJI hackathon grand prize.",
+      "headline": "Winner: HUJI Hackathon",
+      "subhead": "A prototype built fast, driven by a real family story."
+    },
+    "beats": [
+      "A waiting room turned into a product problem.",
+      "We built Shaman to guide people through government forms.",
+      "Agents, translation, and a clear demo under pressure.",
+      "Hackathon pressure, ship, test, pitch, repeat.",
+      "What used to feel impossible became step-by-step."
+    ],
+    "caseFile": {
+      "context": "At the HUJI hackathon, my team and I built Shaman, a prototype that helps people complete public sector forms in their own language. The idea came from watching my grandmother struggle with digital paperwork designed without her in mind. I worked mainly on backend and agent logic, then helped shape the demo and pitch. We won, but the real takeaway was learning to ship, test, and communicate under a hard deadline.",
+      "whatIDid": [
+        "Owned the backend and agent orchestration to drive the form flow.",
+        "Implemented multilingual handling so the system meets users where they are.",
+        "Helped shape the final demo and pitch for clarity under time constraints."
+      ],
+      "impact": [
+        "HUJI Hackathon winner (May 2025).",
+        "Built a prototype that turns intimidating bureaucracy into guided steps."
+      ],
+      "evidence": [
+        {
+          "label": "Hackathon page",
+          "url": "https://github.com/HUJI-Hackathon"
+        },
+        {
+          "label": "Project repo",
+          "url": "https://github.com/saidaz24-meet/HujiHackathon2024"
+        }
+      ],
+      "deepDive": "I did not come to the hackathon looking for a prize. I came with a memory. A waiting room. An elder shrinking in her seat because a form felt like a wall.\n\nWe mapped the journey: find the right form, decode jargon, translate, fill fields, upload files, and hope it submits. I wanted a system that replaces fear with a guided conversation.\n\nMy role was mainly backend and agent logic. I built the orchestration that asks the right questions, keeps state, and generates a clean output.\n\nThe team kept cutting until the demo was undeniable. Winning mattered, but the part I keep is the discipline: ship something real, test it, explain it, and accept feedback in public."
+    }
+  },
+  {
+    "id": "meta-hackathon-win",
+    "type": "honor",
+    "title": "Meta Hackathon – Winner",
+    "date": "2022",
+    "tags": [
+      "Entrepreneurship",
+      "Craft",
+      "Community"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/foom_meta_hackathon_win/g2-announcing-winners.JPG",
+      "teaserVideo": "",
+      "youtubeUrl": "https://www.youtube.com/watch?app=desktop&v=gDBhXQG5lmo",
+      "gallery": [
+        "/images/life/foom_meta_hackathon_win/g1-presenting-to-meta.jpg",
+        "/images/life/foom_meta_hackathon_win/g2-announcing-winners.JPG"
+      ]
+    },
+    "card": {
+      "oneLiner": "Won the Meta Hackathon with FOOM, an affordable food waste solution.",
+      "headline": "Winner: learning to ship under real pressure",
+      "subhead": "FOOM deck and pitch video are linked below."
+    },
+    "beats": [
+      "A deadline, a room, and one idea worth testing.",
+      "FOOM: an affordable way to reduce food waste.",
+      "We built the deck fast and kept the story simple.",
+      "I presented and learned to answer tough questions calmly.",
+      "That pressure still shapes how I build."
+    ],
+    "caseFile": {
+      "context": "Meta’s hackathon forced me to compress FOOM into a simple story: a food waste solution that stays affordable and accessible. The lesson was not just the win, but learning to make tradeoffs fast, communicate clearly, and stay calm under pressure.",
+      "whatIDid": [
+        "Clarified FOOM’s problem and value proposition into one sharp pitch.",
+        "Built the slide deck and presentation narrative under time pressure.",
+        "Presented to judges and adapted the story based on live feedback."
+      ],
+      "impact": [
+        "Won the Meta Hackathon (Aug 2022) with FOOM.",
+        "Left with a pitch structure I still reuse when I need clarity fast."
+      ],
+      "evidence": [
+        {
+          "label": "FOOM deck (Google Slides)",
+          "url": "https://docs.google.com/presentation/d/1dxYgnbYF24OX7D7QERP_aOF-5phdfWuVOuMrYRjumOw/edit?usp=sharing"
+        },
+        {
+          "label": "Winning presentation (YouTube)",
+          "url": "https://www.youtube.com/watch?app=desktop&v=gDBhXQG5lmo"
+        }
+      ],
+      "deepDive": ""
+    }
+  },
+  {
+    "id": "bml-advanced-track",
+    "type": "honor",
+    "title": "BetterMind Labs – Advanced Track",
+    "date": "july 2025 - present",
+    "tags": [
+      "Leadership",
+      "Craft",
+      "Community"
+    ],
+    "orgIds": [
+      "BML",
+      "MEET"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/meet-TA/g5-class-pic.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "https://www.youtube.com/watch?v=rXLCb_o5eC8",
+      "gallery": [
+        "/images/life/meet-TA/g5-class-pic.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "Selected for BetterMind Labs advanced track; built MSSA to support MEET teaching.",
+      "headline": "From teaching chaos to a tool that helps",
+      "subhead": "Advanced track coaching while shipping a real assistant for instructors."
+    },
+    "beats": [
+      "Teaching revealed the real bottleneck: prep time.",
+      "So I built MSSA, a teaching assistant for session structure.",
+      "Refined with engineering feedback in the advanced track.",
+      "Focused on deployment for MEET’s next cycle.",
+      "AI as leverage, not novelty."
+    ],
+    "caseFile": {
+      "context": "While teaching at MEET, I noticed the same pain point again and again: instructors spend huge energy turning scattered materials into a clean session plan. I built MSSA to turn prompts, notes, and slides into structured teaching assets. In BetterMind Labs’ Advanced Track, I refined the tool with engineering guidance and kept the focus on grounded outputs that actually help instructors.",
+      "whatIDid": [
+        "Observed instructor pain points while teaching and translated them into product requirements.",
+        "Built MSSA to turn teaching materials into structured session assets.",
+        "Iterated with feedback and prepared the tool for real use in MEET."
+      ],
+      "impact": [
+        "Selected for the BetterMind Labs Advanced Track after the initial program.",
+        "Shipped a tool aimed at reducing prep friction and improving teaching consistency."
+      ],
+      "evidence": [
+        {
+          "label": "MSSA repo",
+          "url": "https://github.com/saidaz24-meet/meet-session-script-assistant"
+        },
+        {
+          "label": "Advanced Track letter",
+          "url": "https://drive.google.com/file/d/1sBxCysQzjNaGbi522Te04YaCgetFwuIj/view"
+        },
+        {
+          "label": "Interview (YouTube)",
+          "url": "https://www.youtube.com/watch?v=rXLCb_o5eC8"
+        }
+      ],
+      "deepDive": "I love teaching, but it exposed a problem I could not ignore. Before every session, instructors were doing invisible labor: turning messy notes into a flow, predicting where students will struggle, and deciding what to cut when time runs out.\n\nMSSA started as a small attempt to help. I designed it to produce grounded outputs: a session outline, question prompts, timing suggestions, and simple follow-up tasks. Nothing flashy. Just useful.\n\nBetterMind Labs gave me a harder kind of feedback. Not praise, but questions about reliability, failure modes, and what happens when the input is incomplete. That pressure made the tool better and made my thinking more professional.\n\nThe goal is simple: reduce prep friction so instructors can spend their energy on students."
+    }
+  },
+  {
+    "id": "dabka",
+    "type": "experience",
+    "title": "Dabka (Dance)",
+    "date": "2016 - present",
+    "tags": [
+      "Identity",
+      "Community",
+      "Movement"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/dabka/Budapest-international-festival.JPG",
+      "teaserVideo": "",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ARY_L0_9DEc",
+      "gallery": [
+        "/images/life/dabka/Budapest-international-festival.JPG",
+        "/images/life/dabka/spain-festival.JPG"
+      ]
+    },
+    "card": {
+      "oneLiner": "Nine years of Dabka, discipline, belonging, and motion.",
+      "headline": "A decade of rhythm that kept me grounded",
+      "subhead": "Six hours a week, even during the busiest seasons."
+    },
+    "beats": [
+      "When life gets loud, my body remembers the rhythm.",
+      "Discipline built through repetition, not motivation.",
+      "A team sport disguised as dance.",
+      "Culture carried through motion.",
+      "I return to it when I need to feel grounded."
+    ],
+    "caseFile": {
+      "context": "Dabka is the longest commitment in my life. It taught me discipline that does not depend on mood, and belonging that does not need big speeches. Training for years made me comfortable with repetition, coordination, and showing up even when I feel tired.",
+      "whatIDid": [
+        "Trained consistently for years as part of a troupe and performed on stage.",
+        "Learned to lead from within a group and stay synchronized under pressure.",
+        "Performed at local and international festivals, carrying culture through motion."
+      ],
+      "impact": [
+        "Built a kind of discipline that quietly supports everything else I do."
+      ],
+      "evidence": [
+        {
+          "label": "Performance video (YouTube)",
+          "url": "https://www.youtube.com/watch?v=ARY_L0_9DEc"
+        }
+      ],
+      "deepDive": ""
+    }
+  },
+  {
+    "id": "meet",
+    "type": "experience",
+    "title": "MEET (Middle East Entrepreneurs of Tomorrow)",
+    "date": "2022 - present",
+    "tags": [
+      "Bridge-building",
+      "Leadership",
+      "Community",
+      "Identity"
+    ],
+    "orgIds": [
+      "MEET"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/meet/1d9300b2-2414-473f-90b8-e562e2899c34.JPG",
+      "teaserVideo": "/teasers/meet.mov",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/life/meet/1d9300b2-2414-473f-90b8-e562e2899c34.JPG",
+        "/images/life/meet/2b36274f-f88b-433f-b658-1700934ef121.JPG"
+      ]
+    },
+    "card": {
+      "oneLiner": "A place where building and dialogue happen in the same room.",
+      "headline": "Where code becomes a language for trust",
+      "subhead": "Binational collaboration that trained both craft and responsibility."
+    },
+    "beats": [
+      "You build, then you talk, then you build again.",
+      "Differences do not vanish, they become constraints.",
+      "The team is the test: can you still ship?",
+      "Projects become bridges you can actually walk on.",
+      "MEET made my ambition more responsible."
+    ],
+    "caseFile": {
+      "context": "MEET gave me a rare kind of education. We built products with a binational team, and we also practiced how to stay in the room when conversations got hard. It trained my technical craft, but it also trained my responsibility: to listen, to make decisions transparently, and to treat people as more than categories.",
+      "whatIDid": [
+        "Collaborated in binational teams on product and engineering work.",
+        "Practiced dialogue alongside building, especially when tension was real.",
+        "Co-founded RoofMate through MEET and learned to ship with shared ownership."
+      ],
+      "impact": [
+        "Learned to lead and build in a way that keeps trust and craft tied together."
+      ],
+      "evidence": [
+        {
+          "label": "MEET official site",
+          "url": "https://www.meet.org/"
+        }
+      ],
+      "deepDive": "MEET is not just a program. It is a room where building and dialogue happen together.\n\nOn some days, the work is technical: design a flow, debug a crash, make a demo stable. On other days, the work is human: hold disagreement without turning it into dismissal. The hardest part is doing both at once.\n\nWorking in a binational team forced me to become more precise with my words and more honest with my assumptions. It also forced me to ship. Trust is not built by opinions. It is built by showing up, doing the work, and owning mistakes.\n\nMEET taught me that entrepreneurship is not a personality. It is a responsibility."
+    }
+  },
+  {
+    "id": "meet-ta",
+    "type": "experience",
+    "title": "MEET TA / Teaching Assistant",
+    "date": "2024 - 2025",
+    "tags": [
+      "Leadership",
+      "Community",
+      "Craft",
+      "Identity"
+    ],
+    "orgIds": [
+      "MEET"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/meet-TA/g5-class-pic.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/life/meet-TA/g1-falling-in-love.jpg",
+        "/images/life/meet-TA/g2-love-the-students.jpg",
+        "/images/life/meet-TA/g3-students.jpg",
+        "/images/life/meet-TA/g4-cool-pic-with-students-funny.jpg",
+        "/images/life/meet-TA/g5-class-pic.jpg",
+        "/images/life/meet-TA/g6-class-pic.jpg",
+        "/images/life/meet-TA/g7-team-pic.jpg",
+        "/images/life/meet-TA/g8-team-pic.jpg",
+        "/images/life/meet-TA/g9-me-as-a-funny-ta.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "Teaching made me sharper: you only understand what you can explain simply.",
+      "headline": "Turning my learning loop into a teaching loop",
+      "subhead": "Mentoring students through early ideas, prototypes, and presentations."
+    },
+    "beats": [
+      "Teaching exposes what I do not fully understand yet.",
+      "Students need structure, not just inspiration.",
+      "I learned to give feedback that is kind and precise.",
+      "I also built tools to reduce prep friction.",
+      "Mentorship became part of my identity."
+    ],
+    "caseFile": {
+      "context": "Being a TA at MEET taught me to slow down and meet students where they are. The best sessions were not the ones with the most content, but the ones where students left with clarity and momentum. Teaching also revealed hidden labor, so I started building tools that reduce prep friction and make good sessions repeatable.",
+      "whatIDid": [
+        "Mentored student teams through ideation, scope decisions, and prototype iterations.",
+        "Helped students prepare pitches by sharpening their story and demo flow.",
+        "Built and tested small tools to support session planning and consistency."
+      ],
+      "impact": [
+        "Strengthened my ability to lead with empathy while still demanding clarity."
+      ],
+      "evidence": [
+        {
+          "label": "MSSA repo",
+          "url": "https://github.com/saidaz24-meet/meet-session-script-assistant"
+        }
+      ],
+      "deepDive": ""
+    }
+  },
+  {
+    "id": "school-leyada",
+    "type": "experience",
+    "title": "Leyada (Hebrew University Secondary School)",
+    "date": "2019 - 2025",
+    "tags": [
+      "Identity",
+      "Leadership",
+      "Craft"
+    ],
+    "orgIds": [
+      "HUJI"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/school-leyada/g2-graduating.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/life/school-leyada/g1-learning-life-lessons-with-friends.jpg",
+        "/images/life/school-leyada/g2-graduating.jpg",
+        "/images/life/school-leyada/g3-graduating-with-teachers.jpg",
+        "/images/life/school-leyada/g4-graudation-friends-for-life.jpg",
+        "/images/life/school-leyada/g6-scores-bagrut-and-sat-accomplishments.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "A demanding school chapter where I learned to earn my space.",
+      "headline": "Where rigor met identity, and neither stayed simple",
+      "subhead": "Advanced STEM environment that trained my structure and endurance."
+    },
+    "beats": [
+      "A school built for advanced STEM intensity.",
+      "Rigor that forced structure, not just talent.",
+      "Identity lived inside the same hallways.",
+      "Friendships and friction, both taught me.",
+      "I left with momentum, not closure."
+    ],
+    "caseFile": {
+      "context": "Leyada was where my discipline became real. The pace was intense, and the expectations did not care about my mood. I learned to build structure around learning, not just rely on talent. I also learned what it means to hold identity inside a mixed environment and still stay open, curious, and steady.",
+      "whatIDid": [
+        "Completed high school in a rigorous advanced STEM environment.",
+        "Balanced heavy coursework with building projects, mentoring, and community commitments.",
+        "Built reflection and time-management habits to stay consistent under pressure."
+      ],
+      "impact": [
+        "Left with a stronger relationship with rigor and a clearer sense of who I am."
+      ],
+      "evidence": [
+        {
+          "label": "Leyada official site",
+          "url": "https://www.leyada.net/"
+        }
+      ],
+      "deepDive": "Most nights, I climb to the roof.\n\nSometimes I write. Sometimes I just breathe. From up there, the city looks calm, even when my week was not. That contrast taught me something: pressure is real, but it does not have to own you.\n\nLeyada pushed me academically, but the deeper push was internal. I learned to earn my focus, to plan my weeks, and to keep going when motivation disappeared. I also learned how to live my identity in a mixed environment without turning it into either a shield or a performance.\n\nWhen I look back, I do not remember one perfect grade. I remember learning how to keep my integrity while growing."
+    }
+  },
+  {
+    "id": "volunteering",
+    "type": "experience",
+    "title": "Volunteering",
+    "date": "2023 - 2024",
+    "tags": [
+      "Community",
+      "Leadership"
+    ],
+    "orgIds": [
+      "MEET"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/life/volunteering/hero.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": []
+    },
+    "card": {
+      "oneLiner": "Showing up where people needed hands, not headlines.",
+      "headline": "Service that trained my patience and responsibility",
+      "subhead": "MEET entrepreneurship TA, volunteering with elders, and farm work after Oct 7."
+    },
+    "beats": [
+      "Less about hours. More about presence.",
+      "Mentoring as an entrepreneurship TA in MEET.",
+      "Time with elders taught me to slow down and listen.",
+      "Farm work after Oct 7 taught me to help quietly.",
+      "I try to build with that same mindset."
+    ],
+    "caseFile": {
+      "context": "My volunteering has lived in three places. First, I served as an entrepreneurship TA in MEET for a full year, mentoring students through the uncomfortable early stages of building. Second, I volunteered in elderly houses, where the work is mostly presence and dignity. Third, after Oct 7, I joined farm volunteer shifts. Sometimes the most important help is simply showing up and doing the physical work that keeps life moving.",
+      "whatIDid": [
+        "Mentored student teams as an entrepreneurship TA and helped them turn ideas into next steps.",
+        "Volunteered in elderly houses and learned how to be fully present without trying to fix everything.",
+        "Joined farm volunteer shifts after Oct 7 and did the unglamorous work that still matters."
+      ],
+      "impact": [
+        "Built a habit of consistency and responsibility that shows up in how I lead and build."
+      ],
+      "evidence": [],
+      "deepDive": "Volunteering taught me the difference between helping and performing help.\n\nIn elderly houses, I learned that agency can disappear quietly. A person can be surrounded by staff and still feel unseen. The most meaningful moments were not dramatic. They were small: sitting with someone long enough for them to speak, asking what they want instead of guessing, and treating dignity as practical.\n\nAs an entrepreneurship TA in MEET, the work was different but connected. Students do not need you to be a hero. They need you to listen, ask the right questions, and make the next step feel possible.\n\nAfter Oct 7, I joined farm volunteer shifts because the moment called for hands. It grounded me. No speeches. Just work.\n\nThis is the mindset I try to carry into everything else: show up, be useful, and stay human."
+    }
+  },
+  {
+    "id": "be-useful",
+    "type": "book",
+    "title": "Be Useful",
+    "date": "high school",
+    "tags": [
+      "Leadership",
+      "Craft"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/be_useful/9780593792988.jpeg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/be_useful/9780593792988.jpeg"
+      ]
+    },
+    "card": {
+      "oneLiner": "When I feel noisy inside, I come back to usefulness.",
+      "headline": "Action is a form of respect",
+      "subhead": "A simple question that cuts through excuses: what helps right now?"
+    },
+    "beats": [
+      "Discipline is not a mood. It is a decision I practice.",
+      "Useful work makes anxiety smaller because it gives my hands a job.",
+      "I measure days by what I finished, not what I felt."
+    ],
+    "caseFile": {
+      "context": "This book feels like a steady hand on my shoulder. Not inspirational in the loud way. Practical in the quiet way. It pushed me to stop waiting for the perfect mindset and start building self trust through small actions.",
+      "whatIDid": [
+        "I treat usefulness as a filter when I am overwhelmed.",
+        "I turn big goals into one next step that I can finish today.",
+        "I try to build routines that survive stress, not routines that require perfect conditions."
+      ],
+      "impact": [
+        "I became less dependent on motivation to move.",
+        "I learned to calm myself by choosing a concrete action.",
+        "I started valuing consistency over intensity."
+      ],
+      "evidence": [],
+      "deepDive": "Some advice tries to make you feel powerful. This one asks you to become reliable. I like that it does not romanticize struggle. It respects repetition. The deeper lesson for me is that usefulness is not only service to others. It is a way to protect my own mind. When I focus on what is useful, I stop negotiating with my emotions. I step into a role. Builder. Teammate. Son. Friend. The identity comes first, then the action follows. Over time, that is how confidence becomes real."
+    }
+  },
+  {
+    "id": "rich-dad-poor-dad",
+    "type": "book",
+    "title": "Rich Dad Poor Dad",
+    "date": "high school",
+    "tags": [
+      "Leadership",
+      "Entrepreneurship"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/rich_dad_poor_dad/0013778173-L.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/rich_dad_poor_dad/0013778173-L.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "I used it as a lens, not a bible.",
+      "headline": "Value is a system, not a paycheck",
+      "subhead": "It taught me to ask what compounds, and what just looks busy."
+    },
+    "beats": [
+      "I started thinking in incentives, not just effort.",
+      "Ownership is not greed. It is responsibility for outcomes.",
+      "I learned to question the default path without disrespecting it."
+    ],
+    "caseFile": {
+      "context": "This book is controversial, and I understand why. I did not take it as technical truth. I took it as a provocation. The useful part was the mental separation between activity and compounding value. It made me ask harder questions about time.",
+      "whatIDid": [
+        "I look at projects through a compounding lens: skills, systems, relationships, trust.",
+        "I separate learning from performing. I do not confuse motion with progress.",
+        "I try to build assets that grow with reuse, like code, writing, and tools."
+      ],
+      "impact": [
+        "I became more intentional about where my hours go.",
+        "I started respecting leverage without worshipping money.",
+        "I learned to verify ideas instead of repeating slogans."
+      ],
+      "evidence": [],
+      "deepDive": "The highest value I got from this book was not a tactic. It was a question. Does this path make me more dependent, or more capable? If I keep doing this for years, will it compound into freedom or into exhaustion? I think this is why it resonates with young people. It gives permission to think. But it also demands maturity, because permission without rigor becomes fantasy. So I keep the spark and I add my own responsibility: I cross check, I learn from other sources, and I focus on building real skills. For me, that is the honest way to carry its influence forward."
+    }
+  },
+  {
+    "id": "start-with-why",
+    "type": "book",
+    "title": "Start With Why",
+    "date": "high school",
+    "tags": [
+      "Leadership",
+      "Craft"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/start_with_why/images_1.jpeg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/start_with_why/images_1.jpeg"
+      ]
+    },
+    "card": {
+      "oneLiner": "Clarity builds trust faster than charisma.",
+      "headline": "Purpose is a discipline",
+      "subhead": "If I cannot explain why in one sentence, I am not ready to build."
+    },
+    "beats": [
+      "A clear why makes tradeoffs easier and ego smaller.",
+      "The why is not a slogan. It is a decision filter.",
+      "Teams move faster when meaning is shared, not assumed."
+    ],
+    "caseFile": {
+      "context": "I do not treat this as a scientific proof. I treat it as a communication tool. When a purpose is vague, everything becomes harder: priorities, scope, even relationships. This book pushed me to practice clarity without hype.",
+      "whatIDid": [
+        "I try to write the purpose in plain language before I design anything.",
+        "I use the why to decide what not to build.",
+        "I test whether my story is real by asking if it survives simple questions."
+      ],
+      "impact": [
+        "I learned to lead with meaning instead of features.",
+        "I became more honest about tradeoffs and constraints.",
+        "I reduced the gap between what I say and what I actually do."
+      ],
+      "evidence": [],
+      "deepDive": "I used to think purpose was a nice speech you give at the beginning. Now I see it as a daily habit. The best why is not poetic. It is usable. It helps you say no. It helps you stay kind when pressure rises because you remember what you are protecting. And it also keeps you humble. A why is not proof that you are right. It is proof that you have a direction. Execution still decides everything. So the real lesson I carry is this: if the why is true, it should show up in the small choices, not only in the headline."
+    }
+  },
+  {
+    "id": "the-almanack",
+    "type": "book",
+    "title": "The Almanack of Naval Ravikant",
+    "date": "high school",
+    "tags": [
+      "Leadership",
+      "Entrepreneurship"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/the_almanack/the-almanack-of-naval-ravikant-9798893310948_lg.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/the_almanack/the-almanack-of-naval-ravikant-9798893310948_lg.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "It sharpened how I think about leverage and calm.",
+      "headline": "Build what scales, protect what matters",
+      "subhead": "Attention, judgment, and specific knowledge are the real currency."
+    },
+    "beats": [
+      "Leverage is not a flex. It is a responsibility.",
+      "Specific knowledge grows when learning feels like play, not obligation.",
+      "Calm is not a reward. It is part of good work."
+    ],
+    "caseFile": {
+      "context": "This book feels like a set of clean mental models. Not to quote. To test. The parts I keep are about leverage and attention. They match what I feel when I build: the best results come from doing fewer things with more care.",
+      "whatIDid": [
+        "I try to build reusable systems instead of one time effort.",
+        "I protect attention by reducing noise and choosing deep focus.",
+        "I treat calm as an input to quality, not a luxury."
+      ],
+      "impact": [
+        "I became more deliberate about what deserves my time.",
+        "I started chasing clarity over speed.",
+        "I learned to respect long term thinking without losing urgency."
+      ],
+      "evidence": [],
+      "deepDive": "The idea that changed me most is that leverage is not a personality trait. It is a design choice. You can choose to build something that helps one person once, or something that helps many people repeatedly. Both are honorable. But they ask different things from you. Leverage asks for patience, precision, and accountability. It also exposes your values, because what you build at scale will carry your fingerprints. That is why the second lesson matters: attention. If my attention is fragmented, my values will be shallow. When I protect attention, my work becomes calmer, and my decisions become cleaner. That is the forward looking part for me. I want to build at scale, but with a conscience."
+    }
+  },
+  {
+    "id": "the-power-of-now",
+    "type": "book",
+    "title": "The Power of Now",
+    "date": "high school",
+    "tags": [
+      "Identity",
+      "Leadership"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/the_power_of_now/9780340733509.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/the_power_of_now/9780340733509.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "A manual for staying steady under pressure.",
+      "headline": "Presence is a skill I can practice",
+      "subhead": "I do not need to win the mind. I just need to guide it."
+    },
+    "beats": [
+      "I can notice a thought without following it.",
+      "One breath can interrupt a spiral.",
+      "Clarity often arrives after I stop wrestling the moment."
+    ],
+    "caseFile": {
+      "context": "I read this when my mind felt louder than my schedule. I do not agree with every framing, but I respect the core training: return to the present. It helped me separate myself from the story my stress tries to write.",
+      "whatIDid": [
+        "I practice a small pause before reacting, even if it is one breath.",
+        "I try to name what is happening inside me instead of becoming it.",
+        "I return to the next step in front of me, not the future I am afraid of."
+      ],
+      "impact": [
+        "I became more stable during intense weeks.",
+        "I learned to recover faster after setbacks.",
+        "I started treating attention like something I can train."
+      ],
+      "evidence": [],
+      "deepDive": "The quiet lesson here is that I do not have to believe every thought that arrives. That sounds simple, but it changes everything. It turns anxiety from a commander into a signal. It turns anger from identity into information. When I am present, I stop arguing with reality and I start acting inside it. That is what makes this book practical for ordinary life. It does not remove pressure. It changes my relationship with pressure. I still have ambition. I still have deadlines. But I am learning to carry them without losing my center. That is the kind of strength I want to keep building."
+    }
+  },
+  {
+    "id": "think-again",
+    "type": "book",
+    "title": "Think Again",
+    "date": "high school",
+    "tags": [
+      "Leadership",
+      "Craft"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/think_again/9781984878106.jpeg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/think_again/9781984878106.jpeg"
+      ]
+    },
+    "card": {
+      "oneLiner": "It taught me to treat certainty like a draft.",
+      "headline": "Confidence with a door open",
+      "subhead": "I can lead strongly and still stay revisable."
+    },
+    "beats": [
+      "Being wrong is not a threat. It is data.",
+      "A good argument is one that makes me smarter, not louder.",
+      "The goal is not to win. The goal is to update."
+    ],
+    "caseFile": {
+      "context": "This book made me respect rethinking as a skill. Not an apology. Not indecision. A skill. It helped me detach ego from ideas, which matters in building and in relationships.",
+      "whatIDid": [
+        "I try to ask what would change my mind before debating.",
+        "I practice separating identity from opinion.",
+        "I invite critique earlier so revisions are cheaper and kinder."
+      ],
+      "impact": [
+        "I became less defensive when challenged.",
+        "I learned to treat feedback as collaboration, not judgment.",
+        "I started seeing humility as a form of strength."
+      ],
+      "evidence": [],
+      "deepDive": "The best leaders I know are not the most certain. They are the most teachable. That is the shift this book gave me. It reframed rethinking as integrity. If reality changes, I should change too. That does not weaken conviction. It refines it. In practice, this means I try to build opinions the way I build products: test, iterate, and keep what survives contact with truth. It also means I aim for conversations where the relationship matters more than being right. That is the future I want. Less performance. More learning."
+    }
+  },
+  {
+    "id": "7-habits-teen",
+    "type": "book",
+    "title": "7 Habits of Highly Effective Teens",
+    "date": "high school",
+    "tags": [
+      "Leadership",
+      "Craft"
+    ],
+    "privacy": "public",
+    "media": {
+      "heroImage": "/images/book/7_habits_of_highly_effective_teenagers/the-7-habits-of-highly-effective-teens-9781476764665_hr.jpg",
+      "teaserVideo": "",
+      "youtubeUrl": "",
+      "gallery": [
+        "/images/book/7_habits_of_highly_effective_teenagers/the-7-habits-of-highly-effective-teens-9781476764665_hr.jpg"
+      ]
+    },
+    "card": {
+      "oneLiner": "The book I link to early structure and agency.",
+      "headline": "Habits are architecture",
+      "subhead": "A simple framework that taught me I can shape my days."
+    },
+    "beats": [
+      "I am not a victim of mood. I can choose my next step.",
+      "Small commitments build identity over time.",
+      "Private wins come first, then public wins follow."
+    ],
+    "caseFile": {
+      "context": "I associate this book with learning responsibility in a concrete way. Not inspirational quotes. Simple habits that create self respect. It gave me language for agency when I was still learning how to manage pressure.",
+      "whatIDid": [
+        "I try to plan my week around priorities, not urgency.",
+        "I practice making small promises and keeping them.",
+        "I return to basics when life feels chaotic."
+      ],
+      "impact": [
+        "I became more structured when motivation was not enough.",
+        "I learned to see discipline as self care, not punishment.",
+        "I started thinking of growth as something I can design."
+      ],
+      "evidence": [],
+      "deepDive": "The most underrated part of growing up is learning that freedom is built, not found. This book gave me a map for that. Not perfect. Not rigid. Just usable. It taught me that the person I want to be is a set of habits I repeat when no one is watching. That idea has stayed with me. When I drift, I do not need a dramatic reset. I need one small habit returned to its place. One honest plan. One task finished. One conversation handled with respect. That is how I want to live forward. With agency that is quiet, consistent, and real."
+    }
+  }
+];

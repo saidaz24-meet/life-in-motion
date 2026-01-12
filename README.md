@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+# Said Azaizah — Life in Motion
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A narrative of ideas, artifacts, and action. A world-facing story built from work, trust, and continuous learning.
 
-Currently, two official plugins are available:
+***
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Welcome
+I aim to show who I am by living the story, not listing it in bullets. This is a cinematic, evidence-powered narrative of building things that matter and bridging communities that matter more.
 
-## React Compiler
+I’m a student-builder from a mixed Arab/Jewish environment in Israel, and my work centers on two forces that shape me:
+- Craft — turning ideas into usable systems
+- Bridge-building — creating trust where it’s easy to give up
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This site is a proof-driven narrative: cinematic in tone, founder’s voice, grounded in real artifacts—photos, demos, writeups, links.
 
-## Expanding the ESLint configuration
+***
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## How the site is organized
+Everything here unfolds as chapters, not cards. Each chapter has three layers:
+- Hook — a one-line idea plus a headline
+- Beats — short cinematic lines you scroll through
+- Case File — context, what I did, impact, and evidence (links)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+This structure lets readers skim quickly or dive deep without losing the story.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+***
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Where to start
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Story
+The main experience after the introduction: a curated timeline of scenes that connect years, decisions, and turning points.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Honors
+A proof-first view of recognition and milestones—designed to be readable fast and verifiable.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Ventures
+The real-world projects where founder thinking shows up most clearly.
+
+### Life Atlas
+A map of experiences—community, teaching, movement, leadership—the “why” behind the work.
+
+### Books
+A small shelf of ideas that shaped how I think.
+
+***
+
+## What you’ll find inside (high level)
+
+### Ventures — building real things
+- RoofMate — a student housing and roommate-matching product shaped by listening, iteration, and trust design
+- Peptide Visual Lab — a research-and-engineering effort building a framework for understanding biological sequences through visualization and computation
+- EmpowerED — a community-driven initiative focused on empowerment through learning and leadership
+
+### Experiences — the environments that built me
+- MEET (Middle East Entrepreneurs of Tomorrow) — learning to work across difference and still ship
+- MEET TA — teaching and mentorship as a craft, not a checkbox
+- Leyada tutoring / volunteering — long-term commitment, including 180+ hours of CS/math tutoring
+- Dabka — movement as identity and discipline
+
+### Honors — evidence-first
+This section is intentionally designed to be supported by links, media, and proof pages—because credibility matters more than hype.
+
+***
+
+## Design philosophy (for world readers)
+
+- Evidence-first: strong claims deserve links, demos, photos, or artifacts.
+- Founder clarity: identify the problem, the solution, the impact, and the lessons.
+- Human tone: this is a living record of growth, not a corporate brochure.
+
+***
+
+## Media and privacy notes
+Some videos are intentionally unlisted; some artifacts are shared as proof links rather than public embeds. This keeps the site focused, respectful, and clean while preserving transparency.
+
+***
+
+## A quick tour (3 minutes)
+
+- Open Story and scroll through the scenes
+- Jump to Ventures → RoofMate and Ventures → Peptide Visual Lab
+- Skim Honors for quick verification
+
+***
+
+## Contact
+If you’re reviewing my work or exploring partnerships, thank you for the time. This site exists to be understood as a living, evolving narrative—beyond a simple profile.
+
+- Contact details live on the Contact page.
+
+***
+
+### Future visions (what comes next)
+- Scale and iterate RoofMate to serve diverse campus communities globally, with a strong emphasis on inclusive design and data privacy.
+- Expand Peptide Visual Lab into an open visualization platform for biology education and research collaboration.
+- Grow EmpowerED into a global network that centers student leadership, mentorship, and peer-to-peer learning across disciplines.
+- Build a global Life Atlas that maps impact, collaboration networks, and learning paths to connect ideas with action.

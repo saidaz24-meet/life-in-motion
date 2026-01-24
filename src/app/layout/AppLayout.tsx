@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Header from "../../components/layout/Header";
 import PageFooter from "../../components/layout/PageFooter";
 import ScrollToTop from "../../components/layout/ScrollToTop";
+import DebugHelper from "../../components/debug/DebugHelper";
 
 export default function AppLayout() {
   const location = useLocation();
@@ -24,6 +25,7 @@ export default function AppLayout() {
   return (
     <>
       <ScrollToTop />
+      {import.meta.env.DEV && <DebugHelper />}
       <div className="fixed inset-0 overflow-hidden flex flex-col h-[100dvh]">
         {/* Fixed cinematic background */}
         <div className="absolute inset-0">

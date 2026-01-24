@@ -213,8 +213,7 @@ export const ALL_ITEMS: ContentItem[] = [
       ],
       "deepDive": ""
     }
-  }
-  ,
+  },
   {
     "id": "huji-hackathon-win",
     "type": "honor",
@@ -369,7 +368,7 @@ export const ALL_ITEMS: ContentItem[] = [
       "AI as leverage, not novelty."
     ],
     "caseFile": {
-      "context": "While teaching at MEET, We lost major investmentor & quality teachers from MIT. I noticed the same pain point again and again: instructors spend huge energy turning scattered materials into a clean session plan. I built MSSA to turn prompts, notes, and slides into structured teaching assets. In BetterMind Labs’ Advanced Track, I refined the tool with engineering guidance and kept the focus on grounded outputs that actually help instructors.",
+      "context": "While teaching at MEET, We lost major investmentor & quality teachers from MIT. I noticed the same pain point again and again: instructors spend huge energy turning scattered materials into a clean session plan. I built MSSA to turn prompts, notes, and slides into structured teaching assets. In BetterMind Labs' Advanced Track, I refined the tool with engineering guidance and kept the focus on grounded outputs that actually help instructors.",
       "whatIDid": [
         "Observed instructor pain points while teaching and translated them into product requirements.",
         "Built MSSA to turn teaching materials into structured session assets.",

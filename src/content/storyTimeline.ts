@@ -19,7 +19,6 @@ export const STORY_TIMELINE_SCENES: StoryTimelineScene[] = [
       "I Love Building",
       "I lead by showing up...no matter what",
       "I am a reciepe that can make up dozens of dishes...only time will tell",
-      
     ],
     mediaRef: "/images/profile/hero.JPEG",
     itemIds: []

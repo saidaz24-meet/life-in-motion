@@ -110,7 +110,6 @@ export function SoundProvider({ children }: SoundProviderProps) {
     loadAudio("tick_2.wav");
   }, [isEnabled, getAudioContext]);
 
-
   // Main SFX API: play("click"|"hover"|"transition") - uses tick sounds
   const play = useCallback((type: SFXType) => {
     if (!isEnabled || !hasUserInteracted || prefersReducedMotion) return;
@@ -187,6 +186,7 @@ export function SoundProvider({ children }: SoundProviderProps) {
         gainNode.connect(ctx.destination);
 
         if (type === "click") {
+          // Click: quick, sharp tick
           oscillator.frequency.value = 800;
           oscillator.type = "sine";
           gainNode.gain.setValueAtTime(0.06, ctx.currentTime);
@@ -194,6 +194,7 @@ export function SoundProvider({ children }: SoundProviderProps) {
           oscillator.start(ctx.currentTime);
           oscillator.stop(ctx.currentTime + 0.05);
         } else if (type === "hover") {
+          // Hover: subtle, soft blip
           oscillator.frequency.value = 600;
           oscillator.type = "sine";
           gainNode.gain.setValueAtTime(0.04, ctx.currentTime);
@@ -201,6 +202,7 @@ export function SoundProvider({ children }: SoundProviderProps) {
           oscillator.start(ctx.currentTime);
           oscillator.stop(ctx.currentTime + 0.08);
         } else if (type === "transition") {
+          // Transition: gentle, slightly longer tone
           oscillator.frequency.setValueAtTime(400, ctx.currentTime);
           oscillator.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + 0.12);
           oscillator.type = "sine";

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { STORY_TIMELINE_SCENES } from "../../content/storyTimeline";
 import { clsx } from "clsx";
@@ -18,7 +18,6 @@ interface StoryShellProps {
 export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   const navigate = useNavigate();
   const nav = createNavLogger(navigate);
-  const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentScene, setCurrentScene] = useState(0);
@@ -53,10 +52,6 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   }, []);
 
   const totalScenes = STORY_TIMELINE_SCENES?.length ?? 0;
-
-  // Check for debug query param
-  const searchParams = new URLSearchParams(location.search);
-  const showDebug = searchParams.get("debug") === "1";
 
   // Simple scroll to scene for keyboard navigation
   const scrollToScene = useCallback((index: number) => {
@@ -229,13 +224,6 @@ export default function StoryShell({ onMountChange }: StoryShellProps = {}) {
   return (
     <>
       <SEOHead title="Story" preloadImage={firstImage} />
-      {/* Debug verification - dev only */}
-      {(import.meta.env.DEV || showDebug) && (
-        <div className="fixed top-20 right-6 z-50 px-3 py-2 bg-black/80 border border-white/20 rounded text-xs font-mono text-white">
-          <div>Route: {location.pathname}</div>
-          <div>Scenes: {totalScenes}</div>
-        </div>
-      )}
       <div className="relative w-full h-full overflow-hidden">
         {/* Scroll container - uses main scroll container via parent */}
         {/* Mobile: Use 100dvh to fill entire viewport including system bars, Desktop: h-full */}

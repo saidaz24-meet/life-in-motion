@@ -51,7 +51,7 @@ export const ALL_ITEMS: ContentItem[] = [
     },
     "card": {
       "oneLiner": "Android-first roommate matching built to make dorm trust easier to start.",
-      "headline": "A roommate can change your whole year",
+      "headline": "In Israel, a roommate can change a whole generation's perception",
       "subhead": "Co-founded through MEET with a binational team. App-first by design."
     },
     "beats": [
@@ -62,7 +62,7 @@ export const ALL_ITEMS: ContentItem[] = [
       "Built to make \"the other\" feel like a roommate."
     ],
     "caseFile": {
-      "context": "RoofMate is a nonprofit, Android-first roommate matching app for dorm housing. I co-founded it through MEET with a binational team of Arabs and Jews in Israel. We built it around one idea: trust grows faster when people meet as people, not labels. My work focused on building the product into something students can actually use and on turning user feedback into clear choices.",
+      "context": "RoofMate is a nonprofit, Android-first roommate matching app for dorm housing. I co-founded it through MEET with a binational team of Arabs and Jews in Israel. We built it around one idea: trust grows faster when people meet as humans, build upon extensive personal experiences. My work focused on building the product into something students can actually use and on turning user feedback into clear choices.",
       "whatIDid": [
         "Built core app flows and the onboarding experience with a focus on drop-off points.",
         "Implemented matching logic that ranks compatibility by interests and living habits.",
@@ -136,7 +136,7 @@ export const ALL_ITEMS: ContentItem[] = [
       "So I rebuilt the workflow into a platform.",
       "Runs cached by sequence hash, less recompute, more insight.",
       "Validation is the loop. Biology decides the thresholds.",
-      "Long-term direction: queryable precomputed structure."
+      "Long-term direction: queryable precomputed database (UniProt 2.0)."
     ],
     "caseFile": {
       "context": "Peptide Visual Lab is a privacy-first web platform I proposed and built with an evolutionary research team. It began during a selective course at DESY and continued afterward as an ongoing collaboration. I rebuilt the analysis pipeline into a modular backend and designed a frontend that makes sequence results interpretable at a glance. The long-term direction is to precompute structural properties at scale so labs can query instead of rerunning manual workflows.",
@@ -166,13 +166,8 @@ export const ALL_ITEMS: ContentItem[] = [
     "id": "empowered",
     "type": "venture",
     "title": "EmpowerED",
-    "date": "september 2023 - jan 2024",
-    "tags": [
-      "Community",
-      "Leadership",
-      "Entrepreneurship",
-      "Craft"
-    ],
+    "date": "Sep 2023 – Jan 2024",
+    "tags": ["Community", "Leadership", "Entrepreneurship", "Craft"],
     "privacy": "public",
     "media": {
       "heroImage": "/images/life/empowered/g1-group-pic.JPG",
@@ -184,27 +179,27 @@ export const ALL_ITEMS: ContentItem[] = [
       ]
     },
     "card": {
-      "oneLiner": "A short sprint where three of us built an MVP plus a workshop and curriculum.",
-      "headline": "A team sprint toward something we wanted to fix",
-      "subhead": "Drive artifacts and the deck are linked below."
+      "oneLiner": "Three of us built a small MVP for career guidance, then turned it into a workshop and a curriculum that can be reused.",
+      "headline": "EmpowerED was my first attempt to flip the snowball",
+      "subhead": "An MVP, a workshop, and a process archive you can actually rerun."
     },
     "beats": [
-      "A focused build sprint: Sep 2023 to Jan 2024.",
-      "We turned a problem into an MVP you can demo.",
-      "Then we taught it: workshop and curriculum.",
-      "We documented decisions so the work survives the sprint.",
-      "It trained how I build with a team."
+      "I grew up seeing kids get labeled early, especially the ones who were simply ahead, bored, or restless.",
+      "I was one of them. I finished fast, got bored, and became the “problem kid” in the room.",
+      "My mom refused that label. She pushed for testing, fought the school, and proved I needed pace, not punishment.",
+      "EmpowerED was my way to build a first rung for students who are capable but under guided.",
+      "We shipped an MVP you could demo, then tested the idea through a workshop, then turned the learning into a curriculum and an archive so others can repeat it."
     ],
     "caseFile": {
-      "context": "EmpowerED was a short sprint where my team of three built an MVP plus a workshop and curriculum to help high school students get career support earlier. We explored the problem, designed simple guidance content, tested assumptions in a workshop, and kept a clear archive of artifacts so others can build on the work.",
+      "context": "EmpowerED started from something personal. In my early school years in Abu Ghosh, I watched classmates get boxed in by a system that had one speed. If you matched it, you were fine. If you moved faster, you became noise. I lived that. My mom fought hard to prove I was not broken. I was bored. That experience stayed with me. EmpowerED was a short sprint where my team of three built a simple career support MVP for high school students, then turned it into a workshop and curriculum that others can run. The goal was not to “solve education.” It was to create one clean, repeatable way to give students direction earlier, before they drift into a label.",
       "whatIDid": [
-        "Helped narrow scope and connect flows into an MVP we could demo.",
-        "Helped run the workshop and used it to test what we assumed.",
-        "Helped turn the learning into a curriculum and a reusable process archive."
+        "Helped shrink a big problem into a demoable MVP with clear flows and a tight scope.",
+        "Helped run the workshop and used it to test what we assumed and rewrite what did not land.",
+        "Helped convert the sprint into a reusable curriculum and a process archive so the work survives the team."
       ],
       "impact": [
-        "Produced an MVP, a workshop plan, and a curriculum we could run again.",
-        "Built a repeatable sprint rhythm I later used in bigger projects."
+        "Produced an MVP, a workshop plan, and a curriculum we could run again with new groups.",
+        "Trained the build rhythm I use now: ship small, test in reality, document so others can continue."
       ],
       "evidence": [
         {
@@ -218,7 +213,8 @@ export const ALL_ITEMS: ContentItem[] = [
       ],
       "deepDive": ""
     }
-  },
+  }
+  ,
   {
     "id": "huji-hackathon-win",
     "type": "honor",
@@ -246,9 +242,9 @@ export const ALL_ITEMS: ContentItem[] = [
       ]
     },
     "card": {
-      "oneLiner": "Built a form-filling assistant in a weekend. Won the HUJI hackathon grand prize.",
+      "oneLiner": "Built a form-filling assistant in 48 hrs. Won the HUJI hackathon grand prize as a highschooler.",
       "headline": "Winner: HUJI Hackathon",
-      "subhead": "A prototype built fast, driven by a real family story."
+      "subhead": "A solution for my grandmother's weekly struggles with bureaucracy."
     },
     "beats": [
       "A waiting room turned into a product problem.",
@@ -361,9 +357,9 @@ export const ALL_ITEMS: ContentItem[] = [
       ]
     },
     "card": {
-      "oneLiner": "Selected for BetterMind Labs advanced track; built MSSA to support MEET teaching.",
-      "headline": "From teaching chaos to a tool that helps",
-      "subhead": "Advanced track coaching while shipping a real assistant for instructors."
+      "oneLiner": "Selected for BetterMind Labs advanced track (after 300+ hours of teaching)",
+      "headline": "Built MSSA to support MEET teaching & curriculum development.",
+      "subhead": "Advanced track coaching while shipping an assistant for instructors."
     },
     "beats": [
       "Teaching revealed the real bottleneck: prep time.",
@@ -373,14 +369,14 @@ export const ALL_ITEMS: ContentItem[] = [
       "AI as leverage, not novelty."
     ],
     "caseFile": {
-      "context": "While teaching at MEET, I noticed the same pain point again and again: instructors spend huge energy turning scattered materials into a clean session plan. I built MSSA to turn prompts, notes, and slides into structured teaching assets. In BetterMind Labs’ Advanced Track, I refined the tool with engineering guidance and kept the focus on grounded outputs that actually help instructors.",
+      "context": "While teaching at MEET, We lost major investmentor & quality teachers from MIT. I noticed the same pain point again and again: instructors spend huge energy turning scattered materials into a clean session plan. I built MSSA to turn prompts, notes, and slides into structured teaching assets. In BetterMind Labs’ Advanced Track, I refined the tool with engineering guidance and kept the focus on grounded outputs that actually help instructors.",
       "whatIDid": [
         "Observed instructor pain points while teaching and translated them into product requirements.",
         "Built MSSA to turn teaching materials into structured session assets.",
         "Iterated with feedback and prepared the tool for real use in MEET."
       ],
       "impact": [
-        "Selected for the BetterMind Labs Advanced Track after the initial program.",
+        "Selected for the BetterMind Labs Advanced Track after the initial program ( Top 4% )",
         "Shipped a tool aimed at reducing prep friction and improving teaching consistency."
       ],
       "evidence": [
@@ -421,23 +417,20 @@ export const ALL_ITEMS: ContentItem[] = [
       ]
     },
     "card": {
-      "oneLiner": "Nine years of Dabka, discipline, belonging, and motion.",
-      "headline": "A decade of rhythm that kept me grounded",
-      "subhead": "Six hours a week, even during the busiest seasons."
+      "oneLiner": "Nine years of Dabka that started from a \"Wow you are talented!\".",
+      "headline": "A decade of rhythm & belonging",
+      "subhead": "Long hours, even in Ramadan & fasting."
     },
     "beats": [
-      "When life gets loud, my body remembers the rhythm.",
-      "Discipline built through repetition, not motivation.",
-      "A team sport disguised as dance.",
-      "Culture carried through motion.",
-      "I return to it when I need to feel grounded."
+      "When life gets loud, I find peace.",
+      "Adventures, stories, personal experiences and lots of memories."
     ],
     "caseFile": {
-      "context": "Dabka is the longest commitment in my life. It taught me discipline that does not depend on mood, and belonging that does not need big speeches. Training for years made me comfortable with repetition, coordination, and showing up even when I feel tired.",
+      "context": "Dabka is the longest commitment in my life. Before everything, this is how I met my best friends. It taught me discipline that does not depend on mood, and belonging that does not need big speeches. Training for years made me comfortable with repetition, coordination, and showing up even when I feel tired.",
       "whatIDid": [
-        "Trained consistently for years as part of a troupe and performed on stage.",
+        "Trained consistently for years as part of a troupe and performed very often.",
         "Learned to lead from within a group and stay synchronized under pressure.",
-        "Performed at local and international festivals, carrying culture through motion."
+        "Performed at local and international festivals, carrying culture."
       ],
       "impact": [
         "Built a kind of discipline that quietly supports everything else I do."
@@ -476,15 +469,15 @@ export const ALL_ITEMS: ContentItem[] = [
       ]
     },
     "card": {
-      "oneLiner": "A place where building and dialogue happen in the same room.",
+      "oneLiner": "A place where building and dialogue happen in the same room. (I will always miss DU-Deep Understanding Sessions)",
       "headline": "Where code becomes a language for trust",
       "subhead": "Binational collaboration that trained both craft and responsibility."
     },
     "beats": [
-      "You build, then you talk, then you build again.",
+      "MEET takes technology, and uses it to make you understand the region's conflict",
+      "Then, it takes the conflict, and uses it to make you understand YOURSELF!!",
+      "And only then, you can build meaningful solutions starting with YOU.",
       "Differences do not vanish, they become constraints.",
-      "The team is the test: can you still ship?",
-      "Projects become bridges you can actually walk on.",
       "MEET made my ambition more responsible."
     ],
     "caseFile": {
@@ -503,7 +496,7 @@ export const ALL_ITEMS: ContentItem[] = [
           "url": "https://www.meet.org/"
         }
       ],
-      "deepDive": "MEET is not just a program. It is a room where building and dialogue happen together.\n\nOn some days, the work is technical: design a flow, debug a crash, make a demo stable. On other days, the work is human: hold disagreement without turning it into dismissal. The hardest part is doing both at once.\n\nWorking in a binational team forced me to become more precise with my words and more honest with my assumptions. It also forced me to ship. Trust is not built by opinions. It is built by showing up, doing the work, and owning mistakes.\n\nMEET taught me that entrepreneurship is not a personality. It is a responsibility."
+      "deepDive": "MEET is a family where building and dialogue happen together.\n\nOn some days, the work is technical: design a flow, debug a crash, make a demo stable. On other days, the work is human: hold disagreement without turning it into dismissal. The hardest part is doing both at once.\n\nWorking in a binational team forced me to become more precise with my words and more honest with my assumptions. It also forced me to ship. Trust is not built by opinions. It is built by showing up, doing the work, and owning mistakes.\n\nMEET taught me that entrepreneurship is not a personality. It is a responsibility."
     }
   },
   {
@@ -596,12 +589,12 @@ export const ALL_ITEMS: ContentItem[] = [
     },
     "card": {
       "oneLiner": "A demanding school chapter where I learned to earn my space.",
-      "headline": "Where rigor met identity, and neither stayed simple",
+      "headline": "Where rigor met identity, and neither stayed the same for me",
       "subhead": "Advanced STEM environment that trained my structure and endurance."
     },
     "beats": [
       "A school built for advanced STEM intensity.",
-      "Rigor that forced structure, not just talent.",
+      "Rigor that forced systems, not just talent.",
       "Identity lived inside the same hallways.",
       "Friendships and friction, both taught me.",
       "I left with momentum, not closure."
@@ -647,17 +640,17 @@ export const ALL_ITEMS: ContentItem[] = [
     "card": {
       "oneLiner": "Showing up where people needed hands, not headlines.",
       "headline": "Service that trained my patience and responsibility",
-      "subhead": "MEET entrepreneurship TA, volunteering with elders, and farm work after Oct 7."
+      "subhead": "MEET entrepreneurship TA & CS Co-Instructor, volunteering with elders, and farm work after Oct 7."
     },
     "beats": [
-      "Less about hours. More about presence.",
+      "QUALITY QUALITY QUALITY.",
       "Mentoring as an entrepreneurship TA in MEET.",
       "Time with elders taught me to slow down and listen.",
       "Farm work after Oct 7 taught me to help quietly.",
       "I try to build with that same mindset."
     ],
     "caseFile": {
-      "context": "My volunteering has lived in three places. First, I served as an entrepreneurship TA in MEET for a full year, mentoring students through the uncomfortable early stages of building. Second, I volunteered in elderly houses, where the work is mostly presence and dignity. Third, after Oct 7, I joined farm volunteer shifts. Sometimes the most important help is simply showing up and doing the physical work that keeps life moving.",
+      "context": "My volunteering has lived in four places. First, I served as an entrepreneurship TA in MEET for a full year, and CS Co-Instructor for a full summer & yearlong (2+ years), mentoring students through the uncomfortable early stages of building. Second, I volunteered in elderly houses, where the work is mostly presence and dignity. Third, after Oct 7, I joined farm volunteer shifts. Sometimes the most important help is simply showing up and doing the physical work that keeps life moving.",
       "whatIDid": [
         "Mentored student teams as an entrepreneurship TA and helped them turn ideas into next steps.",
         "Volunteered in elderly houses and learned how to be fully present without trying to fix everything.",
@@ -911,10 +904,10 @@ export const ALL_ITEMS: ContentItem[] = [
     "card": {
       "oneLiner": "It taught me to treat certainty like a draft.",
       "headline": "Confidence with a door open",
-      "subhead": "I can lead strongly and still stay revisable."
+      "subhead": "I can lead confidently and still stay revisable."
     },
     "beats": [
-      "Being wrong is not a threat. It is data.",
+      "Being wrong is not a threat. It is must.",
       "A good argument is one that makes me smarter, not louder.",
       "The goal is not to win. The goal is to update."
     ],

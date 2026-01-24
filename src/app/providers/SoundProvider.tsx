@@ -37,6 +37,8 @@ export function SoundProvider({ children }: SoundProviderProps) {
   const [isEnabled, setIsEnabled] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const audioBuffersRef = useRef<{ [key: string]: AudioBuffer }>({});
+  const activeAudioSourcesRef = useRef<AudioBufferSourceNode[]>([]);
 
   // Initialize audio context lazily
   const getAudioContext = useCallback(() => {
@@ -84,7 +86,32 @@ export function SoundProvider({ children }: SoundProviderProps) {
   const lastClickTimeRef = useRef(0);
   const lastTransitionTimeRef = useRef(0);
 
-  // Main SFX API: play("click"|"hover"|"transition")
+  // Load audio buffers for tick sounds
+  useEffect(() => {
+    if (!isEnabled) return;
+
+    const loadAudio = async (filename: string) => {
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        const response = await fetch(`/audio/${filename}`);
+        if (!response.ok) return;
+
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+        audioBuffersRef.current[filename] = audioBuffer;
+      } catch {
+        // Silently fail if audio file not found
+      }
+    };
+
+    loadAudio("tick_1.wav");
+    loadAudio("tick_2.wav");
+  }, [isEnabled, getAudioContext]);
+
+
+  // Main SFX API: play("click"|"hover"|"transition") - uses tick sounds
   const play = useCallback((type: SFXType) => {
     if (!isEnabled || !hasUserInteracted || prefersReducedMotion) return;
 
@@ -93,7 +120,7 @@ export function SoundProvider({ children }: SoundProviderProps) {
 
     // Throttle hover sounds more aggressively
     if (type === "hover") {
-      throttleTime = 200; // 200ms between hover sounds
+      throttleTime = 120; // 120ms between hover sounds (lower volume)
       if (now - lastHoverTimeRef.current < throttleTime) return;
       lastHoverTimeRef.current = now;
     } else if (type === "click") {
@@ -110,38 +137,78 @@ export function SoundProvider({ children }: SoundProviderProps) {
       const ctx = getAudioContext();
       if (!ctx) return;
 
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
+      if (ctx.state === "suspended") {
+        ctx.resume().catch(() => {});
+        return;
+      }
 
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
+      // Try to use tick audio files, fall back to oscillator if not loaded
+      const availableTicks = ["tick_1.wav", "tick_2.wav"].filter(
+        (f) => audioBuffersRef.current[f]
+      );
 
-      // Sound presets
-      if (type === "click") {
-        // Click: quick, sharp tick
-        oscillator.frequency.value = 800;
-        oscillator.type = "sine";
-        gainNode.gain.setValueAtTime(0.06, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.05);
-      } else if (type === "hover") {
-        // Hover: subtle, soft blip
-        oscillator.frequency.value = 600;
-        oscillator.type = "sine";
-        gainNode.gain.setValueAtTime(0.04, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.08);
-      } else if (type === "transition") {
-        // Transition: gentle, slightly longer tone
-        oscillator.frequency.setValueAtTime(400, ctx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + 0.12);
-        oscillator.type = "sine";
-        gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-        oscillator.start(ctx.currentTime);
-        oscillator.stop(ctx.currentTime + 0.15);
+      if (availableTicks.length > 0) {
+        // Use tick audio file
+        const chosenFile = availableTicks[Math.floor(Math.random() * availableTicks.length)];
+        const buffer = audioBuffersRef.current[chosenFile];
+        if (!buffer) return;
+
+        const source = ctx.createBufferSource();
+        const gainNode = ctx.createGain();
+
+        source.buffer = buffer;
+        source.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        // Adjust pitch and volume based on type
+        if (type === "hover") {
+          source.playbackRate.value = 0.95 + Math.random() * 0.06; // Slightly lower
+          gainNode.gain.value = 0.25 + Math.random() * 0.1; // Lower volume for hover
+        } else if (type === "click") {
+          source.playbackRate.value = 0.97 + Math.random() * 0.06;
+          gainNode.gain.value = 0.35 + Math.random() * 0.15;
+        } else if (type === "transition") {
+          source.playbackRate.value = 0.92 + Math.random() * 0.04; // Deeper
+          gainNode.gain.value = 0.3 + Math.random() * 0.1;
+        }
+
+        source.start(ctx.currentTime);
+
+        activeAudioSourcesRef.current.push(source);
+        source.onended = () => {
+          activeAudioSourcesRef.current = activeAudioSourcesRef.current.filter((s) => s !== source);
+        };
+      } else {
+        // Fallback to oscillator if audio files not loaded
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        if (type === "click") {
+          oscillator.frequency.value = 800;
+          oscillator.type = "sine";
+          gainNode.gain.setValueAtTime(0.06, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+          oscillator.start(ctx.currentTime);
+          oscillator.stop(ctx.currentTime + 0.05);
+        } else if (type === "hover") {
+          oscillator.frequency.value = 600;
+          oscillator.type = "sine";
+          gainNode.gain.setValueAtTime(0.04, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+          oscillator.start(ctx.currentTime);
+          oscillator.stop(ctx.currentTime + 0.08);
+        } else if (type === "transition") {
+          oscillator.frequency.setValueAtTime(400, ctx.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + 0.12);
+          oscillator.type = "sine";
+          gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+          oscillator.start(ctx.currentTime);
+          oscillator.stop(ctx.currentTime + 0.15);
+        }
       }
     } catch (error) {
       // Silently fail if audio is not available

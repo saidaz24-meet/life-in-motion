@@ -10,38 +10,20 @@
  * ✅ Mobile performance ok (proper cleanup, reduced motion support)
  */
 
-import { useState, useEffect } from "react";
-
-const INTRO_COMPLETED_KEY = "introCompleted";
+import { useState } from "react";
 
 export function useIntroGate() {
-  const [shouldShow, setShouldShow] = useState(false);
-
-  useEffect(() => {
-    // Check for dev-only debug escape hatch: ?debugIntro=1
-    const urlParams = new URLSearchParams(window.location.search);
-    const debugIntro = urlParams.get("debugIntro") === "1";
-    
-    if (debugIntro) {
-      // Force show gate when debug param is present
-      setShouldShow(true);
-      return;
-    }
-
-    // Normal behavior: check localStorage
-    const hasSeen = localStorage.getItem(INTRO_COMPLETED_KEY);
-    setShouldShow(hasSeen !== "1");
-  }, []);
+  // Always show intro - ignore localStorage gate
+  const [shouldShow, setShouldShow] = useState(true);
 
   const complete = () => {
-    localStorage.setItem(INTRO_COMPLETED_KEY, "1");
+    // Don't persist intro completion - always show on next load
     console.log("[useIntroGate] complete() called");
     setShouldShow(false);
   };
 
   const skip = () => {
-    // Immediately set localStorage before fade-out
-    localStorage.setItem(INTRO_COMPLETED_KEY, "1");
+    // Don't persist skip - always show on next load
     console.log("[useIntroGate] skip() called");
     setShouldShow(false);
   };

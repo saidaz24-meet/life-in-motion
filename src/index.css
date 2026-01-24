@@ -75,6 +75,11 @@ body {
   }
 }
 
+/* Serif font for cinematic intro */
+.introSerif {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Georgia", "Times New Roman", Times, serif;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

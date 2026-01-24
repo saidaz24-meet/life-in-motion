@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import type { Honor } from "../../content/honors";
+import type { ContentItem } from "../../content/types";
 import { clsx } from "clsx";
 import LazyImage from "../ui/LazyImage";
 import LazyVideo from "../ui/LazyVideo";
@@ -9,7 +9,7 @@ import SkeletonCard from "../ui/SkeletonCard";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 interface HonorCardProps {
-  honor: Honor;
+  honor: ContentItem;
   onClick: () => void;
   index: number;
 }
@@ -63,16 +63,16 @@ export default function HonorCard({ honor, onClick, index }: HonorCardProps) {
       >
         {/* Background media */}
         <div className="absolute inset-0 overflow-hidden">
-          {honor.teaserMedia.type === "image" ? (
+          {honor.media.teaserMedia?.type === "image" ? (
             <LazyImage
-              src={honor.teaserMedia.src}
-              alt={honor.teaserMedia.alt || honor.title}
+              src={honor.media.teaserMedia.src}
+              alt={honor.media.teaserMedia.label || honor.title}
               className="w-full h-full transition-transform duration-500 group-hover:scale-110"
               onLoad={() => setIsLoaded(true)}
             />
-          ) : (
+          ) : honor.media.teaserMedia?.type === "video" ? (
             <LazyVideo
-              src={honor.teaserMedia.src}
+              src={honor.media.teaserMedia.src}
               className="w-full h-full transition-transform duration-500 group-hover:scale-110"
               autoPlay
               loop
@@ -80,7 +80,14 @@ export default function HonorCard({ honor, onClick, index }: HonorCardProps) {
               playsInline
               onLoad={() => setIsLoaded(true)}
             />
-          )}
+          ) : honor.media.heroImage ? (
+            <LazyImage
+              src={honor.media.heroImage}
+              alt={honor.title}
+              className="w-full h-full transition-transform duration-500 group-hover:scale-110"
+              onLoad={() => setIsLoaded(true)}
+            />
+          ) : null}
           
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
@@ -102,7 +109,7 @@ export default function HonorCard({ honor, onClick, index }: HonorCardProps) {
               {honor.title}
             </h3>
             <p className="text-sm text-[rgb(var(--fg-1))] leading-relaxed">
-              {honor.oneLiner}
+              {honor.card.oneLiner}
             </p>
           </div>
 
@@ -110,7 +117,7 @@ export default function HonorCard({ honor, onClick, index }: HonorCardProps) {
           <div className="mt-auto">
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-4">
-              {honor.tags.slice(0, 3).map((tag) => (
+              {honor.tags.slice(0, 3).map((tag: string) => (
                 <span
                   key={tag}
                   className="px-2 py-1 rounded-full bg-white/10 border border-white/20 text-xs text-[rgb(var(--fg-1))]"

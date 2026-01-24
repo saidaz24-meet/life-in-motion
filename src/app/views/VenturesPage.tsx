@@ -356,7 +356,8 @@ function SmallVentureCard({
             alt={venture.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
+          {/* Subtle gradient overlay - lighter for better image visibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30" />
         </div>
       )}
               <h3 className="text-xl sm:text-2xl font-bold text-[rgb(var(--fg-0))] mb-2 group-hover:text-[rgb(var(--accent))] transition-colors">

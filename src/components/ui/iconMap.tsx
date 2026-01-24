@@ -12,7 +12,7 @@ import {
   MapPin,
   type LucideIcon,
 } from "lucide-react";
-import type { Experience } from "../../content/experiences";
+import type { ContentItem } from "../../content/types";
 import type { Tag } from "../../content/meta";
 
 // Map experience IDs to specific icons
@@ -43,7 +43,7 @@ const TAG_ICON_PRIORITY: Record<Tag, LucideIcon> = {
  * Get the appropriate icon for an experience
  * Priority: 1) Experience ID mapping, 2) Primary tag, 3) Default MapPin
  */
-export function getExperienceIcon(experience: Experience): LucideIcon {
+export function getExperienceIcon(experience: ContentItem): LucideIcon {
   // First, check if there's a specific icon for this experience ID
   const iconByID = EXPERIENCE_ICON_MAP[experience.id];
   if (iconByID) {
@@ -52,7 +52,7 @@ export function getExperienceIcon(experience: Experience): LucideIcon {
 
   // Otherwise, use the first tag's icon (tags are ordered by relevance)
   if (experience.tags.length > 0) {
-    const primaryTag = experience.tags[0];
+    const primaryTag = experience.tags[0] as Tag;
     const iconByTag = TAG_ICON_PRIORITY[primaryTag];
     if (iconByTag) {
       return iconByTag;
@@ -70,7 +70,7 @@ export function ExperienceIcon({
   experience,
   className,
 }: {
-  experience: Experience;
+  experience: ContentItem;
   className?: string;
 }): ReactElement {
   const Icon = getExperienceIcon(experience);

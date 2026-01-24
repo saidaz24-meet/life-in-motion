@@ -89,8 +89,15 @@ export default function AtlasTimelineGrid({
             </span>
           </div>
 
-          {/* Experience Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          {/* Experience Cards Grid - Wider cards when fewer items per row */}
+          <div className={clsx(
+            "grid gap-6",
+            yearExperiences.length === 1 
+              ? "grid-cols-1 max-w-2xl" 
+              : yearExperiences.length === 2
+              ? "grid-cols-1 lg:grid-cols-2 max-w-5xl"
+              : "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
+          )}>
             {yearExperiences.map((experience, index) => {
               const isHighlighted = highlightedId === experience.id;
               const microSummary = experience.card.microSummary || experience.card.oneLiner;
@@ -120,7 +127,8 @@ export default function AtlasTimelineGrid({
                     {/* Thumbnail */}
                     {experience.media.heroImage && (
                       <div className="relative w-24 h-24 lg:w-28 lg:h-28 flex-shrink-0 rounded-lg overflow-hidden bg-[rgb(var(--bg-1))]">
-                        {experience.media.teaserVideo ? (
+                        {/* Prioritize image for MEET, show video only if no image or video explicitly preferred */}
+                        {experience.media.teaserVideo && experience.id !== "meet" ? (
                           <LazyVideo
                             src={experience.media.teaserVideo}
                             className="w-full h-full object-cover"
@@ -133,10 +141,14 @@ export default function AtlasTimelineGrid({
                           <LazyImage
                             src={experience.media.heroImage}
                             alt={experience.title}
-                            className="w-full h-full object-cover"
+                            className={clsx(
+                              "w-full h-full object-cover",
+                              experience.id === "volunteering" && "object-top"
+                            )}
                           />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60" />
+                        {/* Subtle gradient overlay - lighter for better image visibility */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30" />
                       </div>
                     )}
 

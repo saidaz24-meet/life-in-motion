@@ -341,7 +341,8 @@ function ExperienceListItem({
         {/* Thumbnail */}
         {experience.media.heroImage && (
           <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden">
-            {experience.media.teaserVideo ? (
+            {/* Prioritize image for MEET, show video only if no image or video explicitly preferred */}
+            {experience.media.teaserVideo && experience.id !== "meet" ? (
               <LazyVideo
                 src={experience.media.teaserVideo}
                 className="w-full h-full object-cover"
@@ -354,10 +355,14 @@ function ExperienceListItem({
               <LazyImage
                 src={experience.media.heroImage}
                 alt={experience.title}
-                className="w-full h-full object-cover"
+                className={clsx(
+                  "w-full h-full object-cover",
+                  experience.id === "volunteering" && "object-top"
+                )}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
+            {/* Subtle gradient overlay - lighter for better image visibility */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30" />
           </div>
         )}
 
